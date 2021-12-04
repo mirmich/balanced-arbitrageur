@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PairService {
   constructor(private http: HttpClient) {}
 
