@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;600&family=Roboto:wght@900&display=swap');
+
 .top-bar {
   padding-top: 10px;
+  font-family: 'Advent Pro', sans-serif;
   text-align: center;
 }
