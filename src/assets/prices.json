@@ -1,0 +1,20 @@
+[
+  {
+    "name": "sICX/USDC",
+    "first": "sICX",
+    "second": "USDC",
+    "price": 1.2
+  },
+  {
+    "name": "sICX/USDT",
+    "first": "sICX",
+    "second": "USDT",
+    "price": 1.19
+  },
+  {
+    "name": "sICX/USDS",
+    "first": "sICX",
+    "second": "USDS",
+    "price": 1.21
+  }
+]
