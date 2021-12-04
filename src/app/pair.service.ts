@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
 
 @Injectable()
-export class PriceService {
+export class PairService {
   constructor(private http: HttpClient) {}
 
   getPrices() {

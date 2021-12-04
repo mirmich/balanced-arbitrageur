@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PriceService } from '../price.service';
+import { PairService } from '../pair.service';
 
 @Component({
   selector: 'app-pair-list',
@@ -7,9 +7,7 @@ import { PriceService } from '../price.service';
   styleUrls: ['./pair-list.component.css'],
 })
 export class PairListComponent implements OnInit {
-  pairs = this.priceService.getPrices();
-
-  constructor(private priceService: PriceService) {}
-
+  constructor(private pairService: PairService) {}
+  pairs = this.pairService.getPrices();
   ngOnInit() {}
 }
