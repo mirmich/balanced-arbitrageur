@@ -9,5 +9,8 @@ import { PairService } from '../pair.service';
 export class PairListComponent implements OnInit {
   constructor(private pairService: PairService) {}
   pairs = this.pairService.getPrices();
-  ngOnInit() {}
+
+  ngOnInit() {
+    this.pairService.getPricesReal().subscribe((result) => console.log(result));
+  }
 }
