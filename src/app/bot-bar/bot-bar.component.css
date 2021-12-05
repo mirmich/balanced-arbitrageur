@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;600&family=Roboto:wght@900&display=swap');
+
+form {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: fit-content;
+  margin: auto;
+  display: grid;
+  grid-template-columns: [first] 50% [second] 50% [last];
+  row-gap: 5px;
+}
+
+label {
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 750;
+  grid-column-start: first;
+  grid-column-end: second;
+  text-align: center;
+}
+
+button {
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 750;
+  grid-column-start: first;
+  grid-column-end: last;
+  background-color: #0c2a4d;
+  color: white;
+  border: none;
+  font-size: 20px;
+  border-radius: 10px;
+}

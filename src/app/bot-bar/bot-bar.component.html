@@ -1,13 +1,9 @@
-<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="name"> Name </label>
-    <input id="name" type="text" formControlName="name" />
-  </div>
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="feedback">
+  <label for="name"> Name </label>
+  <input id="name" type="text" formControlName="name" />
 
-  <div>
-    <label> Comment </label>
-    <input type="text" id="comment" formControlName="comment" />
-  </div>
+  <label> Comment </label>
+  <input type="" id="comment" formControlName="comment" />
 
   <button class="button" type="submit">Submit</button>
 </form>
