@@ -6,3 +6,9 @@ export interface IPairReq {
   method: string;
   params: IPairReqParams;
 }
+
+export interface IAssetBalance {
+  id: number;
+  jsonrpc: string;
+  result: string;
+}

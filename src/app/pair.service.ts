@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { IPairReq } from './pair-req';
+import { IAssetBalance, IPairReq } from './pair-req';
 import { IPairReqParams } from './pair-req-params';
 
 @Injectable({
@@ -18,8 +18,8 @@ export class PairService {
     data: {
       method: 'getPoolTotal',
       params: {
-        _id: '0x8',
-        _token: 'cxbb2871f468a3008f80b08fdde5b8b951583acf0',
+        _id: '0x3',
+        _token: 'cxf61cd5a45dc9f91c15aa65831a30a90d59a09619',
       },
     },
   };
@@ -38,6 +38,6 @@ export class PairService {
   }
 
   getPricesReal() {
-    return this.http.post(this.address, this.req);
+    return this.http.post<IAssetBalance>(this.address, this.req);
   }
 }
