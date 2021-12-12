@@ -1,6 +1,7 @@
 <div class="pair-list">
   <h2>Pairs</h2>
-  <div *ngFor="let pair of pairs | async">
-    <p>{{ pair.name }}</p>
+  <div *ngFor="let pool of pools">
+    <p>{{ pool.result.name }}</p>
+    <p>{{ pool.result.price }}</p>
   </div>
 </div>

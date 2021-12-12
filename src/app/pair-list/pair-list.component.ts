@@ -12,6 +12,8 @@ export class PairListComponent implements OnInit {
   constructor(private pairService: PairService) {}
   pairs = this.pairService.getPrices();
 
+  pools: Array<IPoolStats> = [];
+
   ngOnInit() {
     this.pairService.getPoolStatsOut('0x11').subscribe((res) => {
       console.log(this.hexToDouble(res.result.price));
@@ -26,15 +28,23 @@ export class PairListComponent implements OnInit {
 
   public init() {
     const observer: Observer<IPoolStats> = {
-      next: (x: IPoolStats) =>
-        console.log('Observer got a next value: ' + x.result.name),
+      next: (x: IPoolStats) => this.pools.push(this.smoothPoolResult(x)),
       error: (err: string) => console.log(),
       complete: () => console.log(),
     };
+
     for (let i = 1; i < 100; i++) {
-      this.pairService
+      const prd = this.pairService
         .getPoolStatsOut('0x' + i.toString(16))
         .subscribe(observer);
     }
+  }
+  private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
+    const smoothed = this.hexToDouble(resultDirty.result.price).toString();
+    let p1 = {
+      ...resultDirty
+    };
+    p1.result.price = smoothed;
+    return p1;
   }
 }
