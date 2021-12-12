@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
-import { Observable, throwError, Observer } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { IAssetBalance, IPairReq } from './pair-req';
-import { IPairReqParams } from './pair-req-params';
-import { merge, interval } from 'rxjs';
-import { take } from 'rxjs/operators';
 import {
   IPoolStatsReqParams,
   IPoolStatsReq,
@@ -47,24 +41,5 @@ export class PairService {
       params: params,
     };
     return req;
-  }
-
-  private hexToDouble(numberInHex: string) {
-    return parseInt(numberInHex.substring(2), 16) / 1000000000000000000;
-  }
-
-  public init() {
-    const observer: Observer<Observable<IPoolStats>> = {
-      next: (x: Observable<IPoolStats>) =>
-        console.log('Observer got a next value: ' + x),
-      error: (err: string) => console.error('Observer got an error: ' + err),
-      complete: () => console.log('Observer got a complete notification'),
-    };
-    let poolsObservableArray: Array<Observable<IPoolStats>>;
-    for (let i = 1; i < 100; i++) {
-      poolsObservableArray.push(this.getPoolStatsOut('0x' + i.toString(16)));
-    }
-    const merged = merge(poolsObservableArray, 2);
-    merged.subscribe(observer);
   }
 }
