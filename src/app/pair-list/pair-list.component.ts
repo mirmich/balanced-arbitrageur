@@ -11,11 +11,10 @@ export class PairListComponent implements OnInit {
   pairs = this.pairService.getPrices();
 
   ngOnInit() {
-    this.pairService
-      .getPricesReal()
-      .subscribe((result) => console.log(this.hexToDouble(result.result)));
-
-    this.pairService.getPoolStatsOut().subscribe((res) => console.log(res));
+    this.pairService.getPoolStatsOut().subscribe((res) => {
+      console.log(this.hexToDouble(res.result.price));
+      console.log(res.result.name);
+    });
   }
 
   hexToDouble(numberInHex: string) {

@@ -15,3 +15,20 @@ export interface IPoolStatsReq {
   method: string;
   params: IPoolStatsReqParams;
 }
+
+export interface IPoolStats {
+  id: number;
+  jsonrpc: string;
+  result: {
+    base: string;
+    base_decimals: string;
+    base_token: string;
+    min_quote: string;
+    name: string;
+    price: string;
+    quote: string;
+    quote_decimals: string;
+    quote_token: string;
+    total_supply: string;
+  };
+}
