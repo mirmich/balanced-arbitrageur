@@ -14,6 +14,8 @@ export class PairListComponent implements OnInit {
     this.pairService
       .getPricesReal()
       .subscribe((result) => console.log(this.hexToDouble(result.result)));
+
+    this.pairService.getPoolStatsOut().subscribe((res) => console.log(res));
   }
 
   hexToDouble(numberInHex: string) {
