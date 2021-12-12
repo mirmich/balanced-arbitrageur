@@ -11,7 +11,8 @@ export class PairListComponent implements OnInit {
   pairs = this.pairService.getPrices();
 
   ngOnInit() {
-    this.pairService.getPoolStatsOut().subscribe((res) => {
+    
+    this.pairService.getPoolStatsOut('0x11').subscribe((res) => {
       console.log(this.hexToDouble(res.result.price));
       console.log(res.result.name);
     });

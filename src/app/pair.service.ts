@@ -23,8 +23,8 @@ export class PairService {
     return this.http.get<PairPrice[]>('/assets/prices.json');
   }
 
-  getPoolStatsOut() {
-    return this.http.post<IPoolStats>(this.address, this.getPoolStats('0x11'));
+  getPoolStatsOut(poolId: string) {
+    return this.http.post<IPoolStats>(this.address, this.getPoolStats(poolId));
   }
 
   private getPoolStats(poolId: string) {
@@ -47,24 +47,24 @@ export class PairService {
     return req;
   }
 
-//   private createReqPayload(method: string, poolId: string, token: string) {
-//     const params: IPairReqParams = {
-//       to: 'cxa0af3165c08318e988cb30993b3048335b94af6c',
-//       dataType: 'call',
-//       data: {
-//         method: `${method}`,
-//         params: {
-//           _id: `${poolId}`,
-//           _token: `${token}`,
-//         },
-//       },
-//     };
-//     const req: IPairReq = {
-//       jsonrpc: '2.0',
-//       id: 1631894860562,
-//       method: 'icx_call',
-//       params: params,
-//     };
-//     return req;
-//   }
+  //   private createReqPayload(method: string, poolId: string, token: string) {
+  //     const params: IPairReqParams = {
+  //       to: 'cxa0af3165c08318e988cb30993b3048335b94af6c',
+  //       dataType: 'call',
+  //       data: {
+  //         method: `${method}`,
+  //         params: {
+  //           _id: `${poolId}`,
+  //           _token: `${token}`,
+  //         },
+  //       },
+  //     };
+  //     const req: IPairReq = {
+  //       jsonrpc: '2.0',
+  //       id: 1631894860562,
+  //       method: 'icx_call',
+  //       params: params,
+  //     };
+  //     return req;
+  //   }
 }
