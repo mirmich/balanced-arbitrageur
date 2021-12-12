@@ -24,7 +24,7 @@ export class PairService {
   }
 
   getPoolStatsOut() {
-    return this.http.post<IPoolStats>(this.address, this.getPoolStats('0x3'));
+    return this.http.post<IPoolStats>(this.address, this.getPoolStats('0x11'));
   }
 
   private getPoolStats(poolId: string) {
