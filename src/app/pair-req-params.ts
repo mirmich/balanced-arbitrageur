@@ -1,4 +1,4 @@
-export interface IPairReqParams {
+export interface IPoolTotalReqParams {
   to: string;
   dataType: string;
   data: {
