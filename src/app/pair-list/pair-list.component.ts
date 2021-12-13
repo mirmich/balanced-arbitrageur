@@ -22,8 +22,12 @@ export class PairListComponent implements OnInit {
     this.init();
   }
 
-  private hexToDouble(numberInHex: string) {
-    return parseInt(numberInHex.substring(2), 16) / 1000000000000000000;
+  private hexToDouble(numberInHex: string, decimal: number = 0) {
+    const resTemp =
+      parseInt(numberInHex.substring(2), 16) / Math.pow(10, decimal);
+    console.log(resTemp);
+    const res = resTemp > 100000000 ? resTemp / Math.pow(10, 12) : resTemp;
+    return res;
   }
 
   public init() {
@@ -40,9 +44,21 @@ export class PairListComponent implements OnInit {
     }
   }
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
-    const smoothed = this.hexToDouble(resultDirty.result.price).toString();
+    const decimalBase = parseInt(
+      resultDirty.result.base_decimals.substring(2),
+      16
+    );
+    const decimalQuote = parseInt(
+      resultDirty.result.quote_decimals.substring(2),
+      16
+    );
+    const decimal = Math.min(decimalBase, decimalQuote);
+    const smoothed = this.hexToDouble(
+      resultDirty.result.price,
+      decimal
+    ).toString();
     let p1 = {
-      ...resultDirty
+      ...resultDirty,
     };
     p1.result.price = smoothed;
     return p1;
