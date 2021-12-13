@@ -1,7 +1,7 @@
-<div class="pair-list">
+<div class="pair-list-container">
   <h2>Pairs</h2>
-  <div *ngFor="let pool of pools">
+  <div *ngFor="let pool of pools" class="pair-list-inner">
     <p>{{ pool.result.name }}</p>
-    <p>{{ pool.result.price }}</p>
+    <p>{{ pool.result.price | number }}</p>
   </div>
 </div>
