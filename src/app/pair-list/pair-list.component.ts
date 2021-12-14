@@ -25,8 +25,7 @@ export class PairListComponent implements OnInit {
   private hexToDouble(numberInHex: string, decimal: number = 0) {
     const resTemp =
       parseInt(numberInHex.substring(2), 16) / Math.pow(10, decimal);
-    console.log(resTemp);
-    const res = resTemp > 100000000 ? resTemp / Math.pow(10, 12) : resTemp;
+    const res = resTemp > 100000000 ? resTemp / Math.pow(10, 24) : resTemp;
     return res;
   }
 
@@ -43,6 +42,7 @@ export class PairListComponent implements OnInit {
         .subscribe(observer);
     }
   }
+  
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
     const decimalBase = parseInt(
       resultDirty.result.base_decimals.substring(2),
