@@ -3,10 +3,11 @@ export interface IPoolStatsReqParams {
   dataType: string;
   data: {
     method: string;
-    params: {
+    params?: {
       _id: string;
     };
   };
+  id?: string;
 }
 
 export interface IPoolStatsReq {
@@ -14,6 +15,12 @@ export interface IPoolStatsReq {
   id: number;
   method: string;
   params: IPoolStatsReqParams;
+}
+
+export interface ITokenName {
+  jsonrpc: string;
+  id: number;
+  result: string;
 }
 
 export interface IPoolStats {

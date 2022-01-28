@@ -19,6 +19,11 @@ export class PairListComponent implements OnInit {
       console.log(this.hexToDouble(res.result.price));
       console.log(res.result.name);
     });
+    this.pairService
+      .getTokenNameOut('cx66f2ed0663d5aa7efe92ab41b1e0e19ac73007a4')
+      .subscribe((res) => {
+        console.log(this.hexToDouble(res.result));
+      });
     this.init();
   }
 
