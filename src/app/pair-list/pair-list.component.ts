@@ -31,7 +31,10 @@ export class PairListComponent implements OnInit {
 
   public init() {
     const observer: Observer<IPoolStats> = {
-      next: (x: IPoolStats) => this.pools.push(this.smoothPoolResult(x)),
+      next: (poolStats: IPoolStats) =>
+        this.hasName(poolStats)
+          ? this.pools.push(this.smoothPoolResult(poolStats))
+          : this.resolveName(poolStats),
       error: (err: string) => console.log(),
       complete: () => console.log(),
     };
@@ -42,8 +45,19 @@ export class PairListComponent implements OnInit {
         .subscribe(observer);
     }
   }
-  
+
+  private hasName(poolStats: IPoolStats) {
+    return (
+      poolStats.result.name !== null && poolStats.result.name !== undefined
+    );
+  }
+
+  private resolveName(poolStats: IPoolStats) {
+    console.log(this.smoothPoolResult(poolStats));
+  }
+
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
+    // console.log(resultDirty);
     const decimalBase = parseInt(
       resultDirty.result.base_decimals.substring(2),
       16
