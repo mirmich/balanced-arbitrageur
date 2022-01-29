@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PairService } from '../pair.service';
 import { Observable, throwError, Observer } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { IPoolStats } from '../pool-stats-req-params';
+import { firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-pair-list',
@@ -15,14 +17,10 @@ export class PairListComponent implements OnInit {
   pools: Array<IPoolStats> = [];
 
   ngOnInit() {
-    this.pairService.getPoolStatsOut('0x11').subscribe((res) => {
-      console.log(this.hexToDouble(res.result.price));
-      console.log(res.result.name);
-    });
     this.pairService
       .getTokenNameOut('cx66f2ed0663d5aa7efe92ab41b1e0e19ac73007a4')
       .subscribe((res) => {
-        console.log(this.hexToDouble(res.result));
+        console.log(res.result);
       });
     this.init();
   }
@@ -36,10 +34,10 @@ export class PairListComponent implements OnInit {
 
   public init() {
     const observer: Observer<IPoolStats> = {
-      next: (poolStats: IPoolStats) =>
+      next: async (poolStats: IPoolStats) =>
         this.hasName(poolStats)
           ? this.pools.push(this.smoothPoolResult(poolStats))
-          : this.resolveName(poolStats),
+          : this.pools.push(this.smoothPoolResult(await this.resolveName(poolStats))),
       error: (err: string) => console.log(),
       complete: () => console.log(),
     };
@@ -47,6 +45,7 @@ export class PairListComponent implements OnInit {
     for (let i = 1; i < 100; i++) {
       const prd = this.pairService
         .getPoolStatsOut('0x' + i.toString(16))
+        //.pipe(map(val => this.resolveName(val)))
         .subscribe(observer);
     }
   }
@@ -57,8 +56,19 @@ export class PairListComponent implements OnInit {
     );
   }
 
-  private resolveName(poolStats: IPoolStats) {
-    console.log(this.smoothPoolResult(poolStats));
+  private async resolveName(poolStats: IPoolStats) {
+    if(this.hasName(poolStats)){
+      return poolStats;
+    } else {
+      const nameBase = await firstValueFrom(this.pairService.getTokenNameOut(poolStats.result.base_token));
+      const nameQuote = await firstValueFrom(this.pairService.getTokenNameOut(poolStats.result.quote_token));
+      const poolName = (poolStats.result.name = `${nameBase.result}/${nameQuote.result}`);
+      let p1 = {
+        ...poolStats,
+      };
+      p1.result.name = poolName;
+      return p1;
+    }
   }
 
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {

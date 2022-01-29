@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
+
 import {
   IPoolStatsReqParams,
   IPoolStatsReq,
@@ -57,7 +58,6 @@ export class PairService {
       data: {
         method: 'name',
       },
-      id: '344522255',
     };
     const req: IPoolStatsReq = {
       jsonrpc: '2.0',
