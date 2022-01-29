@@ -71,6 +71,10 @@ export class PairListComponent implements OnInit {
     }
   }
 
+  private prettifyName(name: string) {
+    
+  }
+
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
     // console.log(resultDirty);
     const decimalBase = parseInt(
