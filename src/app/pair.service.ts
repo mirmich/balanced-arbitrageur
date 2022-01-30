@@ -23,7 +23,7 @@ export class PairService {
   }
 
   getNames() {
-    return this.http.get<Names[]>('/assets/names.json');
+    return this.http.get<ITokenName[]>('/assets/names.json');
   }
 
   getPoolStatsOut(poolId: string) {
