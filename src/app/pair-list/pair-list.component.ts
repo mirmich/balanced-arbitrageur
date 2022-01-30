@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { IPoolStats } from '../pool-stats-req-params';
 import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from '../names';
+import { GraphCalculationService } from '../graph-calculation.service';
 
 @Component({
   selector: 'app-pair-list',
@@ -12,7 +13,7 @@ import { ITokenAltName } from '../names';
   styleUrls: ['./pair-list.component.css'],
 })
 export class PairListComponent implements OnInit {
-  constructor(private pairService: PairService) {}
+  constructor(private pairService: PairService, private graphService: GraphCalculationService) {}
   pairs = this.pairService.getPrices();
 
   pools: Array<IPoolStats> = [];
@@ -20,6 +21,7 @@ export class PairListComponent implements OnInit {
 
   ngOnInit() {
     this.init();
+    this.graphService.initGraph();
   }
 
   private hexToDouble(numberInHex: string, decimal: number = 0) {
