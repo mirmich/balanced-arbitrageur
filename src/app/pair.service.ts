@@ -8,6 +8,7 @@ import {
   IPoolStats,
   ITokenName,
 } from './pool-stats-req-params';
+import { Names } from './names';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,10 @@ export class PairService {
 
   getPrices() {
     return this.http.get<PairPrice[]>('/assets/prices.json');
+  }
+
+  getNames() {
+    return this.http.get<Names[]>('/assets/names.json');
   }
 
   getPoolStatsOut(poolId: string) {

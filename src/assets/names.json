@@ -1,16 +1,58 @@
-{
-  "IAM Token": "IAM",
-  "Stably USD": "USDS",
-  "Finance Token": "FIN",
-  "Staked ICX": "sICX",
-  "ICON Tether": "IUSDT",
-  "ICON USD Coin": "IUSDC",
-  "GangstaBetToken": "GBET",
-  "Coda Governance Token": "CODA",
-  "ICON Ethereum": "IETH",
-  "Balanced Dollar": "bnUSD",
-  "Craft": "CFT",
-  "TapToken": "TAP",
-  "Omm Token": "OMM",
-  "Chicken": "CHKN"
-}
+[
+  {
+    "name": "IAM Token",
+    "ticker": "IAM"
+  },
+  {
+    "name": "Stably USD",
+    "ticker": "USDS"
+  },
+  {
+    "name": "Finance Token",
+    "ticker": "FIN"
+  },
+  {
+    "name": "Staked ICX",
+    "ticker": "sICX"
+  },
+  {
+    "name": "ICON Tether",
+    "ticker": "IUSDT"
+  },
+  {
+    "name": "ICON USD Coin",
+    "ticker": "IUSDC"
+  },
+  {
+    "name": "GangstaBetToken",
+    "ticker": "GBET"
+  },
+  {
+    "name": "Coda Governance Token",
+    "ticker": "CODA"
+  },
+  {
+    "name": "ICON Ethereum",
+    "ticker": "IETH"
+  },
+  {
+    "name": "Balanced Dollar",
+    "ticker": "bnUSD"
+  },
+  {
+    "name": "Craft",
+    "ticker": "CFT"
+  },
+  {
+    "name": "TapToken",
+    "ticker": "TAP"
+  },
+  {
+    "name": "Omm Token",
+    "ticker": "OMM"
+  },
+  {
+    "name": "Chicken",
+    "ticker": "CHKN"
+  }
+]
