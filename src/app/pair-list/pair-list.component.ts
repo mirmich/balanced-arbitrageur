@@ -3,7 +3,8 @@ import { PairService } from '../pair.service';
 import { Observable, throwError, Observer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IPoolStats } from '../pool-stats-req-params';
-import { firstValueFrom} from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { ITokenAltName } from '../names';
 
 @Component({
   selector: 'app-pair-list',
@@ -15,13 +16,9 @@ export class PairListComponent implements OnInit {
   pairs = this.pairService.getPrices();
 
   pools: Array<IPoolStats> = [];
+  altNames: Array<ITokenAltName> = [];
 
   ngOnInit() {
-    this.pairService
-      .getTokenNameOut('cx66f2ed0663d5aa7efe92ab41b1e0e19ac73007a4')
-      .subscribe((res) => {
-        console.log(res.result);
-      });
     this.init();
   }
 
@@ -32,12 +29,15 @@ export class PairListComponent implements OnInit {
     return res;
   }
 
-  public init() {
+  public async init() {
+    this.altNames = (await firstValueFrom(this.pairService.getNames()));
     const observer: Observer<IPoolStats> = {
       next: async (poolStats: IPoolStats) =>
         this.hasName(poolStats)
           ? this.pools.push(this.smoothPoolResult(poolStats))
-          : this.pools.push(this.smoothPoolResult(await this.resolveName(poolStats))),
+          : this.pools.push(
+              this.smoothPoolResult(await this.resolveName(poolStats))
+            ),
       error: (err: string) => console.log(),
       complete: () => console.log(),
     };
@@ -57,12 +57,21 @@ export class PairListComponent implements OnInit {
   }
 
   private async resolveName(poolStats: IPoolStats) {
-    if(this.hasName(poolStats)){
+    if (this.hasName(poolStats)) {
       return poolStats;
     } else {
-      const nameBase = await firstValueFrom(this.pairService.getTokenNameOut(poolStats.result.base_token));
-      const nameQuote = await firstValueFrom(this.pairService.getTokenNameOut(poolStats.result.quote_token));
-      const poolName = (poolStats.result.name = `${nameBase.result}/${nameQuote.result}`);
+      const nameBase = await firstValueFrom(
+        this.pairService.getTokenNameOut(poolStats.result.base_token)
+      );
+      const altNameBase = this.altNames.find(el => el.name === nameBase.result);
+      const nameQuote = await firstValueFrom(
+        this.pairService.getTokenNameOut(poolStats.result.quote_token)
+      );
+      const altNameQuote = this.altNames.find(el => el.name === nameQuote.result);
+      const nameBaseRes = (altNameBase === undefined) ? nameBase.result : altNameBase.ticker;
+      const nameQuoteRes = (altNameQuote === undefined) ? nameQuote.result : altNameQuote.ticker;
+      const poolName =
+        (poolStats.result.name = `${nameBaseRes}/${nameQuoteRes}`);
       let p1 = {
         ...poolStats,
       };
@@ -71,9 +80,7 @@ export class PairListComponent implements OnInit {
     }
   }
 
-  private prettifyName(name: string) {
-    
-  }
+  private prettifyName(name: string) {}
 
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
     // console.log(resultDirty);

@@ -1,4 +1,4 @@
-export interface ITokenName {
+export interface ITokenAltName {
   name: string;
   ticker: string;
 }
