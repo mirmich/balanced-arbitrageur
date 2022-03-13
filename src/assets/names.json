@@ -28,6 +28,10 @@
     "ticker": "GBET"
   },
   {
+    "name": "GangstaBet Token",
+    "ticker": "GBET"
+  },
+  {
     "name": "Coda Governance Token",
     "ticker": "CODA"
   },
@@ -38,6 +42,10 @@
   {
     "name": "Balanced Dollar",
     "ticker": "bnUSD"
+  },
+  {
+    "name": "Balance Token",
+    "ticker": "BALN"
   },
   {
     "name": "Craft",

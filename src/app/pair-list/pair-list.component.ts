@@ -46,7 +46,6 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(),
       complete: () => console.log(),
     };
-    console.log(this.altNames);
 
     for (let i = 1; i < 100; i++) {
       const prd = this.pairService
