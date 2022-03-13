@@ -55,6 +55,7 @@ export class PairService {
     };
     return req;
   }
+
   private getTokenName(tokenAddress: String) {
     const params: IPoolStatsReqParams = {
       to: `${tokenAddress}`,

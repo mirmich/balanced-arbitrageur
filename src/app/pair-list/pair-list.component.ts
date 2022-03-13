@@ -13,7 +13,10 @@ import { GraphCalculationService } from '../graph-calculation.service';
   styleUrls: ['./pair-list.component.css'],
 })
 export class PairListComponent implements OnInit {
-  constructor(private pairService: PairService, private graphService: GraphCalculationService) {}
+  constructor(
+    private pairService: PairService,
+    private graphService: GraphCalculationService
+  ) {}
   pairs = this.pairService.getPrices();
 
   pools: Array<IPoolStats> = [];
@@ -32,7 +35,7 @@ export class PairListComponent implements OnInit {
   }
 
   public async init() {
-    this.altNames = (await firstValueFrom(this.pairService.getNames()));
+    this.altNames = await firstValueFrom(this.pairService.getNames());
     const observer: Observer<IPoolStats> = {
       next: async (poolStats: IPoolStats) =>
         this.hasName(poolStats)
@@ -43,6 +46,7 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(),
       complete: () => console.log(),
     };
+    console.log(this.altNames);
 
     for (let i = 1; i < 100; i++) {
       const prd = this.pairService
@@ -65,13 +69,19 @@ export class PairListComponent implements OnInit {
       const nameBase = await firstValueFrom(
         this.pairService.getTokenNameOut(poolStats.result.base_token)
       );
-      const altNameBase = this.altNames.find(el => el.name === nameBase.result);
+      const altNameBase = this.altNames.find(
+        (el) => el.name === nameBase.result
+      );
       const nameQuote = await firstValueFrom(
         this.pairService.getTokenNameOut(poolStats.result.quote_token)
       );
-      const altNameQuote = this.altNames.find(el => el.name === nameQuote.result);
-      const nameBaseRes = (altNameBase === undefined) ? nameBase.result : altNameBase.ticker;
-      const nameQuoteRes = (altNameQuote === undefined) ? nameQuote.result : altNameQuote.ticker;
+      const altNameQuote = this.altNames.find(
+        (el) => el.name === nameQuote.result
+      );
+      const nameBaseRes =
+        altNameBase === undefined ? nameBase.result : altNameBase.ticker;
+      const nameQuoteRes =
+        altNameQuote === undefined ? nameQuote.result : altNameQuote.ticker;
       const poolName =
         (poolStats.result.name = `${nameBaseRes}/${nameQuoteRes}`);
       let p1 = {
