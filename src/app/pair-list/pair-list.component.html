@@ -1,9 +1,15 @@
 <div class="pair-list-container">
   <h2>Pairs</h2>
   <div class="pair-list-grid">
-    <div *ngFor="let pool of pools" class="pair-list-inner">
-      <p>{{ pool.result.name }}</p>
-      <p>{{ pool.result.price | number }}</p>
+    <div *ngFor="let pool of pools">
+      <div class="pair-list-inner-info">
+        <p>{{ pool.result.name }}</p>
+        <p>{{ pool.result.price | number }}</p>
+      </div>
+      <div class="pair-list-inner-drop-down">
+        <p>prdel</p>
+        <p>prdel</p>
+      </div>
     </div>
   </div>
 </div>
