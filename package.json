@@ -14,6 +14,7 @@
     "graphology": "^0.23.2",
     "graphology-traversal": "^0.3.0",
     "graphology-types": ">=0.23.0",
+    "graphology-simple-path": "^0.1.2",
     "rxjs": "^7.3.0",
     "tslib": "^2.3.1",
     "zone.js": "^0.11.4"
