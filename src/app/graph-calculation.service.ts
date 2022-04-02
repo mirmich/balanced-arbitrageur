@@ -51,10 +51,20 @@ export class GraphCalculationService {
     console.log(graph.size);
     console.log(graph.toJSON());
     const cycles = allSimplePaths(graph, 'sICX', 'sICX');
-    const edges = cycles.map((x) => x.map((node) => graph.degree(node)));
-    //console.log(edges);
-    // const graph = new Graph<NodeType>((n: NodeType) => n.name);
-    // graph.insert({ name: 'sICX' });
-    // console.log(graph.getNodes());
+    const edges = cycles.map((x) => {
+      const path = x.map((y, i) => {
+        if (i + 1 < x.length) {
+          const key = graph.edge(y, x[i + 1]);
+          const price = graph.getEdgeAttribute(
+            graph.edge(y, x[i + 1]),
+            'price'
+          );
+          return { edge: key, price: price };
+        }
+      });
+      path.pop();
+      return path;
+    });
+    console.log(edges);
   }
 }
