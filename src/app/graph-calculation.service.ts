@@ -3,6 +3,7 @@ import Graph from 'graphology';
 import { dfs } from 'graphology-traversal/dfs';
 import { allSimplePaths } from 'graphology-simple-path';
 import { Attributes } from 'graphology-types';
+import { IPoolStats } from 'pool-stats-req-params';
 
 type NodeType = { name: string };
 
@@ -13,7 +14,7 @@ export class GraphCalculationService {
   constructor() {}
   graph = new Graph();
 
-  initGraph() {
+  initGraph(pools: Array<IPoolStats>) {
     this.graph.addNode('sICX');
     this.graph.addNode('BALN');
     this.graph.addNode('bnUSD');

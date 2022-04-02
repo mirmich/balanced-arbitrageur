@@ -24,7 +24,6 @@ export class PairListComponent implements OnInit {
 
   ngOnInit() {
     this.init();
-    this.graphService.initGraph();
   }
 
   private hexToDouble(numberInHex: string, decimal: number = 0) {
@@ -47,12 +46,14 @@ export class PairListComponent implements OnInit {
       complete: () => console.log(),
     };
 
+    // Find all possible pools listed on Balanced
     for (let i = 1; i < 100; i++) {
       const prd = this.pairService
         .getPoolStatsOut('0x' + i.toString(16))
-        //.pipe(map(val => this.resolveName(val)))
         .subscribe(observer);
     }
+
+    this.graphService.initGraph(this.pools);
   }
 
   private hasName(poolStats: IPoolStats) {
