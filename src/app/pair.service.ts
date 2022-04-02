@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import {
   IPoolStatsReqParams,
@@ -27,7 +29,14 @@ export class PairService {
   }
 
   getPoolStatsOut(poolId: string) {
-    return this.http.post<IPoolStats>(this.address, this.getPoolStats(poolId));
+    return this.http
+      .post<IPoolStats>(this.address, this.getPoolStats(poolId))
+      .pipe(
+        catchError((error) => {
+          console.log(error);
+          return of([]);
+        })
+      );
   }
   getTokenNameOut(tokenAddress: String) {
     return this.http.post<ITokenName>(

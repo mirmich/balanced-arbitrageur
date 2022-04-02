@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PairService } from '../pair.service';
 import { Observable, throwError, Observer } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { concat, forkJoin } from 'rxjs';
 import { IPoolStats } from '../pool-stats-req-params';
 import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from '../names';
@@ -35,25 +36,38 @@ export class PairListComponent implements OnInit {
 
   public async init() {
     this.altNames = await firstValueFrom(this.pairService.getNames());
-    const observer: Observer<IPoolStats> = {
-      next: async (poolStats: IPoolStats) =>
-        this.hasName(poolStats)
-          ? this.pools.push(this.smoothPoolResult(poolStats))
-          : this.pools.push(
-              this.smoothPoolResult(await this.resolveName(poolStats))
-            ),
-      error: (err: string) => console.log(),
-      complete: () => console.log(),
+
+    const observer: Observer<IPoolStats[]> = {
+      next: async (poolStats: IPoolStats[]) => {
+        poolStats.forEach(async (poolStat) => {
+          console.log(poolStat);
+          this.hasName(poolStat)
+            ? this.pools.push(this.smoothPoolResult(poolStat))
+            : this.pools.push(
+                this.smoothPoolResult(await this.resolveName(poolStat))
+              );
+        });
+      },
+      error: (err: string) => console.log(err),
+      complete: () => console.log('im done'),
     };
 
+    var indices: Array<number> = [];
     // Find all possible pools listed on Balanced
     for (let i = 1; i < 100; i++) {
-      const prd = this.pairService
-        .getPoolStatsOut('0x' + i.toString(16))
-        .subscribe(observer);
+      indices.push(i);
+      // const prd = this.pairService
+      //   .getPoolStatsOut('0x' + i.toString(16))
+      //   .subscribe(observer);
     }
+    const observables = indices.map((x) =>
+      this.pairService.getPoolStatsOut('0x' + x.toString(16))
+    );
+    const smthing = forkJoin(observables);
+    console.log(observables);
+    smthing.subscribe(observer);
 
-    this.graphService.initGraph(this.pools);
+    //this.graphService.initGraph(this.pools);
   }
 
   private hasName(poolStats: IPoolStats) {

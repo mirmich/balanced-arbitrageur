@@ -3,7 +3,7 @@ import Graph from 'graphology';
 import { dfs } from 'graphology-traversal/dfs';
 import { allSimplePaths } from 'graphology-simple-path';
 import { Attributes } from 'graphology-types';
-import { IPoolStats } from 'pool-stats-req-params';
+import { IPoolStats } from './pool-stats-req-params';
 
 type NodeType = { name: string };
 
@@ -15,48 +15,49 @@ export class GraphCalculationService {
   graph = new Graph();
 
   initGraph(pools: Array<IPoolStats>) {
-    this.graph.addNode('sICX');
-    this.graph.addNode('BALN');
-    this.graph.addNode('bnUSD');
-    this.graph.addNode('IUSDC');
-    // sICX/BALN
-    this.graph.addDirectedEdgeWithKey('sICX->BALN', 'sICX', 'BALN', {
-      price: 0.96,
-    });
-    this.graph.addDirectedEdgeWithKey('BALN->sICX', 'BALN', 'sICX', {
-      price: 1.04,
-    });
-    // bnUSD/sICX
-    this.graph.addDirectedEdgeWithKey('sICX->bnUSD', 'sICX', 'bnUSD', {
-      price: 0.74,
-    });
-    this.graph.addDirectedEdgeWithKey('bnUSD->sICX', 'bnUSD', 'sICX', {
-      price: 1.32,
-    });
-    // bnUSD/BALN
-    this.graph.addDirectedEdgeWithKey('BALN->bnUSD', 'BALN', 'bnUSD', {
-      price: 0.77,
-    });
-    this.graph.addDirectedEdgeWithKey('bnUSD->BALN', 'bnUSD', 'BALN', {
-      price: 1.28,
-    });
-    // bnUSD/IUSDC
-    this.graph.addDirectedEdgeWithKey('bnUSD->IUSDC', 'bnUSD', 'IUSDC', {
-      price: 1.04,
-    });
-    this.graph.addDirectedEdgeWithKey('IUSDC->bnUSD', 'IUSDC', 'bnUSD', {
-      price: 1.28,
-    });
+    console.log(pools);
+    // this.graph.addNode('sICX');
+    // this.graph.addNode('BALN');
+    // this.graph.addNode('bnUSD');
+    // this.graph.addNode('IUSDC');
+    // // sICX/BALN
+    // this.graph.addDirectedEdgeWithKey('sICX->BALN', 'sICX', 'BALN', {
+    //   price: 0.96,
+    // });
+    // this.graph.addDirectedEdgeWithKey('BALN->sICX', 'BALN', 'sICX', {
+    //   price: 1.04,
+    // });
+    // // bnUSD/sICX
+    // this.graph.addDirectedEdgeWithKey('sICX->bnUSD', 'sICX', 'bnUSD', {
+    //   price: 0.74,
+    // });
+    // this.graph.addDirectedEdgeWithKey('bnUSD->sICX', 'bnUSD', 'sICX', {
+    //   price: 1.32,
+    // });
+    // // bnUSD/BALN
+    // this.graph.addDirectedEdgeWithKey('BALN->bnUSD', 'BALN', 'bnUSD', {
+    //   price: 0.77,
+    // });
+    // this.graph.addDirectedEdgeWithKey('bnUSD->BALN', 'bnUSD', 'BALN', {
+    //   price: 1.28,
+    // });
+    // // bnUSD/IUSDC
+    // this.graph.addDirectedEdgeWithKey('bnUSD->IUSDC', 'bnUSD', 'IUSDC', {
+    //   price: 1.04,
+    // });
+    // this.graph.addDirectedEdgeWithKey('IUSDC->bnUSD', 'IUSDC', 'bnUSD', {
+    //   price: 1.28,
+    // });
 
-    this.graph.addDirectedEdgeWithKey('IUSDC->sICX', 'IUSDC', 'sICX', {
-      price: 1.26,
-    });
-    this.graph.addDirectedEdgeWithKey('sICX->IUSDC', 'sICX', 'IUSDC', {
-      price: 0.77,
-    });
-    console.log(this.graph.size);
-    console.log(this.graph.toJSON());
-    this.findAllCyclesForNode('sICX');
+    // this.graph.addDirectedEdgeWithKey('IUSDC->sICX', 'IUSDC', 'sICX', {
+    //   price: 1.26,
+    // });
+    // this.graph.addDirectedEdgeWithKey('sICX->IUSDC', 'sICX', 'IUSDC', {
+    //   price: 0.77,
+    // });
+    // console.log(this.graph.size);
+    // console.log(this.graph.toJSON());
+    //this.findAllCyclesForNode('sICX');
   }
 
   findAllCyclesForNode(node: string) {
