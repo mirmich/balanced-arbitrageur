@@ -50,10 +50,8 @@ export class GraphCalculationService {
     });
     console.log(graph.size);
     console.log(graph.toJSON());
-    dfs(graph, function (node, attr, depth) {
-      console.log(node, attr, depth);
-    });
     const cycles = allSimplePaths(graph, 'sICX', 'sICX');
+    const edges = cycles.map((x) => x.map((node) => graph.degree(node)));
     console.log(cycles);
     // const graph = new Graph<NodeType>((n: NodeType) => n.name);
     // graph.insert({ name: 'sICX' });
