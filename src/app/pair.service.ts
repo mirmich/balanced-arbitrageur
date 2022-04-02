@@ -33,8 +33,7 @@ export class PairService {
       .post<IPoolStats>(this.address, this.getPoolStats(poolId))
       .pipe(
         catchError((error) => {
-          console.log(error);
-          return of([]);
+          return of({});
         })
       );
   }

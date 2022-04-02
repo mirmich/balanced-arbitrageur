@@ -7,6 +7,7 @@ import { IPoolStats } from '../pool-stats-req-params';
 import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from '../names';
 import { GraphCalculationService } from '../graph-calculation.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-pair-list',
@@ -38,18 +39,15 @@ export class PairListComponent implements OnInit {
     this.altNames = await firstValueFrom(this.pairService.getNames());
 
     const observer: Observer<IPoolStats[]> = {
-      next: async (poolStats: IPoolStats[]) => {
+      next: (poolStats: IPoolStats[]) => {
         poolStats.forEach(async (poolStat) => {
-          console.log(poolStat);
-          this.hasName(poolStat)
-            ? this.pools.push(this.smoothPoolResult(poolStat))
-            : this.pools.push(
-                this.smoothPoolResult(await this.resolveName(poolStat))
-              );
+          if (!_.isEmpty(poolStat)) {
+            this.pools.push( this.smoothPoolResult(await this.resolveName(poolStat)));
+          }
         });
       },
       error: (err: string) => console.log(err),
-      complete: () => console.log('im done'),
+      complete: () => console.log(this.pools),
     };
 
     var indices: Array<number> = [];
@@ -72,7 +70,7 @@ export class PairListComponent implements OnInit {
 
   private hasName(poolStats: IPoolStats) {
     return (
-      poolStats.result.name !== null && poolStats.result.name !== undefined
+      poolStats?.result?.name !== null && poolStats?.result?.name !== undefined
     );
   }
 
