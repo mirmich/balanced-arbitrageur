@@ -52,7 +52,7 @@ export class GraphCalculationService {
     console.log(graph.toJSON());
     const cycles = allSimplePaths(graph, 'sICX', 'sICX');
     const edges = cycles.map((x) => x.map((node) => graph.degree(node)));
-    console.log(edges);
+    //console.log(edges);
     // const graph = new Graph<NodeType>((n: NodeType) => n.name);
     // graph.insert({ name: 'sICX' });
     // console.log(graph.getNodes());
