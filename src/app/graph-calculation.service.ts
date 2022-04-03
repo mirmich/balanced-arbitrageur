@@ -16,32 +16,44 @@ export class GraphCalculationService {
 
   initGraph(pools: Array<IPoolStats>) {
     console.log(pools.map((x) => x.result.price + ' ' + x.result.name));
-    pools.forEach((pool) => {
-      const names = pool.result.name.split('/');
+    const blackListedPools: Array<string> = Array(
+      'LambdaX/bnUSD',
+      'LambdaX/USDS',
+      'LambdaX/sICX',
+      'sICX/IUSDC',
+      'IAM/sICX',
+      'IAM/bnUSD',
+      'IAM/IUSDC',
+      'CODA/bnUSD'
+    );
+    pools
+      .filter((pool) => !(blackListedPools.indexOf(pool.result.name) > -1))
+      .forEach((pool) => {
+        const names = pool.result.name.split('/');
 
-      // Add base token
-      if (!this.graph.hasNode(names[0])) {
-        this.graph.addNode(names[0]);
-      }
-      // Add quote token
-      if (!this.graph.hasNode(names[1])) {
-        this.graph.addNode(names[1]);
-      }
-      const firstEdge = `${names[0]}->${names[1]}`;
-      const secondEdge = `${names[1]}->${names[0]}`;
+        // Add base token
+        if (!this.graph.hasNode(names[0])) {
+          this.graph.addNode(names[0]);
+        }
+        // Add quote token
+        if (!this.graph.hasNode(names[1])) {
+          this.graph.addNode(names[1]);
+        }
+        const firstEdge = `${names[0]}->${names[1]}`;
+        const secondEdge = `${names[1]}->${names[0]}`;
 
-      if (!this.graph.hasDirectedEdge(firstEdge)) {
-        this.graph.addDirectedEdgeWithKey(firstEdge, names[0], names[1], {
-          price: parseFloat(pool.result.price),
-        });
-      }
+        if (!this.graph.hasDirectedEdge(firstEdge)) {
+          this.graph.addDirectedEdgeWithKey(firstEdge, names[0], names[1], {
+            price: parseFloat(pool.result.price),
+          });
+        }
 
-      if (!this.graph.hasDirectedEdge(secondEdge)) {
-        this.graph.addDirectedEdgeWithKey(secondEdge, names[1], names[0], {
-          price: 1 / parseFloat(pool.result.price),
-        });
-      }
-    });
+        if (!this.graph.hasDirectedEdge(secondEdge)) {
+          this.graph.addDirectedEdgeWithKey(secondEdge, names[1], names[0], {
+            price: 1 / parseFloat(pool.result.price),
+          });
+        }
+      });
     console.log(this.graph.toJSON());
     const cycles = this.findAllCyclesForNode('bnUSD');
 
@@ -59,50 +71,9 @@ export class GraphCalculationService {
             .map((edge) => edge.price)
             .reduce((prev, current) => prev * current),
         };
-      });
-    //console.log(resultFiltered);
-    // this.graph.addNode('sICX');
-    // this.graph.addNode('BALN');
-    // this.graph.addNode('bnUSD');
-    // this.graph.addNode('IUSDC');
-    // // sICX/BALN
-    // this.graph.addDirectedEdgeWithKey('sICX->BALN', 'sICX', 'BALN', {
-    //   price: 0.96,
-    // });
-    // this.graph.addDirectedEdgeWithKey('BALN->sICX', 'BALN', 'sICX', {
-    //   price: 1.04,
-    // });
-    // // bnUSD/sICX
-    // this.graph.addDirectedEdgeWithKey('sICX->bnUSD', 'sICX', 'bnUSD', {
-    //   price: 0.74,
-    // });
-    // this.graph.addDirectedEdgeWithKey('bnUSD->sICX', 'bnUSD', 'sICX', {
-    //   price: 1.32,
-    // });
-    // // bnUSD/BALN
-    // this.graph.addDirectedEdgeWithKey('BALN->bnUSD', 'BALN', 'bnUSD', {
-    //   price: 0.77,
-    // });
-    // this.graph.addDirectedEdgeWithKey('bnUSD->BALN', 'bnUSD', 'BALN', {
-    //   price: 1.28,
-    // });
-    // // bnUSD/IUSDC
-    // this.graph.addDirectedEdgeWithKey('bnUSD->IUSDC', 'bnUSD', 'IUSDC', {
-    //   price: 1.04,
-    // });
-    // this.graph.addDirectedEdgeWithKey('IUSDC->bnUSD', 'IUSDC', 'bnUSD', {
-    //   price: 1.28,
-    // });
-
-    // this.graph.addDirectedEdgeWithKey('IUSDC->sICX', 'IUSDC', 'sICX', {
-    //   price: 1.26,
-    // });
-    // this.graph.addDirectedEdgeWithKey('sICX->IUSDC', 'sICX', 'IUSDC', {
-    //   price: 0.77,
-    // });
-    // console.log(this.graph.size);
-    // console.log(this.graph.toJSON());
-    //this.findAllCyclesForNode('sICX');
+      })
+      .sort((a, b) => (a.price > b.price ? 1 : -1));
+    console.log(resultFiltered);
   }
 
   findAllCyclesForNode(node: string) {

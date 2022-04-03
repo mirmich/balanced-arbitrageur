@@ -33,10 +33,8 @@ export class PairListComponent implements OnInit {
   private hexToDouble(numberInHex: string, decimal: number = 0) {
     const resTemp =
       parseInt(numberInHex.substring(2), 16) / Math.pow(10, decimal);
-    console.log(resTemp);
-    const res = resTemp > 100000000 ? resTemp / Math.pow(10, 24) : resTemp;
-    console.log(decimal);
-    console.log(res);
+    const resTemp1 = resTemp > 100000000 ? resTemp / Math.pow(10, 12) : resTemp;
+    const res = resTemp1 > 100000000 ? resTemp1 / Math.pow(10, 12) : resTemp1;
     return res;
   }
 
@@ -131,8 +129,6 @@ export class PairListComponent implements OnInit {
       resultDirty.result.quote_decimals.substring(2),
       16
     );
-    console.log(decimalBase);
-    console.log(decimalQuote);
     const decimal = Math.min(decimalBase, decimalQuote);
     const smoothed = this.hexToDouble(
       resultDirty.result.price,
