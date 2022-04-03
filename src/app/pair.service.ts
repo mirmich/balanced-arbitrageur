@@ -38,10 +38,13 @@ export class PairService {
       );
   }
   getTokenNameOut(tokenAddress: String) {
-    return this.http.post<ITokenName>(
-      this.address,
-      this.getTokenName(tokenAddress)
-    );
+    return this.http
+      .post<ITokenName>(this.address, this.getTokenName(tokenAddress))
+      .pipe(
+        catchError((error) => {
+          return of({ jsonrpc: '', id: '', result: '' });
+        })
+      );
   }
 
   private getPoolStats(poolId: string) {
