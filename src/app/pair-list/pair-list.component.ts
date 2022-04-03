@@ -8,6 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from '../names';
 import { GraphCalculationService } from '../graph-calculation.service';
 import * as _ from 'lodash';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 
 @Component({
   selector: 'app-pair-list',
@@ -32,7 +33,10 @@ export class PairListComponent implements OnInit {
   private hexToDouble(numberInHex: string, decimal: number = 0) {
     const resTemp =
       parseInt(numberInHex.substring(2), 16) / Math.pow(10, decimal);
+    console.log(resTemp);
     const res = resTemp > 100000000 ? resTemp / Math.pow(10, 24) : resTemp;
+    console.log(decimal);
+    console.log(res);
     return res;
   }
 
@@ -55,18 +59,11 @@ export class PairListComponent implements OnInit {
     // Find all possible pools listed on Balanced
     for (let i = 1; i < 50; i++) {
       indices.push(i);
-      // const prd = this.pairService
-      //   .getPoolStatsOut('0x' + i.toString(16))
-      //   .subscribe(observer);
     }
     const observables = indices.map((x) =>
       this.pairService.getPoolStatsOut('0x' + x.toString(16))
     );
-    const smthing = forkJoin(observables);
-
-    smthing.subscribe(observer);
-
-    //this.graphService.initGraph(this.pools);
+    forkJoin(observables).subscribe(observer);
   }
 
   private tranformNames() {
@@ -75,7 +72,7 @@ export class PairListComponent implements OnInit {
         poolStats.forEach((x) => this.poolsGroomed.push(x));
       },
       error: (err: string) => console.log(err),
-      complete: () => console.log(this.poolsGroomed),
+      complete: () => this.graphService.initGraph(this.poolsGroomed),
     };
 
     const poolsGroomed: Array<Observable<IPoolStats>> = this.pools.map(
@@ -125,38 +122,6 @@ export class PairListComponent implements OnInit {
     );
   }
 
-  private async resolveName(poolStats: IPoolStats): Promise<IPoolStats> {
-    if (this.hasName(poolStats)) {
-      return poolStats;
-    } else {
-      const nameBase = await firstValueFrom(
-        this.pairService.getTokenNameOut(poolStats.result.base_token)
-      );
-      const altNameBase = this.altNames.find(
-        (el) => el.name === nameBase.result
-      );
-      const nameQuote = await firstValueFrom(
-        this.pairService.getTokenNameOut(poolStats.result.quote_token)
-      );
-      const altNameQuote = this.altNames.find(
-        (el) => el.name === nameQuote.result
-      );
-      const nameBaseRes =
-        altNameBase === undefined ? nameBase.result : altNameBase.ticker;
-      const nameQuoteRes =
-        altNameQuote === undefined ? nameQuote.result : altNameQuote.ticker;
-      const poolName =
-        (poolStats.result.name = `${nameBaseRes}/${nameQuoteRes}`);
-      let p1 = {
-        ...poolStats,
-      };
-      p1.result.name = poolName;
-      return p1;
-    }
-  }
-
-  private prettifyName(name: string) {}
-
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
     const decimalBase = parseInt(
       resultDirty.result.base_decimals.substring(2),
@@ -166,6 +131,8 @@ export class PairListComponent implements OnInit {
       resultDirty.result.quote_decimals.substring(2),
       16
     );
+    console.log(decimalBase);
+    console.log(decimalQuote);
     const decimal = Math.min(decimalBase, decimalQuote);
     const smoothed = this.hexToDouble(
       resultDirty.result.price,

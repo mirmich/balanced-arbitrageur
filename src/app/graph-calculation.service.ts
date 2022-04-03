@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Graph from 'graphology';
 import { dfs } from 'graphology-traversal/dfs';
-import { allSimplePaths } from 'graphology-simple-path';
+import { allSimpleEdgePaths, allSimplePaths } from 'graphology-simple-path';
 import { Attributes } from 'graphology-types';
 import { IPoolStats } from './pool-stats-req-params';
 
@@ -15,7 +15,52 @@ export class GraphCalculationService {
   graph = new Graph();
 
   initGraph(pools: Array<IPoolStats>) {
-    console.log(pools);
+    console.log(pools.map((x) => x.result.price + ' ' + x.result.name));
+    pools.forEach((pool) => {
+      const names = pool.result.name.split('/');
+
+      // Add base token
+      if (!this.graph.hasNode(names[0])) {
+        this.graph.addNode(names[0]);
+      }
+      // Add quote token
+      if (!this.graph.hasNode(names[1])) {
+        this.graph.addNode(names[1]);
+      }
+      const firstEdge = `${names[0]}->${names[1]}`;
+      const secondEdge = `${names[1]}->${names[0]}`;
+
+      if (!this.graph.hasDirectedEdge(firstEdge)) {
+        this.graph.addDirectedEdgeWithKey(firstEdge, names[0], names[1], {
+          price: parseFloat(pool.result.price),
+        });
+      }
+
+      if (!this.graph.hasDirectedEdge(secondEdge)) {
+        this.graph.addDirectedEdgeWithKey(secondEdge, names[1], names[0], {
+          price: 1 / parseFloat(pool.result.price),
+        });
+      }
+    });
+    console.log(this.graph.toJSON());
+    const cycles = this.findAllCyclesForNode('bnUSD');
+
+    const resultFiltered = cycles
+      .filter(
+        (cycle) =>
+          cycle
+            .map((edge) => edge.price)
+            .reduce((prev, current) => prev * current) > 1
+      )
+      .map((cycle) => {
+        return {
+          cycle: cycle,
+          price: cycle
+            .map((edge) => edge.price)
+            .reduce((prev, current) => prev * current),
+        };
+      });
+    //console.log(resultFiltered);
     // this.graph.addNode('sICX');
     // this.graph.addNode('BALN');
     // this.graph.addNode('bnUSD');
@@ -76,6 +121,6 @@ export class GraphCalculationService {
       path.pop();
       return path;
     });
-    console.log(edges);
+    return edges;
   }
 }
