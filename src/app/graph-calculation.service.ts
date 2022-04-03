@@ -67,15 +67,13 @@ export class GraphCalculationService {
       .map((cycle) => {
         return {
           cycle: cycle,
-          price: cycle
-            .map((edge) => edge.price)
-            .reduce((prev, current) => prev * current),
+          price: (cycle.map((edge) => edge.price).reduce((prev, current) => prev * current) - (cycle.length * 0.027 * 1.05)),
         };
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1));
     console.log(resultFiltered);
   }
-
+  // every trade 0.3
   findAllCyclesForNode(node: string) {
     const cycles = allSimplePaths(this.graph, node, node);
     const edges = cycles.map((x) => {
