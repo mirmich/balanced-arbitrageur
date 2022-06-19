@@ -20,7 +20,6 @@ export class PairListComponent implements OnInit {
     private pairService: PairService,
     private graphService: GraphCalculationService
   ) {}
-  pairs = this.pairService.getPrices();
 
   pools: Array<IPoolStats> = [];
   poolsGroomed: Array<IPoolStats> = [];
