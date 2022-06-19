@@ -55,23 +55,23 @@ export class GraphCalculationService {
         }
       });
     console.log(this.graph.toJSON());
-    const cycles = this.findAllCyclesForNode('bnUSD');
+    // const cycles = this.findAllCyclesForNode('bnUSD');
 
-    const resultFiltered = cycles
-      .filter(
-        (cycle) =>
-          cycle
-            .map((edge) => edge.price)
-            .reduce((prev, current) => prev * current) > 1
-      )
-      .map((cycle) => {
-        return {
-          cycle: cycle,
-          price: (cycle.map((edge) => edge.price).reduce((prev, current) => prev * current) - (cycle.length * 0.027 * 1.05)),
-        };
-      })
-      .sort((a, b) => (a.price > b.price ? 1 : -1));
-    console.log(resultFiltered);
+    // const resultFiltered = cycles
+    //   .filter(
+    //     (cycle) =>
+    //       cycle
+    //         .map((edge) => edge.price)
+    //         .reduce((prev, current) => prev * current) > 1
+    //   )
+    //   .map((cycle) => {
+    //     return {
+    //       cycle: cycle,
+    //       price: (cycle.map((edge) => edge.price).reduce((prev, current) => prev * current) - (cycle.length * 0.027 * 1.05)),
+    //     };
+    //   })
+    //   .sort((a, b) => (a.price > b.price ? 1 : -1));
+    // console.log(resultFiltered);
   }
   // every trade 0.3
   findAllCyclesForNode(node: string) {

@@ -9,6 +9,7 @@ import { ITokenAltName } from '../names';
 import { GraphCalculationService } from '../graph-calculation.service';
 import * as _ from 'lodash';
 import { resetFakeAsyncZone } from '@angular/core/testing';
+import { hexToDouble } from '../utils/pair-utils';
 
 @Component({
   selector: 'app-pair-list',
@@ -29,23 +30,14 @@ export class PairListComponent implements OnInit {
     this.init();
   }
 
-  private hexToDouble(numberInHex: string, decimal: number = 0) {
-    const resTemp =
-      parseInt(numberInHex.substring(2), 16) / Math.pow(10, decimal);
-    const resTemp1 = resTemp > 100000000 ? resTemp / Math.pow(10, 12) : resTemp;
-    const res = resTemp1 > 100000000 ? resTemp1 / Math.pow(10, 12) : resTemp1;
-    return res;
-  }
-
   public async init() {
     this.altNames = await firstValueFrom(this.pairService.getNames());
 
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
         poolStats.forEach(async (poolStat) => {
-          if (!_.isEmpty(poolStat)) {
-            this.pools.push(this.smoothPoolResult(poolStat));
-          }
+          console.log('lol');
+          this.pools.push(poolStat);
         });
       },
       error: (err: string) => console.log(err),
@@ -57,13 +49,16 @@ export class PairListComponent implements OnInit {
     for (let i = 1; i < 50; i++) {
       indices.push(i);
     }
-    const observables = indices.map((x) =>
-      this.pairService.getPoolStatsOut('0x' + x.toString(16))
-    );
-    forkJoin(observables).subscribe(observer);
+    // This touch APIs
+    // const observables = indices.map((x) =>
+    //   this.pairService.getPoolStatsOut('0x' + x.toString(16))
+    // );
+    // forkJoin(observables).subscribe(observer);
+    this.pairService.getPools(50).subscribe(observer);
   }
 
   private tranformNames() {
+    console.log('trans');
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
         poolStats.forEach((x) => this.poolsGroomed.push(x));
@@ -129,10 +124,7 @@ export class PairListComponent implements OnInit {
       16
     );
     const decimal = Math.min(decimalBase, decimalQuote);
-    const smoothed = this.hexToDouble(
-      resultDirty.result.price,
-      decimal
-    ).toString();
+    const smoothed = hexToDouble(resultDirty.result.price, decimal).toString();
     let p1 = {
       ...resultDirty,
     };
