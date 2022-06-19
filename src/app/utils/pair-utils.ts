@@ -12,7 +12,7 @@ export function hexToDouble(numberInHex: string, decimal: number = 0) {
 
 
 
-function isEmpty(obj: Record<string, any>): boolean {
+export function isEmpty(obj: Record<string, any>): boolean {
   return Object.keys(obj).length === 0;
 }
 

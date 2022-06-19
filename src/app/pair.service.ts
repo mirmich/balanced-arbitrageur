@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
 import { of } from 'rxjs';
 import { catchError, filter, map, switchMap, mergeMap } from 'rxjs/operators';
-import { hexToDouble, isNotNullOrUndefined } from './utils/pair-utils';
+import { hexToDouble, isNotNullOrUndefined, isEmpty } from './utils/pair-utils';
 import { Observable, throwError, Observer } from 'rxjs';
-import { concat, forkJoin, merge } from 'rxjs';
+import { concat, forkJoin, merge, zip, combineLatest } from 'rxjs';
 
 import {
   IPoolStatsReqParams,
@@ -58,14 +58,14 @@ export class PairService {
 
     const observables = indices.map((x) =>
       this.getPoolStatsOut('0x' + x.toString(16)).pipe(
-        isNotNullOrUndefined(),
-        mergeMap((pool) => {
+        filter((x) => !isEmpty(x)),
+        map((pool) => {
           console.log(pool);
-          return of(this.smoothPoolResult(pool as unknown as IPoolStats));
+          return this.smoothPoolResult(pool as IPoolStats);
         })
       )
     );
-    const pools = forkJoin(observables);
+    const pools = combineLatest(observables);
     return pools;
   }
 

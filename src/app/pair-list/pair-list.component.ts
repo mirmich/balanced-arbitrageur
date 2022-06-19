@@ -54,7 +54,7 @@ export class PairListComponent implements OnInit {
     //   this.pairService.getPoolStatsOut('0x' + x.toString(16))
     // );
     // forkJoin(observables).subscribe(observer);
-    this.pairService.getPools(50).subscribe(observer);
+    this.pairService.getPools(20).subscribe(observer);
   }
 
   private tranformNames() {
@@ -112,23 +112,5 @@ export class PairListComponent implements OnInit {
     return (
       poolStats?.result?.name !== null && poolStats?.result?.name !== undefined
     );
-  }
-
-  private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
-    const decimalBase = parseInt(
-      resultDirty.result.base_decimals.substring(2),
-      16
-    );
-    const decimalQuote = parseInt(
-      resultDirty.result.quote_decimals.substring(2),
-      16
-    );
-    const decimal = Math.min(decimalBase, decimalQuote);
-    const smoothed = hexToDouble(resultDirty.result.price, decimal).toString();
-    let p1 = {
-      ...resultDirty,
-    };
-    p1.result.price = smoothed;
-    return p1;
   }
 }
