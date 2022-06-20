@@ -34,7 +34,8 @@ export class PairService {
       indices.push(i);
     }
 
-    const observables = indices.map((x) =>
+    const indx = [...Array(count).keys()];
+    const observables = [...Array(count).keys()].map((x) =>
       this.getPoolStatsOut('0x' + x.toString(16))
     );
 
@@ -62,6 +63,7 @@ export class PairService {
       .post<IPoolStats>(this.address, this.getPoolStats(poolId))
       .pipe(
         catchError((error) => {
+          console.log(`Error when fetching data from pool: ${poolId}`);
           return of({} as IPoolStats);
         })
       );

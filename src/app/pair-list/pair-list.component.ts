@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PairService } from '../pair.service';
 import { Observable, throwError, Observer } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { concat, forkJoin, merge } from 'rxjs';
-import { IPoolStats } from '../pool-stats-req-params';
+import { concat, forkJoin, merge, zip, of } from 'rxjs';
+import { IPoolStats, ITokenName } from '../pool-stats-req-params';
 import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from '../names';
 import { GraphCalculationService } from '../graph-calculation.service';
@@ -56,34 +56,15 @@ export class PairListComponent implements OnInit {
 
     const poolsGroomed: Array<Observable<IPoolStats>> = this.pools.map(
       (pool) => {
-        const baseToken = this.pairService
-          .getTokenNameOut(pool.result.base_token)
-          .pipe(
-            map((name) => {
-              const altName = this.altNames.find(
-                (el) => el.name === name.result
-              );
-              return altName === undefined ? name.result : altName.ticker;
-            })
-          );
-        const quoteToken = this.pairService
-          .getTokenNameOut(pool.result.quote_token)
-          .pipe(
-            map((name) => {
-              const altName = this.altNames.find(
-                (el) => el.name === name.result
-              );
-              return altName === undefined ? name.result : altName.ticker;
-            })
-          );
-        const result = forkJoin(Array(baseToken, quoteToken)).pipe(
+        if (this.hasName(pool)) {
+          return of(pool);
+        }
+        const baseToken = this.getTokenName(pool.result.base_token);
+        const quoteToken = this.getTokenName(pool.result.quote_token);
+
+        const result = zip(baseToken, quoteToken).pipe(
           map((tokenNames) => {
-            if (this.hasName(pool)) {
-              return pool;
-            }
-            let p1 = {
-              ...pool,
-            };
+            let p1 = { ...pool };
             p1.result.name = `${tokenNames[0]}/${tokenNames[1]}`;
             return p1;
           })
@@ -99,5 +80,16 @@ export class PairListComponent implements OnInit {
     return (
       poolStats?.result?.name !== null && poolStats?.result?.name !== undefined
     );
+  }
+
+  private getTokenName(token: string): Observable<string> {
+    return this.pairService
+      .getTokenNameOut(token)
+      .pipe(map((name) => this.resolveName(name as ITokenName)));
+  }
+
+  private resolveName(name: ITokenName): string {
+    const altName = this.altNames.find((el) => el.name === name.result);
+    return altName === undefined ? name.result : altName.ticker;
   }
 }
