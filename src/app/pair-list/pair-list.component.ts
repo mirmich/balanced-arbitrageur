@@ -42,17 +42,6 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(err),
       complete: () => this.tranformNames(),
     };
-
-    var indices: Array<number> = [];
-    // Find all possible pools listed on Balanced
-    for (let i = 1; i < 50; i++) {
-      indices.push(i);
-    }
-    // This touch APIs
-    // const observables = indices.map((x) =>
-    //   this.pairService.getPoolStatsOut('0x' + x.toString(16))
-    // );
-    // forkJoin(observables).subscribe(observer);
     this.pairService.getPools(48).subscribe(observer);
   }
 
