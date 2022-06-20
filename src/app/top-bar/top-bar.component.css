@@ -5,3 +5,8 @@
   font-family: 'Advent Pro', sans-serif;
   text-align: center;
 }
+
+h1 {
+  margin-top: -50px;
+  margin-bottom: 40px;
+}
