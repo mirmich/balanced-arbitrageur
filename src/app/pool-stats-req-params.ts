@@ -24,9 +24,9 @@ export interface ITokenName {
 }
 
 export interface IPoolStats {
-  id: number;
-  jsonrpc: string;
-  result: {
+  id?: number;
+  jsonrpc?: string;
+  result?: {
     base: string;
     base_decimals: string;
     base_token: string;

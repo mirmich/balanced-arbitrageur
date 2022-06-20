@@ -36,7 +36,6 @@ export class PairListComponent implements OnInit {
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
         poolStats.forEach(async (poolStat) => {
-          console.log('lol');
           this.pools.push(poolStat);
         });
       },
@@ -54,11 +53,10 @@ export class PairListComponent implements OnInit {
     //   this.pairService.getPoolStatsOut('0x' + x.toString(16))
     // );
     // forkJoin(observables).subscribe(observer);
-    this.pairService.getPools(20).subscribe(observer);
+    this.pairService.getPools(48).subscribe(observer);
   }
 
   private tranformNames() {
-    console.log('trans');
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
         poolStats.forEach((x) => this.poolsGroomed.push(x));

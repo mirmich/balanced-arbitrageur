@@ -27,29 +27,7 @@ export class PairService {
     return this.http.get<ITokenAltName[]>('/assets/names.json');
   }
 
-  getPoolStatsOut(poolId: string) {
-    return this.http
-      .post<IPoolStats>(this.address, this.getPoolStats(poolId))
-      .pipe(
-        catchError((error) => {
-          return of({});
-        })
-      );
-  }
-
   getPools(count: number) {
-    // const observer: Observer<IPoolStats[]> = {
-    //   next: (poolStats: IPoolStats[]) => {
-    //     poolStats.forEach(async (poolStat) => {
-    //       if (!_.isEmpty(poolStat)) {
-    //         this.pools.push(this.smoothPoolResult(poolStat));
-    //       }
-    //     });
-    //   },
-    //   error: (err: string) => console.log(err),
-    //   complete: () => this.tranformNames(),
-    // };
-
     var indices: Array<number> = [];
     // Find all possible pools listed on Balanced
     for (let i = 1; i < count; i++) {
@@ -57,16 +35,16 @@ export class PairService {
     }
 
     const observables = indices.map((x) =>
-      this.getPoolStatsOut('0x' + x.toString(16)).pipe(
-        filter((x) => !isEmpty(x)),
-        map((pool) => {
-          console.log(pool);
-          return this.smoothPoolResult(pool as IPoolStats);
-        })
+      this.getPoolStatsOut('0x' + x.toString(16))
+    );
+
+    return forkJoin(observables).pipe(
+      map((pools) =>
+        pools
+          .filter((pool) => !isEmpty(pool))
+          .map((pool) => this.smoothPoolResult(pool))
       )
     );
-    const pools = combineLatest(observables);
-    return pools;
   }
 
   getTokenNameOut(tokenAddress: String) {
@@ -75,6 +53,16 @@ export class PairService {
       .pipe(
         catchError((error) => {
           return of({ jsonrpc: '', id: '', result: '' });
+        })
+      );
+  }
+
+  private getPoolStatsOut(poolId: string) {
+    return this.http
+      .post<IPoolStats>(this.address, this.getPoolStats(poolId))
+      .pipe(
+        catchError((error) => {
+          return of({} as IPoolStats);
         })
       );
   }
