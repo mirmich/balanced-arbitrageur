@@ -19,7 +19,7 @@
   font-family: sans-serif;
   font-weight: 500;
   display: grid;
-  grid-template-columns: [first] 70% [second] 30% [end];
+  grid-template-columns: [first] 15% [second] 40% [third] 15% [fourth] 30% [end];
   background-color: #01002a;
   border-radius: 10px;
   height: fit-content;

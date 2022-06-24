@@ -39,7 +39,7 @@ export class PairService {
       this.getPoolStatsOut('0x' + x.toString(16))
     );
 
-    return forkJoin(observables).pipe(
+    return zip(observables).pipe(
       map((pools) =>
         pools
           .filter((pool) => !isEmpty(pool))
