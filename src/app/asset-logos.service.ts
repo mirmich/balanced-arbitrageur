@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AssetLogosService {
   constructor(private http: HttpClient) {}
 

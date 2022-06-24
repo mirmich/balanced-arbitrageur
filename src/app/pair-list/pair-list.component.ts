@@ -79,7 +79,10 @@ export class PairListComponent implements OnInit {
   }
 
   linkToLogo(token: string) {
-    return `https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/${token}/logo.png`;
+    console.log('Im here');
+    this.assetLogosService
+      .getAssetLogo(token)
+      .subscribe((x) => console.log('Link: ' + x));
   }
 
   private hasName(poolStats: IPoolStats) {
