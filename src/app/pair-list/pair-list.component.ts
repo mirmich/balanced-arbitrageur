@@ -10,6 +10,7 @@ import { GraphCalculationService } from '../graph-calculation.service';
 import * as _ from 'lodash';
 import { resetFakeAsyncZone } from '@angular/core/testing';
 import { hexToDouble } from '../utils/pair-utils';
+import { AssetLogosService } from '../asset-logos.service';
 
 @Component({
   selector: 'app-pair-list',
@@ -19,7 +20,8 @@ import { hexToDouble } from '../utils/pair-utils';
 export class PairListComponent implements OnInit {
   constructor(
     private pairService: PairService,
-    private graphService: GraphCalculationService
+    private graphService: GraphCalculationService,
+    private assetLogosService: AssetLogosService
   ) {}
 
   pools: Array<IPoolStats> = [];
