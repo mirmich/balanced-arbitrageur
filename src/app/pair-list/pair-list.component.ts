@@ -27,6 +27,7 @@ export class PairListComponent implements OnInit {
   pools: Array<IPoolStats> = [];
   poolsGroomed: Array<IPoolStats> = [];
   altNames: Array<ITokenAltName> = [];
+  pathLogos: Map<string, string> = new Map<string, string>();
 
   ngOnInit() {
     this.init();
@@ -50,7 +51,11 @@ export class PairListComponent implements OnInit {
   private tranformNames() {
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
-        poolStats.forEach((x) => this.poolsGroomed.push(x));
+        poolStats.forEach((x) => {
+          this.poolsGroomed.push(x);
+          this.linkToLogo(x.result.base_token);
+          this.linkToLogo(x.result.quote_token);
+          });
       },
       error: (err: string) => console.log(err),
       complete: () => this.graphService.initGraph(this.poolsGroomed),
@@ -75,14 +80,15 @@ export class PairListComponent implements OnInit {
       }
     );
     const smting = forkJoin(poolsGroomed);
+    
     smting.subscribe(observer);
   }
 
-  linkToLogo(token: string) {
+  private linkToLogo(token: string) {
     console.log('Im here');
     this.assetLogosService
       .getAssetLogo(token)
-      .subscribe((x) => console.log('Link: ' + x));
+      .subscribe((link) => this.pathLogos.set(token, link));
   }
 
   private hasName(poolStats: IPoolStats) {
