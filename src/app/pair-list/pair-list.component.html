@@ -3,10 +3,21 @@
   <div class="pair-list-grid">
     <div *ngFor="let pool of poolsGroomed">
       <div class="pair-list-inner-info">
-        <img class="pair-list-inner-logo" width="24" height="24" />
+        <!-- https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/cx88fd7df7ddff82f7cc735c871dc519838cb235bb/logo.png -->
+        <img
+          class="pair-list-inner-logo"
+          width="24"
+          height="24"
+          src="{{ linkToLogo(pool.result.base_token) }}"
+        />
         <p>{{ pool.result.name }}</p>
-        <img class="pair-list-inner-logo" width="24" height="24" />
         <p>{{ pool.result.price | number }}</p>
+        <img
+          class="pair-list-inner-logo"
+          width="24"
+          height="24"
+          src="{{ linkToLogo(pool.result.quote_token) }}"
+        />
       </div>
       <div class="pair-list-inner-drop-down">
         <p>prdel</p>

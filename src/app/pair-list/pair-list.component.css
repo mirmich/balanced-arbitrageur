@@ -19,7 +19,7 @@
   font-family: sans-serif;
   font-weight: 500;
   display: grid;
-  grid-template-columns: [first] 15% [second] 40% [third] 15% [fourth] 30% [end];
+  grid-template-columns: [first] 13% [second] 45% [third] 29% [fourth] 13% [end];
   background-color: #01002a;
   border-radius: 10px;
   height: fit-content;
@@ -37,4 +37,9 @@
   z-index: 999;
   margin-top: -18px;
   margin-bottom: 10px;
+}
+
+.pair-list-inner-logo {
+  display: flex;
+  margin: auto;
 }

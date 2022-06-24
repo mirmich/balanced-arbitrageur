@@ -76,6 +76,10 @@ export class PairListComponent implements OnInit {
     smting.subscribe(observer);
   }
 
+  linkToLogo(token: string) {
+    return `https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/${token}/logo.png`;
+  }
+
   private hasName(poolStats: IPoolStats) {
     return (
       poolStats?.result?.name !== null && poolStats?.result?.name !== undefined
