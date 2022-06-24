@@ -14,7 +14,9 @@ export class AssetLogosService {
     return this.http.get<string>(template).pipe(
       map(() => template),
       catchError(() => {
-        return of('/icons/assetLogos/shitcoin.svg');
+        return of(
+          'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg'
+        );
       })
     );
   }

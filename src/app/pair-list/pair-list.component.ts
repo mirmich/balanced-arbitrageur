@@ -55,7 +55,7 @@ export class PairListComponent implements OnInit {
           this.poolsGroomed.push(x);
           this.linkToLogo(x.result.base_token);
           this.linkToLogo(x.result.quote_token);
-          });
+        });
       },
       error: (err: string) => console.log(err),
       complete: () => this.graphService.initGraph(this.poolsGroomed),
@@ -80,15 +80,15 @@ export class PairListComponent implements OnInit {
       }
     );
     const smting = forkJoin(poolsGroomed);
-    
+
     smting.subscribe(observer);
   }
 
   private linkToLogo(token: string) {
-    console.log('Im here');
-    this.assetLogosService
-      .getAssetLogo(token)
-      .subscribe((link) => this.pathLogos.set(token, link));
+    this.assetLogosService.getAssetLogo(token).subscribe((link) => {
+      console.log(link);
+      this.pathLogos.set(token, link);
+    });
   }
 
   private hasName(poolStats: IPoolStats) {
