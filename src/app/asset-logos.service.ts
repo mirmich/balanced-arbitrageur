@@ -11,9 +11,12 @@ export class AssetLogosService {
 
   getAssetLogo(token: string) {
     const template = `https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/${token}/logo.png`;
-    return this.http.get<string>(template).pipe(
-      map(() => template),
-      catchError(() => {
+    const defaultLogo =
+      'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg';
+    return this.http.get<Object>(template).pipe(
+      map((link) => template),
+      catchError((error) => {
+        console.log(error);
         return of(
           'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg'
         );
