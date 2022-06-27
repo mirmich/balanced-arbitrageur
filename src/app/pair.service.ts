@@ -138,10 +138,12 @@ export class PairService {
     );
     const decimal = Math.min(decimalBase, decimalQuote);
     const smoothed = hexToDouble(resultDirty.result.price, decimal).toString();
+    //const liquidity = hexToDouble(resultDirty.result.total_supply, decimal);
     let p1 = {
       ...resultDirty,
     };
     p1.result.price = smoothed;
+    //p1.result.total_supply = liquidity.toString();
     return p1;
   }
 }

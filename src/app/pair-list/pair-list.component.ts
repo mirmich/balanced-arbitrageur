@@ -72,7 +72,10 @@ export class PairListComponent implements OnInit {
             .result.price
         );
         const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
-        console.log(ICXPrice);
+        const metxbnUSD = this.poolsGroomed.find(
+          (pool) => pool.result.name == 'METX/bnUSD'
+        ).result;
+        console.log(metxbnUSD);
         this.graphService.initGraph(this.poolsGroomed, ICXPrice);
       },
     };

@@ -88,7 +88,7 @@ export class GraphCalculationService {
         };
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))
-      .filter((x) => x.price > 0.94);
+      .filter((x) => x.price > 0.99);
     console.log(resultFiltered);
   }
   // every trade 0.3
