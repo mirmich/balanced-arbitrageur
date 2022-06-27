@@ -39,6 +39,7 @@ export class PairListComponent implements OnInit {
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
         poolStats.forEach(async (poolStat) => {
+          this.pools = [];
           this.pools.push(poolStat);
         });
       },
