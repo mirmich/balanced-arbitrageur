@@ -54,7 +54,7 @@ export class GraphCalculationService {
           });
         }
       });
-    console.log(this.graph.toJSON());
+    //console.log(this.graph.toJSON());
     // const cycles = this.findAllCyclesForNode('bnUSD');
 
     // const resultFiltered = cycles
