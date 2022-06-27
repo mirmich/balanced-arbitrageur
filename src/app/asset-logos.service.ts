@@ -16,9 +16,11 @@ export class AssetLogosService {
     return this.http.head(template).pipe(
       map(() => template),
       catchError((error) => {
-
+        // Only sICX/ICX pool should have quote_token null
         if (token == null) {
-          return of('https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/icon.png')
+          return of(
+            'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/icon.png'
+          );
         }
         return of(
           'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg'
