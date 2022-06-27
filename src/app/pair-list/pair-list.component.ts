@@ -86,7 +86,6 @@ export class PairListComponent implements OnInit {
 
   private linkToLogo(token: string) {
     this.assetLogosService.getAssetLogo(token).subscribe((link) => {
-      console.log(link);
       this.pathLogos.set(token, link);
     });
   }
