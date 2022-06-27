@@ -45,7 +45,7 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(err),
       complete: () => this.tranformNames(),
     };
-    this.pairService.requestPools(48).subscribe(observer);
+    this.pairService.getPools(48).subscribe(observer);
   }
 
   private tranformNames() {
