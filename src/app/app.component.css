@@ -4,5 +4,5 @@ p {
 .app {
   background-color: #01002a;
   color: white;
-  height: 150vh;
+  height: fit-content;
 }
