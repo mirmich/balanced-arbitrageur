@@ -22,7 +22,7 @@ import {
 import { ITokenAltName } from './names';
 
 const CACHE_SIZE = 1;
-const REFRESH_INTERVAL = 60000;
+const REFRESH_INTERVAL = 600000;
 
 @Injectable({
   providedIn: 'root',
