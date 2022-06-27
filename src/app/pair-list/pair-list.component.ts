@@ -38,10 +38,12 @@ export class PairListComponent implements OnInit {
 
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
+        this.pools = [];
+        console.log('Bam');
         poolStats.forEach(async (poolStat) => {
-          this.pools = [];
           this.pools.push(poolStat);
         });
+        this.tranformNames();
       },
       error: (err: string) => console.log(err),
       complete: () => this.tranformNames(),
@@ -52,6 +54,7 @@ export class PairListComponent implements OnInit {
   private tranformNames() {
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
+        this.poolsGroomed = [];
         poolStats.forEach((x) => {
           this.poolsGroomed.push(x);
           this.linkToLogo(x.result.base_token);
