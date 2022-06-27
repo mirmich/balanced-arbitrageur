@@ -2,9 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PairPrice } from './pair-price';
 import { of } from 'rxjs';
-import { catchError, filter, map, switchMap, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  shareReplay,
+  switchMap,
+} from 'rxjs/operators';
 import { hexToDouble, isNotNullOrUndefined, isEmpty } from './utils/pair-utils';
-import { Observable, throwError, Observer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { concat, forkJoin, merge, zip, combineLatest } from 'rxjs';
 
 import {
@@ -15,10 +21,14 @@ import {
 } from './pool-stats-req-params';
 import { ITokenAltName } from './names';
 
+const CACHE_SIZE = 1;
+const REFRESH_INTERVAL = 30000;
+
 @Injectable({
   providedIn: 'root',
 })
 export class PairService {
+  private cache$: Observable<IPoolStats[]>;
   constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
@@ -28,6 +38,18 @@ export class PairService {
   }
 
   getPools(count: number) {
+    if (!this.cache$) {
+      const timer$ = timer(0, REFRESH_INTERVAL);
+
+      this.cache$ = timer$.pipe(
+        switchMap((_) => this.requestPools(48)),
+        shareReplay(CACHE_SIZE)
+      );
+    }
+    return this.cache$;
+  }
+
+  requestPools(count: number) {
     var indices: Array<number> = [];
     // Find all possible pools listed on Balanced
     for (let i = 1; i < count; i++) {
