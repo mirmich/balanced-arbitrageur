@@ -36,7 +36,8 @@ export class GraphCalculationService {
       'iDoge/sICX',
       'GBET/USDS',
       'GBET/bnUSD',
-      'GBET/sICX'
+      'GBET/sICX',
+      'USDS/IUSDC'
     );
     pools
       .filter((pool) => !(blackListedPools.indexOf(pool.result.name) > -1))
@@ -83,11 +84,11 @@ export class GraphCalculationService {
             cycle
               .map((edge) => edge.price)
               .reduce((prev, current) => prev * current) -
-            cycle.length * 0.027 * 1.05,
+            cycle.length * 0.027 * 1.03,
         };
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))
-      .filter((x) => x.price > 1.0);
+      .filter((x) => x.price > 0.94);
     console.log(resultFiltered);
   }
   // every trade 0.3
