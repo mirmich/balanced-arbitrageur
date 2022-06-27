@@ -15,7 +15,7 @@ export class GraphCalculationService {
   graph = new Graph();
 
   initGraph(pools: Array<IPoolStats>) {
-    console.log(pools.map((x) => x.result.price + ' ' + x.result.name));
+    //console.log(pools.map((x) => x.result.price + ' ' + x.result.name));
     const blackListedPools: Array<string> = Array(
       'LambdaX/bnUSD',
       'LambdaX/USDS',
