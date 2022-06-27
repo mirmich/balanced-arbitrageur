@@ -14,7 +14,7 @@ export class GraphCalculationService {
   constructor() {}
   graph = new Graph();
 
-  initGraph(pools: Array<IPoolStats>) {
+  initGraph(pools: Array<IPoolStats>, icxPriceInBnUSD: number) {
     //console.log(pools.map((x) => x.result.price + ' ' + x.result.name));
     const blackListedPools: Array<string> = Array(
       'LambdaX/bnUSD',
@@ -84,7 +84,7 @@ export class GraphCalculationService {
             cycle
               .map((edge) => edge.price)
               .reduce((prev, current) => prev * current) -
-            cycle.length * 0.027 * 1.03,
+            cycle.length * 0.027 * icxPriceInBnUSD * 1.03,
         };
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))

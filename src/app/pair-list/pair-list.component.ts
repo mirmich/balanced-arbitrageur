@@ -62,7 +62,19 @@ export class PairListComponent implements OnInit {
         });
       },
       error: (err: string) => console.log(err),
-      complete: () => this.graphService.initGraph(this.poolsGroomed),
+      complete: () => {
+        const sICXtoICXPrice = parseFloat(
+          this.poolsGroomed.find((pool) => pool.result.name == 'sICX/ICX')
+            .result.price
+        );
+        const sICXtobnUSDPrice = parseFloat(
+          this.poolsGroomed.find((pool) => pool.result.name == 'sICX/bnUSD')
+            .result.price
+        );
+        const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
+        console.log(ICXPrice);
+        this.graphService.initGraph(this.poolsGroomed, ICXPrice);
+      },
     };
 
     const poolsGroomed: Array<Observable<IPoolStats>> = this.pools.map(

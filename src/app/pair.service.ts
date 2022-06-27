@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PairPrice } from './pair-price';
 import { of } from 'rxjs';
 import {
   catchError,
