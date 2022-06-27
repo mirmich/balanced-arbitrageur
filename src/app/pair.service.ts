@@ -42,7 +42,7 @@ export class PairService {
       const timer$ = timer(0, REFRESH_INTERVAL);
 
       this.cache$ = timer$.pipe(
-        switchMap((_) => this.requestPools(48)),
+        switchMap((_) => this.requestPools(count)),
         shareReplay(CACHE_SIZE)
       );
     }
