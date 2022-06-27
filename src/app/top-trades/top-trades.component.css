@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;600&family=Roboto:wght@900&display=swap');
+.top-trades-container {
+  background-color: #0c2a4d;
+  width: fit-content;
+  border-radius: 10px;
+  padding: 35px;
+  text-align: center;
+  margin: auto;
+}
+
+.trade-list-grid {
+  display: grid;
+  height: fit-content;
+  width: 80vw;
+  grid-template-columns: repeat(auto-fit, minmax(15vw, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 0 20px;
+}
+
+.trade-list-inner-info {
+  font-family: sans-serif;
+  font-weight: 500;
+  display: grid;
+  grid-template-columns: [first] 13% [second] 45% [third] 29% [fourth] 13% [end];
+  background-color: #01002a;
+  border-radius: 10px;
+  height: fit-content;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
