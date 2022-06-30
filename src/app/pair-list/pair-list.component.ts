@@ -75,7 +75,6 @@ export class PairListComponent implements OnInit {
         const metxbnUSD = this.poolsGroomed.find(
           (pool) => pool.result.name == 'METX/bnUSD'
         ).result;
-        console.log(metxbnUSD);
         this.graphService.initGraph(this.poolsGroomed, ICXPrice);
       },
     };

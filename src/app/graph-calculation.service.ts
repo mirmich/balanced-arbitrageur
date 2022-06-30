@@ -4,6 +4,8 @@ import { dfs } from 'graphology-traversal/dfs';
 import { allSimpleEdgePaths, allSimplePaths } from 'graphology-simple-path';
 import { Attributes } from 'graphology-types';
 import { IPoolStats } from './pool-stats-req-params';
+import { Observable, Subject } from 'rxjs';
+import { ArtbitraguePath, SingleArbitrague } from './top-trades/model';
 
 type NodeType = { name: string };
 
@@ -12,35 +14,42 @@ type NodeType = { name: string };
 })
 export class GraphCalculationService {
   constructor() {}
-  graph = new Graph();
+  private graph = new Graph();
+  private mostProfitableSource = new Subject<Array<ArtbitraguePath>>();
+  private mostProfitableArb: Observable<Array<ArtbitraguePath>> =
+    this.mostProfitableSource.asObservable();
 
-  initGraph(pools: Array<IPoolStats>, icxPriceInBnUSD: number) {
-    //console.log(pools.map((x) => x.result.price + ' ' + x.result.name));
-    const blackListedPools: Array<string> = Array(
-      'LambdaX/bnUSD',
-      'LambdaX/USDS',
-      'LambdaX/sICX',
-      'sICX/IUSDC',
-      'IAM/sICX',
-      'IAM/bnUSD',
-      'IAM/IUSDC',
-      'CODA/bnUSD',
-      'NOTMIRAI/bnUSD',
-      'NOTMIRAI/USDS',
-      'NOTMIRAI/IUSDC',
-      'CHIU/bnUSD',
-      'Claw/sICX',
-      'CHKN/sICX',
-      'iDoge/bnUSD',
-      'iDoge/IUSDC',
-      'iDoge/sICX',
-      'GBET/USDS',
-      'GBET/bnUSD',
-      'GBET/sICX',
-      'USDS/IUSDC'
-    );
+  private blackListedPools: Array<string> = Array(
+    'LambdaX/bnUSD',
+    'LambdaX/USDS',
+    'LambdaX/sICX',
+    'sICX/IUSDC',
+    'IAM/sICX',
+    'IAM/bnUSD',
+    'IAM/IUSDC',
+    'CODA/bnUSD',
+    'NOTMIRAI/bnUSD',
+    'NOTMIRAI/USDS',
+    'NOTMIRAI/IUSDC',
+    'CHIU/bnUSD',
+    'Claw/sICX',
+    'CHKN/sICX',
+    'iDoge/bnUSD',
+    'iDoge/IUSDC',
+    'iDoge/sICX',
+    'GBET/USDS',
+    'GBET/bnUSD',
+    'GBET/sICX',
+    'USDS/IUSDC'
+  );
+
+  public get mostProfitable(): Observable<Array<ArtbitraguePath>> {
+    return this.mostProfitableArb;
+  }
+
+  public initGraph(pools: Array<IPoolStats>, icxPriceInBnUSD: number) {
     pools
-      .filter((pool) => !(blackListedPools.indexOf(pool.result.name) > -1))
+      .filter((pool) => !(this.blackListedPools.indexOf(pool.result.name) > -1))
       .forEach((pool) => {
         const names = pool.result.name.split('/');
 
@@ -70,7 +79,7 @@ export class GraphCalculationService {
     //console.log(this.graph.toJSON());
     const cycles = this.findAllCyclesForNode('bnUSD');
 
-    const resultFiltered = cycles
+    const cyclesFiltered = cycles
       .filter(
         (cycle) =>
           cycle
@@ -85,14 +94,16 @@ export class GraphCalculationService {
               .map((edge) => edge.price)
               .reduce((prev, current) => prev * current) -
             cycle.length * 0.027 * icxPriceInBnUSD * 1.03,
-        };
+        } as ArtbitraguePath;
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))
-      .filter((x) => x.price > 0.99);
-    console.log(resultFiltered);
+      .filter((x) => x.price > 0.99)
+      .slice(-10);
+    this.mostProfitableSource.next(cyclesFiltered);
   }
+
   // every trade 0.3
-  findAllCyclesForNode(node: string) {
+  private findAllCyclesForNode(node: string) {
     const cycles = allSimplePaths(this.graph, node, node);
     const edges = cycles.map((x) => {
       const path = x.map((y, i) => {
@@ -101,8 +112,8 @@ export class GraphCalculationService {
           const price = this.graph.getEdgeAttribute(
             this.graph.edge(y, x[i + 1]),
             'price'
-          );
-          return { edge: key, price: price };
+          ) as number;
+          return { edge: key, price: price } as SingleArbitrague;
         }
       });
       path.pop();
