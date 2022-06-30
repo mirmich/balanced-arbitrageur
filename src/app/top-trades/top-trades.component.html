@@ -1,45 +1,17 @@
 <div class="top-trades-container">
   <h2>Top Trades</h2>
   <div class="trade-list-grid">
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
-    </div>
-    <div class="trade-list-inner-info">
-      <p>ICX...bnUSD</p>
-      <p>+ 0.01</p>
+    <div *ngFor="let arb of arbitragues">
+      <div class="trade-list-inner-info">
+        <p>
+          {{
+            (arb.cycle[0].edge | edgeGroomingPipe) +
+              '...' +
+              (arb.cycle[arb.cycle.length - 1].edge | edgeGroomingPipe)
+          }}
+        </p>
+        <p>{{ arb.price | number }}</p>
+      </div>
     </div>
   </div>
 </div>

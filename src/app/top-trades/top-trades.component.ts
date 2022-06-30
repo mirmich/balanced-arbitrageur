@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GraphCalculationService } from '../graph-calculation.service';
+import { ArtbitraguePath } from './model';
 
 @Component({
   selector: 'app-top-trades',
@@ -9,10 +10,12 @@ import { GraphCalculationService } from '../graph-calculation.service';
 })
 export class TopTradesComponent implements OnDestroy {
   private readonly arbitragueSubscription: Subscription;
+
+  public arbitragues: Array<ArtbitraguePath> = [];
   constructor(private graphService: GraphCalculationService) {
     this.arbitragueSubscription = this.graphService.mostProfitable.subscribe(
       (profitableArb) => {
-        console.log(profitableArb);
+        this.arbitragues = profitableArb;
       }
     );
   }
