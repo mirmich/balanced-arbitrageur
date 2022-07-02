@@ -9,9 +9,16 @@ import { PairListComponent } from './pair-list/pair-list.component';
 import { BotBarComponent } from './bot-bar/bot-bar.component';
 import { TopTradesComponent } from './top-trades/top-trades.component';
 import { EdgeGroomingPipePipe } from './top-trades/edge-grooming-pipe.pipe';
+import { IgxDropDownModule } from 'igniteui-angular';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    IgxDropDownModule,
+  ],
   declarations: [
     AppComponent,
     HelloComponent,
