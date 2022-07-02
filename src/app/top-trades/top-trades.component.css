@@ -29,5 +29,8 @@
 }
 
 button {
-  display: none;
+  display: flex;
+  grid-column-start: first;
+  grid-column-end: end;
+  text-align: center;
 }
