@@ -11,19 +11,6 @@
           }}
         </p>
         <p>{{ arb.price | number }}</p>
-        <button
-          class="button"
-          igxButton="raised"
-          [igxToggleAction]="dropdown"
-          [igxDropDownItemNavigation]="dropdown"
-        >
-          Options
-        </button>
-        <igx-drop-down #dropdown>
-          <igx-drop-down-item *ngFor="let c of arb.cycle">
-            {{ c.edge }}
-          </igx-drop-down-item>
-        </igx-drop-down>
       </div>
     </div>
   </div>

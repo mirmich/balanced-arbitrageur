@@ -10,11 +10,7 @@ import { BotBarComponent } from './bot-bar/bot-bar.component';
 import { TopTradesComponent } from './top-trades/top-trades.component';
 import { EdgeGroomingPipePipe } from './top-trades/edge-grooming-pipe.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  IgxDropDownModule,
-  IgxButtonModule,
-  IgxToggleModule,
-} from 'igniteui-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -23,9 +19,7 @@ import {
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    IgxDropDownModule,
-    IgxButtonModule,
-    IgxToggleModule,
+    NgbModule,
   ],
   declarations: [
     AppComponent,
