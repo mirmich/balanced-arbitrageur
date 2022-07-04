@@ -10,7 +10,6 @@ import { BotBarComponent } from './bot-bar/bot-bar.component';
 import { TopTradesComponent } from './top-trades/top-trades.component';
 import { EdgeGroomingPipePipe } from './top-trades/edge-grooming-pipe.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -19,7 +18,6 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgbDropdown,
   ],
   declarations: [
     AppComponent,
