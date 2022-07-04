@@ -28,7 +28,7 @@
   margin-bottom: 10px;
 }
 
-button {
+/* button {
   grid-column-start: first;
   grid-column-end: end;
   text-align: center;
@@ -38,4 +38,57 @@ button {
   border: none;
   color: white;
   border-radius: 10px;
+} */
+
+/* Style The Dropdown Button */
+.dropbtn {
+  text-align: center;
+  background-color: #01002a;
+  color: white;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  grid-column-start: first;
+  grid-column-end: end;
+  border-radius: 10px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #01002a;
+  width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-top: -23px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content p {
+  color: white;
+  padding: 12px 16px;
+  margin: 0;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content p:hover {
+  background-color: #01002a;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #01002a;
 }
