@@ -14,7 +14,9 @@
         <div class="dropdown">
           <button class="dropbtn">+</button>
           <div class="dropdown-content">
-            <p>Link 1</p>
+            <div *ngFor="let rel of arb.cycle">
+              <p>{{ rel.edge }}</p>
+            </div>
           </div>
         </div>
       </div>
