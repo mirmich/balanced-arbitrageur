@@ -10,7 +10,13 @@
               (arb.cycle[arb.cycle.length - 1].edge | edgeGroomingPipe)
           }}
         </p>
-        <p>{{ arb.price | number }}</p>
+        <img
+          class="trade-list-arrow"
+          width="12"
+          height="12"
+          src="https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/arrowUpCompressed.svg"
+        />
+        <p class="trade-list-price">{{ arb.price | number }}</p>
         <div class="dropdown">
           <button class="dropbtn">+</button>
           <div class="dropdown-content">

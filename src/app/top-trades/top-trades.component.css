@@ -20,12 +20,20 @@
   font-family: sans-serif;
   font-weight: 500;
   display: grid;
-  grid-template-columns: [first] 50% [second] 50% [end];
+  grid-template-columns: [first] 65% [second] 10% [third] 25% [end];
   background-color: #01002a;
   border-radius: 10px;
   height: fit-content;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.trade-list-price {
+  text-align: left;
+}
+
+.trade-list-arrow {
+  margin: auto;
 }
 
 /* button {
