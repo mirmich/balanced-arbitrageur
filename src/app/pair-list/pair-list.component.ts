@@ -84,22 +84,22 @@ export class PairListComponent implements OnInit {
           );
           // 1023923
           // 1073593
-          if (pool.result.name == 'IUSDT/IUSDC') {
-            const tokenALiq = this.hexToDecimalWithPrecision(
-              pool.result.base,
-              pool.result.base_decimals
-            );
-            const tokenBLiq = this.hexToDecimalWithPrecision(
-              pool.result.quote,
-              pool.result.quote_decimals
-            );
-            console.log(`TokenA lig: ${tokenALiq} TokenB lig: ${tokenBLiq}`);
-            console.log(
-              `PoolFactor: ${
-                tokenBLiq - (tokenALiq * tokenBLiq) / (100 + tokenALiq)
-              }`
-            );
-          }
+          // if (pool.result.name == 'IUSDT/IUSDC') {
+          //   const tokenALiq = this.hexToDecimalWithPrecision(
+          //     pool.result.base,
+          //     pool.result.base_decimals
+          //   );
+          //   const tokenBLiq = this.hexToDecimalWithPrecision(
+          //     pool.result.quote,
+          //     pool.result.quote_decimals
+          //   );
+          //   console.log(`TokenA lig: ${tokenALiq} TokenB lig: ${tokenBLiq}`);
+          //   console.log(
+          //     `PoolFactor: ${
+          //       tokenBLiq - (tokenALiq * tokenBLiq) / (100.0 + tokenALiq)
+          //     }`
+          //   );
+          // }
         });
 
         this.graphService.initGraph(this.poolsGroomed, ICXPrice);
@@ -153,13 +153,13 @@ export class PairListComponent implements OnInit {
   }
 
   private priceImpact(pool: IPoolStats, value: number): number {
-    const tokenALiq = hexToDouble(
+    const tokenALiq = this.hexToDecimalWithPrecision(
       pool.result.base,
-      parseInt(pool.result.base_decimals)
+      pool.result.base_decimals
     );
-    const tokenBLiq = hexToDouble(
+    const tokenBLiq = this.hexToDecimalWithPrecision(
       pool.result.quote,
-      parseInt(pool.result.quote_decimals)
+      pool.result.quote_decimals
     );
     const poolFactor = tokenALiq * tokenBLiq;
     return tokenBLiq - poolFactor / (value + tokenALiq);
