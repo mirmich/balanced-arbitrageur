@@ -8,9 +8,8 @@ import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from '../names';
 import { GraphCalculationService } from '../graph-calculation.service';
 import * as _ from 'lodash';
-import { resetFakeAsyncZone } from '@angular/core/testing';
-import { hexToDouble } from '../utils/pair-utils';
 import { AssetLogosService } from '../asset-logos.service';
+import { hexToDouble } from '../utils/pair-utils';
 
 @Component({
   selector: 'app-pair-list',
@@ -123,5 +122,18 @@ export class PairListComponent implements OnInit {
   private resolveName(name: ITokenName): string {
     const altName = this.altNames.find((el) => el.name === name.result);
     return altName === undefined ? name.result : altName.ticker;
+  }
+
+  private priceImpact(pool: IPoolStats, value: number): number {
+    const tokenALiq = hexToDouble(
+      pool.result.base,
+      parseFloat(pool.result.base_decimals)
+    );
+    const tokenBLiq = hexToDouble(
+      pool.result.quote,
+      parseFloat(pool.result.quote_decimals)
+    );
+    const poolFactor = tokenALiq * tokenBLiq;
+    return tokenBLiq - poolFactor / (value + tokenALiq);
   }
 }
