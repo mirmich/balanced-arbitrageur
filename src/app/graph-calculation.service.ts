@@ -98,11 +98,11 @@ export class GraphCalculationService {
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))
       .filter((x) => x.price > 0.99)
-      .slice(-10);
+      .slice(-10)
+      .reverse();
     this.mostProfitableSource.next(cyclesFiltered);
   }
 
-  // every trade 0.3
   private findAllCyclesForNode(node: string) {
     const cycles = allSimplePaths(this.graph, node, node);
     const edges = cycles.map((x) => {
