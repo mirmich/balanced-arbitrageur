@@ -10,6 +10,8 @@ export class TopBarComponent implements OnInit {
 
   ngOnInit() {}
 
+  address: string = '';
+
   onSignIn() {
     console.log('Sign in called');
     const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
@@ -20,7 +22,7 @@ export class TopBarComponent implements OnInit {
     const eventHandler = (event) => {
       const { type, payload } = event.detail;
       if (type === 'RESPONSE_ADDRESS') {
-        console.log(payload); // e.g., hx19870922...
+        this.address = payload;
       }
     };
     window.addEventListener('ICONEX_RELAY_RESPONSE', eventHandler);
