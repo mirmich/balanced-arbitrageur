@@ -33,6 +33,7 @@ button {
 
 .top-bar__wallet-stats-address-label {
   display: block;
+  margin:;
 }
 
 .top-bar__wallet-stats-address-output {
