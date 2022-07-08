@@ -7,10 +7,37 @@
 
   <h1>Balanced Arbitrageur</h1>
   <button (click)="onSignIn()">Sign in</button>
-  <div class="top-bar__wallet-stats">
+  <div class="top-bar-wallet-stats">
     <span class="top-bar__wallet-stats-address-label">Address</span>
-    <output class="top-bar__wallet-stats-address-output">{{
-      this.address | shortenAddress
-    }}</output>
+    <output class="top-bar__wallet-stats-address-output"
+      >{{ this.address | shortenAddress }}
+    </output>
+
+    <span class="top-bar__wallet-stats-currency-label">bnUSD</span>
+    <img
+      class="top-bar__wallet-stats-currency-logo"
+      width="24"
+      height="24"
+      src="https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/cx88fd7df7ddff82f7cc735c871dc519838cb235bb/logo.png"
+    />
+    <output class="top-bar__wallet-stats-address-output">1.001 </output>
+
+    <span class="top-bar__wallet-stats-currency-label">ICX</span>
+    <img
+      class="top-bar__wallet-stats-currency-logo"
+      width="24"
+      height="24"
+      src="https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/icon.png"
+    />
+    <output class="top-bar__wallet-stats-address-output">1.001 </output>
+
+    <span class="top-bar__wallet-stats-currency-label">sICX</span>
+    <img
+      class="top-bar__wallet-stats-currency-logo"
+      width="24"
+      height="24"
+      src="https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/cx2609b924e33ef00b648a409245c7ea394c467824/logo.png"
+    />
+    <output class="top-bar__wallet-stats-address-output">1.001 </output>
   </div>
 </div>
