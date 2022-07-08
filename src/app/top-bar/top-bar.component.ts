@@ -11,6 +11,7 @@ export class TopBarComponent implements OnInit {
   ngOnInit() {}
 
   address: string = '';
+  showButton = true;
 
   onSignIn() {
     console.log('Sign in called');
@@ -23,6 +24,7 @@ export class TopBarComponent implements OnInit {
       const { type, payload } = event.detail;
       if (type === 'RESPONSE_ADDRESS') {
         this.address = payload;
+        this.showButton = false;
       }
     };
     window.addEventListener('ICONEX_RELAY_RESPONSE', eventHandler);

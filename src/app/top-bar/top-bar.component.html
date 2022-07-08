@@ -6,8 +6,8 @@
   />
 
   <h1>Balanced Arbitrageur</h1>
-  <button (click)="onSignIn()">Sign in</button>
-  <div class="top-bar-wallet-stats">
+  <button *ngIf="showButton" (click)="onSignIn()">Sign in</button>
+  <div *ngIf="!showButton" class="top-bar-wallet-stats">
     <span class="top-bar__wallet-stats-address-label">Address</span>
     <output class="top-bar__wallet-stats-address-output"
       >{{ this.address | shortenAddress }}
