@@ -14,7 +14,7 @@ export interface IPoolStatsReq {
   jsonrpc: string;
   id: number;
   method: string;
-  params: IPoolStatsReqParams;
+  params: any;
 }
 
 export interface ITokenName {
@@ -38,4 +38,10 @@ export interface IPoolStats {
     quote_token: string;
     total_supply: string;
   };
+}
+
+export interface IcxBalanceResult {
+  jsonrpc: string;
+  id: number;
+  result: string;
 }
