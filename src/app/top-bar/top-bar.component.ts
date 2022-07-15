@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletProxyService } from '../wallet-proxy.service';
+import { hexToDouble } from '../utils/pair-utils';
 
 @Component({
   selector: 'app-top-bar',
@@ -13,6 +14,7 @@ export class TopBarComponent implements OnInit {
 
   address: string = '';
   showButton = true;
+  icxBalance: number;
 
   onSignIn() {
     this.walletProxyService
@@ -20,6 +22,12 @@ export class TopBarComponent implements OnInit {
       .subscribe((address0) => {
         this.address = address0;
         this.showButton = false;
+        this.walletProxyService
+          .getIcxBalance(this.address)
+          .subscribe((icxBalance) => {
+            this.icxBalance = hexToDouble(icxBalance.result, 6);
+            console.log(this.icxBalance);
+          });
       });
     this.walletProxyService.dispatchEvent('REQUEST_ADDRESS');
   }

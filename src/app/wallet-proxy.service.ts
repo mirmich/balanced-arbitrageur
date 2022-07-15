@@ -38,9 +38,10 @@ export class WalletProxyService {
     window.dispatchEvent(customEvent);
   }
 
-  private getIcxBalance(address0: string) {
+  getIcxBalance(address0: string) {
     return this.http
       .post<IcxBalanceResult>(this.address, this.getIcxBalanceReq(address0))
+
       .pipe(
         catchError((error) => {
           console.log(`Error when asking ICX balance: ${address0}`);
