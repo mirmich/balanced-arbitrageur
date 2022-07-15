@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WalletProxyService } from '../wallet-proxy.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./top-bar.component.css'],
 })
 export class TopBarComponent implements OnInit {
-  constructor() {}
+  constructor(private walletProxyService: WalletProxyService) {}
 
   ngOnInit() {}
 
@@ -14,20 +15,20 @@ export class TopBarComponent implements OnInit {
   showButton = true;
 
   onSignIn() {
-    console.log('Sign in called');
     const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
       detail: {
         type: 'REQUEST_ADDRESS',
       },
     });
-    const eventHandler = (event) => {
-      const { type, payload } = event.detail;
-      if (type === 'RESPONSE_ADDRESS') {
-        this.address = payload;
+    
+
+    this.walletProxyService
+      .handleEvent('RESPONSE_ADDRESS')
+      .subscribe((address0) => {
+        console.log(address0);
+        this.address = address0;
         this.showButton = false;
-      }
-    };
-    window.addEventListener('ICONEX_RELAY_RESPONSE', eventHandler);
+      });
     window.dispatchEvent(customEvent);
   }
 }
