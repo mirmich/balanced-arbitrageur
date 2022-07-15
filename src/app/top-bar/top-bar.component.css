@@ -33,7 +33,7 @@ button {
 
 .top-bar__wallet-stats-address-label {
   display: block;
-  margin:;
+  margin-right: 10px;
 }
 
 .top-bar__wallet-stats-address-output {
@@ -43,9 +43,11 @@ button {
 .top-bar__wallet-stats-currency-label {
   display: block;
   margin-left: 50px;
+  margin-right: 5px;
 }
 
 .top-bar__wallet-stats-currency-logo {
   margin-top: auto;
   margin-bottom: auto;
+  margin-right: 10px;
 }
