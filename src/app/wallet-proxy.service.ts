@@ -10,7 +10,6 @@ export class WalletProxyService {
   handleEvent(eventType: string) {
     return fromEvent(window, 'ICONEX_RELAY_RESPONSE').pipe(
       map((e) => {
-        console.log(e);
         if ((e as CustomEvent).detail.type == eventType) {
           return (e as CustomEvent).detail.payload;
         } else {
@@ -18,5 +17,14 @@ export class WalletProxyService {
         }
       })
     );
+  }
+
+  dispatchEvent(eventType:String) {
+    const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
+      detail: {
+        type: eventType,
+      },
+    });
+    window.dispatchEvent(customEvent);
   }
 }

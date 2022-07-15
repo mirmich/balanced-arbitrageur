@@ -15,20 +15,12 @@ export class TopBarComponent implements OnInit {
   showButton = true;
 
   onSignIn() {
-    const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
-      detail: {
-        type: 'REQUEST_ADDRESS',
-      },
-    });
-    
-
     this.walletProxyService
       .handleEvent('RESPONSE_ADDRESS')
       .subscribe((address0) => {
-        console.log(address0);
         this.address = address0;
         this.showButton = false;
       });
-    window.dispatchEvent(customEvent);
+    this.walletProxyService.dispatchEvent('REQUEST_ADDRESS');
   }
 }
