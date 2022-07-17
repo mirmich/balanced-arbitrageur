@@ -62,4 +62,6 @@ export class WalletProxyService {
     };
     return req;
   }
+  // Token info
+  // https://main.tracker.solidwallet.io/v3/address/info?address=hx81d4f834b91569b43cde903ec241eb1fce64a171
 }
