@@ -66,7 +66,7 @@ export class WalletProxyService {
   }
 
   getTokens(address0: string) {
-    return this.http.get<TokensBalanceResult>(`this.trackerAddress${address0}`);
+    return this.http.get<TokensBalanceResult>(`${this.trackerAddress}${address0}`);
   }
   // Token info
   // https://main.tracker.solidwallet.io/v3/address/info?address=hx81d4f834b91569b43cde903ec241eb1fce64a171
