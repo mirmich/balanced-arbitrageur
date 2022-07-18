@@ -7,6 +7,7 @@ import {
   IPoolStatsReq,
   IPoolStats,
   IcxBalanceResult,
+TokensBalanceResult,
 } from './pool-stats-req-params';
 
 @Injectable({
@@ -16,6 +17,7 @@ export class WalletProxyService {
   constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
+  trackerAddress: string = 'https://main.tracker.solidwallet.io/v3/address/info?address=';
 
   handleEvent(eventType: string) {
     return fromEvent(window, 'ICONEX_RELAY_RESPONSE').pipe(
@@ -61,6 +63,10 @@ export class WalletProxyService {
       params: params,
     };
     return req;
+  }
+
+  getTokens(address0: string) {
+    return this.http.get<TokensBalanceResult>(`this.trackerAddress${address0}`);
   }
   // Token info
   // https://main.tracker.solidwallet.io/v3/address/info?address=hx81d4f834b91569b43cde903ec241eb1fce64a171

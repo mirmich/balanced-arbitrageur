@@ -26,6 +26,9 @@ export class TopBarComponent implements OnInit {
           .getIcxBalance(this.address)
           .subscribe((icxBalance) => {
             this.icxBalance = hexToDouble(icxBalance.result, 6);
+            this.walletProxyService
+              .getTokens(this.address)
+              .subscribe((tokens) => console.log(tokens));
             console.log(this.icxBalance);
           });
       });
