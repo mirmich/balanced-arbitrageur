@@ -128,25 +128,25 @@ export class PairService {
   }
 
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
-    // console.log(this.priceImpact(resultDirty, 1));
-    // const decimalBase = parseInt(
-    //   resultDirty.result.base_decimals.substring(2),
-    //   16
-    // );
-    // const decimalQuote = parseInt(
-    //   resultDirty.result.quote_decimals.substring(2),
-    //   16
-    // );
-    // const decimal = Math.min(decimalBase, decimalQuote);
-    // const smoothed = hexToDouble(resultDirty.result.price, decimal).toString();
-    // //const liquidity = hexToDouble(resultDirty.result.total_supply, decimal);
-    // let p1 = {
-    //   ...resultDirty,
-    // };
-    // p1.result.price = smoothed;
-    resultDirty.result.price = this.priceImpact(resultDirty, 1).toString();
+    console.log(this.priceImpact(resultDirty, 1));
+    const decimalBase = parseInt(
+      resultDirty.result.base_decimals.substring(2),
+      16
+    );
+    const decimalQuote = parseInt(
+      resultDirty.result.quote_decimals.substring(2),
+      16
+    );
+    const decimal = Math.min(decimalBase, decimalQuote);
+    const smoothed = hexToDouble(resultDirty.result.price, decimal).toString();
+    //const liquidity = hexToDouble(resultDirty.result.total_supply, decimal);
+    let p1 = {
+      ...resultDirty,
+    };
+    p1.result.price = smoothed;
+
     //p1.result.total_supply = liquidity.toString();
-    return resultDirty;
+    return p1;
   }
 
   private priceImpact(pool: IPoolStats, value: number): number {
