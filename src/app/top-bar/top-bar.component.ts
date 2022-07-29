@@ -14,7 +14,9 @@ export class TopBarComponent implements OnInit {
 
   address: string = '';
   showButton = true;
-  icxBalance: number;
+  icxBalance: number = 0;
+  bnUsdBalance: number = 0;
+  sIcxBalance: number = 0;
 
   onSignIn() {
     this.walletProxyService
@@ -26,11 +28,20 @@ export class TopBarComponent implements OnInit {
           .getIcxBalance(this.address)
           .subscribe((icxBalance) => {
             this.icxBalance = hexToDouble(icxBalance.result, 6);
-            this.walletProxyService
-              .getTokens(this.address)
-              .subscribe((tokens) => console.log(tokens));
-            console.log(this.icxBalance);
           });
+        this.walletProxyService.getTokens(this.address).subscribe((tokens) => {
+          // TO DO make it less dumb, when a user want to add token by his choice
+          this.sIcxBalance = parseFloat(
+            tokens.data.tokenList.find(
+              (token) => token.contractSymbol == 'sICX'
+            ).quantity
+          );
+          this.bnUsdBalance = parseFloat(
+            tokens.data.tokenList.find(
+              (token) => token.contractSymbol == 'bnUSD'
+            ).quantity
+          );
+        });
       });
     this.walletProxyService.dispatchEvent('REQUEST_ADDRESS');
   }
