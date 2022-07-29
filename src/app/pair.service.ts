@@ -143,7 +143,7 @@ export class PairService {
     let p1 = {
       ...resultDirty,
     };
-    p1.result.price = smoothed;
+    p1.result.price = this.priceImpact(resultDirty, 1).toString();
 
     //p1.result.total_supply = liquidity.toString();
     return p1;
