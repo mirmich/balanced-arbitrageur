@@ -16,6 +16,7 @@
     "graphology-simple-path": "^0.2.0",
     "graphology-traversal": "^0.3.1",
     "graphology-types": "^0.24.4",
+    "icon-sdk-js": "^1.2.3",
     "lodash": "^4.17.21",
     "rxjs": "^7.5.5",
     "tslib": "^2.4.0",
