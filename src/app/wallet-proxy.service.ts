@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { fromEvent, map, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-//import IconService from 'icon-sdk-js';
+import IconService from 'icon-sdk-js';
 
 import {
   IPoolStatsReq,
@@ -10,7 +10,6 @@ import {
   IcxBalanceResult,
   TokensBalanceResult,
 } from './pool-stats-req-params';
-//import HttpProvider from 'icon-sdk-js/build/transport/http/HttpProvider';
 
 @Injectable({
   providedIn: 'root',
@@ -43,14 +42,16 @@ export class WalletProxyService {
     window.dispatchEvent(customEvent);
   }
 
-  // async getIcxBalanceSDK(address0: string) {
-  //   const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
-  //   const iconService = new IconService(httpProvider);
-  //   const balance = await iconService
-  //     .getBalance('hx9d8a8376e7db9f00478feb9a46f44f0d051aab57')
-  //     .execute();
-  //   console.log(balance);
-  // }
+  async getIcxBalanceSDK(address0: string) {
+    const httpProvider = new IconService.HttpProvider(
+      'https://ctz.solidwallet.io/api/v3'
+    );
+    const iconService = new IconService(httpProvider);
+    const balance = await iconService
+      .getBalance('hx9d8a8376e7db9f00478feb9a46f44f0d051aab57')
+      .execute();
+    console.log(balance);
+  }
 
   getIcxBalance(address0: string) {
     return this.http
