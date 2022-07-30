@@ -128,7 +128,6 @@ export class PairService {
   }
 
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
-    console.log(this.priceImpact(resultDirty, 1));
     const decimalBase = parseInt(
       resultDirty.result.base_decimals.substring(2),
       16

@@ -40,7 +40,10 @@ export class GraphCalculationService {
     'GBET/USDS',
     'GBET/bnUSD',
     'GBET/sICX',
-    'USDS/IUSDC'
+    'USDS/IUSDC',
+    'FIN/IUSDC',
+    'IUSDT/IUSDC',
+    'sICX/USDS'
   );
 
   public get mostProfitable(): Observable<Array<ArtbitraguePath>> {
@@ -76,7 +79,6 @@ export class GraphCalculationService {
           });
         }
       });
-    //console.log(this.graph.toJSON());
     const cycles = this.findAllCyclesForNode('bnUSD');
 
     const cyclesFiltered = cycles
