@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;600&family=Roboto:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:wght@400;600&family=Roboto:wght@500&display=swap');
 .top-trades-container {
   background-color: #0c2a4d;
   width: fit-content;
@@ -99,4 +99,33 @@
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
   background-color: #01002a;
+}
+
+.trade-list-inner-info__execute-button {
+  grid-column-start: first;
+  grid-column-end: end;
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 10px;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+  color: white;
+  font-size: 18px;
+  font-family: Roboto;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
