@@ -29,6 +29,7 @@ export class TopBarComponent implements OnInit {
           .subscribe((icxBalance) => {
             this.icxBalance = hexToDouble(icxBalance.result, 6);
           });
+        this.walletProxyService.getIcxBalanceSDK(this.address);
         this.walletProxyService.getTokens(this.address).subscribe((tokens) => {
           // TO DO make it less dumb, when a user want to add token by his choice
           this.sIcxBalance = parseFloat(

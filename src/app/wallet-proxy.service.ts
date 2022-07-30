@@ -46,11 +46,14 @@ export class WalletProxyService {
     const httpProvider = new IconService.HttpProvider(
       'https://ctz.solidwallet.io/api/v3'
     );
+    console.log(address0);
     const iconService = new IconService(httpProvider);
-    const balance = await iconService
-      .getBalance('hx9d8a8376e7db9f00478feb9a46f44f0d051aab57')
-      .execute();
-    console.log(balance);
+    const balanceP = await iconService.getBalance(address0).execute();
+    console.log(balanceP.toNumber());
+    console.log(balanceP.toFixed());
+    console.log(balanceP.toFormat());
+    console.log(balanceP.toFraction());
+    console.log(balanceP.toPrecision());
   }
 
   getIcxBalance(address0: string) {
