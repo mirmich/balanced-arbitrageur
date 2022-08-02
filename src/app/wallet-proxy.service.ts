@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { fromEvent, map, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import IconService from 'icon-sdk-js';
 
 import {

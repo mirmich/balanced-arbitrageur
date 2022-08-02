@@ -69,6 +69,7 @@ export class PairListComponent implements OnInit {
             .result.price
         );
         const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
+        this.pairService.doTrade();
 
         this.graphService.initGraph(this.poolsGroomed, ICXPrice);
       },

@@ -11,6 +11,7 @@ import {
 import { hexToDouble, isNotNullOrUndefined, isEmpty } from './utils/pair-utils';
 import { Observable, timer } from 'rxjs';
 import { concat, forkJoin, merge, zip, combineLatest } from 'rxjs';
+import IconService from 'icon-sdk-js';
 
 import {
   IPoolStatsReqParams,
@@ -31,6 +32,8 @@ export class PairService {
   constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
+  httpProvider = new IconService.HttpProvider(this.address);
+  iconService = new IconService(this.httpProvider);
 
   getNames() {
     return this.http.get<ITokenAltName[]>('/assets/names.json');
@@ -77,6 +80,12 @@ export class PairService {
           return of({ jsonrpc: '', id: '', result: '' });
         })
       );
+  }
+  doTrade() {
+    const smth = IconService.IconConverter.toUtf8(
+      '0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637832363039623932346533336566303062363438613430393234356337656133393463343637383234222c226d696e696d756d52656365697665223a22323939313134363231373733363937393839222c2270617468223a5b22637833613336656131663662396161336432646439636236386538393837626363336161626161613838222c22637832363039623932346533336566303062363438613430393234356337656133393463343637383234225d7d7d'
+    );
+    console.log(smth);
   }
 
   private getPoolStatsOut(poolId: string) {
@@ -221,4 +230,6 @@ Stability fund
         }
     }
 }
+
+{"method":"_swap","params":{"toToken":"cx2609b924e33ef00b648a409245c7ea394c467824","minimumReceive":"299114621773697989","path":["cx3a36ea1f6b9aa3d2dd9cb68e8987bcc3aabaaa88","cx2609b924e33ef00b648a409245c7ea394c467824"]}}
  */
