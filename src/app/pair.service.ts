@@ -18,8 +18,10 @@ import {
   IPoolStatsReq,
   IPoolStats,
   ITokenName,
+  TradeParams,
 } from './pool-stats-req-params';
 import { ITokenAltName } from './names';
+import { CallTransactionBuilder } from 'icon-sdk-js/build/builder/transaction/CallTransaction';
 
 const CACHE_SIZE = 1;
 const REFRESH_INTERVAL = 600000;
@@ -81,11 +83,40 @@ export class PairService {
         })
       );
   }
-  doTrade() {
-    const smth = IconService.IconConverter.toUtf8(
-      '0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637832363039623932346533336566303062363438613430393234356337656133393463343637383234222c226d696e696d756d52656365697665223a22323939313134363231373733363937393839222c2270617468223a5b22637833613336656131663662396161336432646439636236386538393837626363336161626161613838222c22637832363039623932346533336566303062363438613430393234356337656133393463343637383234225d7d7d'
-    );
+  //{"method":"_swap","params":{"toToken":"cx2609b924e33ef00b648a409245c7ea394c467824","minimumReceive":"299114621773697989","path":["cx3a36ea1f6b9aa3d2dd9cb68e8987bcc3aabaaa88","cx2609b924e33ef00b648a409245c7ea394c467824"]}}
+  doTrade(
+    address: string,
+    tokenFrom: string,
+    tokenTo: string,
+    minimumRecieve0: string,
+    path0: string[]
+  ) {
+    const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
     console.log(smth);
+
+    const txObj = new IconService.IconBuilder.CallTransactionBuilder()
+      .method('_swap')
+      .params({
+        toToken: tokenTo,
+        minimumRecieve: minimumRecieve0,
+        path0: path0,
+      })
+      .from(address)
+      .to(tokenFrom)
+      .stepLimit(this.toBigNumber('70000'))
+      .nid(this.toBigNumber('3'))
+      .nonce(this.toBigNumber('1'))
+      .version(this.toBigNumber('3'))
+      .timestamp(new Date().getTime() * 1000)
+      .build();
+  }
+
+  private hexToUtf8(hex: string) {
+    return IconService.IconConverter.toUtf8(hex);
+  }
+
+  private toBigNumber(bigNum: string) {
+    return IconService.IconConverter.toBigNumber(bigNum);
   }
 
   private getPoolStatsOut(poolId: string) {
@@ -231,5 +262,5 @@ Stability fund
     }
 }
 
-{"method":"_swap","params":{"toToken":"cx2609b924e33ef00b648a409245c7ea394c467824","minimumReceive":"299114621773697989","path":["cx3a36ea1f6b9aa3d2dd9cb68e8987bcc3aabaaa88","cx2609b924e33ef00b648a409245c7ea394c467824"]}}
+
  */
