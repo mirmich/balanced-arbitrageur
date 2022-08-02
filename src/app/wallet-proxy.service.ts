@@ -42,43 +42,11 @@ export class WalletProxyService {
     window.dispatchEvent(customEvent);
   }
 
-  async getIcxBalanceSDK(address0: string) {
-    const httpProvider = new IconService.HttpProvider(
-      'https://ctz.solidwallet.io/api/v3'
-    );
-    console.log(address0);
+  async getIcxBalance(address0: string): Promise<number> {
+    const httpProvider = new IconService.HttpProvider(this.address);
     const iconService = new IconService(httpProvider);
     const balanceP = await iconService.getBalance(address0).execute();
-    console.log(balanceP.toNumber());
-    console.log(balanceP.toFixed());
-    console.log(balanceP.toFormat());
-    console.log(balanceP.toFraction());
-    console.log(balanceP.toPrecision());
-  }
-
-  getIcxBalance(address0: string) {
-    return this.http
-      .post<IcxBalanceResult>(this.address, this.getIcxBalanceReq(address0))
-
-      .pipe(
-        catchError((error) => {
-          console.log(`Error when asking ICX balance: ${address0}`);
-          return of({} as IcxBalanceResult);
-        })
-      );
-  }
-
-  private getIcxBalanceReq(address0: string) {
-    const params = {
-      address: address0,
-    };
-    const req: IPoolStatsReq = {
-      jsonrpc: '2.0',
-      id: 1657902889608,
-      method: 'icx_getBalance',
-      params: params,
-    };
-    return req;
+    return balanceP.shiftedBy(-18).toNumber();
   }
 
   getTokens(address0: string) {
