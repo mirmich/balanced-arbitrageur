@@ -64,3 +64,16 @@ export interface TokensBalanceResult {
   result: string;
   data: TokensBalanceResultData;
 }
+
+export interface TradeParams {
+  toToken: string;
+  minimumReceive: string;
+  path: String[];
+}
+
+export interface Trade {
+  method: string;
+  params: TradeParams;
+}
+
+//{"method":"_swap","params":{"toToken":"cx2609b924e33ef00b648a409245c7ea394c467824","minimumReceive":"299114621773697989","path":["cx3a36ea1f6b9aa3d2dd9cb68e8987bcc3aabaaa88","cx2609b924e33ef00b648a409245c7ea394c467824"]}}
