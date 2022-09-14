@@ -109,6 +109,8 @@ export class PairService {
       .version(this.toBigNumber('3'))
       .timestamp(new Date().getTime() * 1000)
       .build();
+    
+      const hash = txObj.value();
   }
 
   private hexToUtf8(hex: string) {

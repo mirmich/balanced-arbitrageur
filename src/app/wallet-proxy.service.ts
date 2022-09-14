@@ -9,6 +9,7 @@ import {
   IcxBalanceResult,
   TokensBalanceResult,
 } from './pool-stats-req-params';
+import { WalletEventPayload } from './wallet-event-payload';
 
 @Injectable({
   providedIn: 'root',
@@ -32,12 +33,23 @@ export class WalletProxyService {
     );
   }
 
-  dispatchEvent(eventType: String) {
-    const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
-      detail: {
-        type: eventType,
-      },
-    });
+  dispatchEvent(eventType: String, payload0?: WalletEventPayload) {
+    let customEvent: Event;
+    if (typeof payload0 !== undefined) {
+      customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
+        detail: {
+          type: eventType,
+          payload: payload0,
+        },
+      });
+    } else {
+      customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
+        detail: {
+          type: eventType,
+        },
+      });
+    }
+
     window.dispatchEvent(customEvent);
   }
 
@@ -54,16 +66,7 @@ export class WalletProxyService {
     );
   }
   /**
-    const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
-      detail: {
-        type: 'REQUEST_SIGNING',
-        payload: {
-          from: 'hx19870922...',
-          hash: '0x13979...'
-        }
-      }
-    });
-    window.dispatchEvent(customEvent);
+  
 
     const eventHandler = event => {
       const { type, payload } = detail
