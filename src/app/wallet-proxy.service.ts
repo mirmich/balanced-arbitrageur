@@ -53,4 +53,27 @@ export class WalletProxyService {
       `${this.trackerAddress}${address0}`
     );
   }
+  /**
+    const customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
+      detail: {
+        type: 'REQUEST_SIGNING',
+        payload: {
+          from: 'hx19870922...',
+          hash: '0x13979...'
+        }
+      }
+    });
+    window.dispatchEvent(customEvent);
+
+    const eventHandler = event => {
+      const { type, payload } = detail
+      if (type === 'RESPONSE_SIGNING') {
+        console.log(payload) // e.g., 'q/dVc3qj4En0GN+...'
+      }
+      else if (type === 'CANCEL_SIGNING') {
+        console.error('User cancelled signing request')
+      }
+    }
+    window.addEventListener('ICONEX_RELAY_RESPONSE', eventHandler);
+   */
 }
