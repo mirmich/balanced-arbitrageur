@@ -22,6 +22,7 @@ import {
 } from './pool-stats-req-params';
 import { ITokenAltName } from './names';
 import { CallTransactionBuilder } from 'icon-sdk-js/build/builder/transaction/CallTransaction';
+import { WalletProxyService } from './wallet-proxy.service';
 
 const CACHE_SIZE = 1;
 const REFRESH_INTERVAL = 600000;
@@ -31,7 +32,10 @@ const REFRESH_INTERVAL = 600000;
 })
 export class PairService {
   private cache$: Observable<IPoolStats[]>;
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private walletProxyService: WalletProxyService
+  ) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
   httpProvider = new IconService.HttpProvider(this.address);
@@ -109,8 +113,8 @@ export class PairService {
       .version(this.toBigNumber('3'))
       .timestamp(new Date().getTime() * 1000)
       .build();
-    
-      const hash = txObj.value();
+
+    const hash = txObj.value();
   }
 
   private hexToUtf8(hex: string) {

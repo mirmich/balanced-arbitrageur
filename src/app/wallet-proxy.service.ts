@@ -39,17 +39,17 @@ export class WalletProxyService {
       customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
         detail: {
           type: eventType,
-          payload: payload0,
+          payload: payload0
         },
       });
     } else {
       customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
         detail: {
-          type: eventType,
+          type: eventType
         },
       });
     }
-
+    
     window.dispatchEvent(customEvent);
   }
 
@@ -65,18 +65,4 @@ export class WalletProxyService {
       `${this.trackerAddress}${address0}`
     );
   }
-  /**
-  
-
-    const eventHandler = event => {
-      const { type, payload } = detail
-      if (type === 'RESPONSE_SIGNING') {
-        console.log(payload) // e.g., 'q/dVc3qj4En0GN+...'
-      }
-      else if (type === 'CANCEL_SIGNING') {
-        console.error('User cancelled signing request')
-      }
-    }
-    window.addEventListener('ICONEX_RELAY_RESPONSE', eventHandler);
-   */
 }
