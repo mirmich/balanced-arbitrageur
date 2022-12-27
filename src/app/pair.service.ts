@@ -88,6 +88,15 @@ export class PairService {
       );
   }
   //{"method":"_swap","params":{"toToken":"cx2609b924e33ef00b648a409245c7ea394c467824","minimumReceive":"299114621773697989","path":["cx3a36ea1f6b9aa3d2dd9cb68e8987bcc3aabaaa88","cx2609b924e33ef00b648a409245c7ea394c467824"]}}
+  /**
+   * Executes the trade
+   * 
+   * @param address The address of the swap smart contracts
+   * @param tokenFrom The source token of the trade
+   * @param tokenTo The target token of the trade
+   * @param minimumRecieve0 The mininum that should be recieved after the trade
+   * @param path0 The path that should be taken over when executing the trade e.g. bnUSD -> IUSDT -> sICX -> bnUSD
+   */
   doTrade(
     address: string,
     tokenFrom: string,
@@ -95,8 +104,8 @@ export class PairService {
     minimumRecieve0: string,
     path0: string[]
   ) {
-    const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
-    console.log(smth);
+    //const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
+    //console.log(smth);
 
     const txObj = new IconService.IconBuilder.CallTransactionBuilder()
       .method('_swap')
