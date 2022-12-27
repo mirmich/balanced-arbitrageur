@@ -266,7 +266,7 @@ export class PairService {
     console.log(data);
     console.log(this.anyToHex(JSON.stringify(data)));
     const txObj = new IconService.IconBuilder.CallTransactionBuilder()
-      .method('transfer"')
+      .method('transfer')
       .params({
         _to: 'cxbb2871f468a3008f80b08fdde5b8b951583acf06', // Balanced router contract address
         _value: '0x19567b1c64cc571',

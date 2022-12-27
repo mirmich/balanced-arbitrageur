@@ -19,6 +19,7 @@ export class TopTradesComponent implements OnDestroy {
       }
     );
   }
+  public trade(): void {}
 
   public ngOnDestroy(): void {
     this.arbitragueSubscription.unsubscribe();
