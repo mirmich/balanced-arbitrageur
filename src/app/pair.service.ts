@@ -250,7 +250,7 @@ export class PairService {
     toToken: string,
     minimumRecieve0: string,
     path0: string[]
-  ) {
+  ): any {
     //const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
     //console.log(smth);
     // TO DO -- you need to use REQUEST_JSON-RPC in order to send transaction
@@ -283,7 +283,7 @@ export class PairService {
       .build();
 
     console.log(txObj);
-    console.log(IconService.IconConverter.toRawTransaction(txObj));
+    return IconService.IconConverter.toRawTransaction(txObj);
   }
 }
 /**
