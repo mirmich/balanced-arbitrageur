@@ -23,6 +23,7 @@ import {
 import { ITokenAltName } from './names';
 import { CallTransactionBuilder } from 'icon-sdk-js/build/builder/transaction/CallTransaction';
 import { WalletProxyService } from './wallet-proxy.service';
+import { ConsoleLogger } from '@angular/compiler-cli';
 
 const CACHE_SIZE = 1;
 const REFRESH_INTERVAL = 600000;
@@ -90,7 +91,7 @@ export class PairService {
   //{"method":"_swap","params":{"toToken":"cx2609b924e33ef00b648a409245c7ea394c467824","minimumReceive":"299114621773697989","path":["cx3a36ea1f6b9aa3d2dd9cb68e8987bcc3aabaaa88","cx2609b924e33ef00b648a409245c7ea394c467824"]}}
   /**
    * Executes the trade
-   * 
+   *
    * @param address The address of the swap smart contracts
    * @param tokenFrom The source token of the trade
    * @param tokenTo The target token of the trade
@@ -106,7 +107,7 @@ export class PairService {
   ) {
     //const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
     //console.log(smth);
-
+    // TO DO -- you need to use REQUEST_JSON-RPC in order to send transaction
     const txObj = new IconService.IconBuilder.CallTransactionBuilder()
       .method('_swap')
       .params({
@@ -123,9 +124,17 @@ export class PairService {
       .timestamp(new Date().getTime() * 1000)
       .build();
 
-    const hash = txObj.value();
+    console.log(txObj);
+    console.log(
+      this.hexToUtf8(
+        '0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637838386664376466376464666638326637636337333563383731646335313938333863623233356262222c226d696e696d756d52656365697665223a22313133333335363231353431373538353238222c2270617468223a5b22637838386664376466376464666638326637636337333563383731646335313938333863623233356262225d7d7d'
+      )
+    );
   }
 
+  private anyToHex(str: string) {
+    return IconService.IconConverter.toHex(str);
+  }
   private hexToUtf8(hex: string) {
     return IconService.IconConverter.toUtf8(hex);
   }
@@ -234,6 +243,48 @@ export class PairService {
     //   parseInt(value, 16) / Number('1E' + parseInt(decimals, 16).toString())
     // );
   }
+
+  doTrade2(
+    address: string,
+    tokenFrom: string,
+    toToken: string,
+    minimumRecieve0: string,
+    path0: string[]
+  ) {
+    //const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
+    //console.log(smth);
+    // TO DO -- you need to use REQUEST_JSON-RPC in order to send transaction
+
+    const data = {
+      method: '_swap',
+      params: {
+        toToken: toToken,
+        minimumRecieve: minimumRecieve0,
+        path: path0,
+      },
+    };
+    console.log(data);
+    console.log(this.anyToHex(JSON.stringify(data)));
+    const txObj = new IconService.IconBuilder.CallTransactionBuilder()
+      .method('transfer"')
+      .params({
+        _to: 'cxbb2871f468a3008f80b08fdde5b8b951583acf06', // Balanced router contract address
+        _value: '0x19567b1c64cc571',
+        _data: this.anyToHex(JSON.stringify(data)),
+      })
+      .from(address)
+      .to(tokenFrom)
+      .stepLimit('0x42c1d80')
+      .nid('0x1')
+      //.nonce(this.toBigNumber('1'))
+      .version('0x3')
+      .value('0x0')
+      .timestamp(new Date().getTime() * 1000)
+      .build();
+
+    console.log(txObj);
+    console.log(IconService.IconConverter.toRawTransaction(txObj));
+  }
 }
 /**
  * 
@@ -253,6 +304,26 @@ export class PairService {
             "_to": "cx21e94c08c03daee80c25d8ee3ea22a20786ec231", balanced router contract
             "_value": "0x1812482108e2eeb", amount probably
             "_data": "0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637832363039623932346533336566303062363438613430393234356337656133393463343637383234222c226d696e696d756d52656365697665223a22323939313134363231373733363937393839222c2270617468223a5b22637833613336656131663662396161336432646439636236386538393837626363336161626161613838222c22637832363039623932346533336566303062363438613430393234356337656133393463343637383234225d7d7d"
+        }
+    }
+}
+
+{
+  USDS TO bnUSd
+    "to": "cxbb2871f468a3008f80b08fdde5b8b951583acf06", source token e.g USDS
+    "from": "hx97180db9263685f07bed00df5111481513ab30c1",
+    "nid": "0x1",
+    "version": "0x3",
+    "timestamp": "0x5f0d51de51918",
+    "stepLimit": "0x42c1d80",
+    "value": "0x0",
+    "dataType": "call",
+    "data": {
+        "method": "transfer",
+        "params": {
+            "_to": "cx21e94c08c03daee80c25d8ee3ea22a20786ec231",
+            "_value": "0x19567b1c64cc571",
+            "_data": "0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637838386664376466376464666638326637636337333563383731646335313938333863623233356262222c226d696e696d756d52656365697665223a22313133333335363231353431373538353238222c2270617468223a5b22637838386664376466376464666638326637636337333563383731646335313938333863623233356262225d7d7d"
         }
     }
 }
