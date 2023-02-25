@@ -21,8 +21,8 @@ export class WalletProxyService {
   trackerAddress: string =
     'https://main.tracker.solidwallet.io/v3/address/info?address=';
 
-  handleEvent(eventType: string) {
-    return fromEvent(window, 'ICONEX_RELAY_RESPONSE').pipe(
+  handleEvent(eventName: string, eventType: string) {
+    return fromEvent(window, eventName).pipe(
       map((e) => {
         if ((e as CustomEvent).detail.type == eventType) {
           return (e as CustomEvent).detail.payload;
@@ -33,23 +33,23 @@ export class WalletProxyService {
     );
   }
 
-  dispatchEvent(eventType: String, payload0?: WalletEventPayload) {
+  dispatchEvent(eventName: string, eventType: String, payload0?: any) {
     let customEvent: Event;
     if (typeof payload0 !== undefined) {
-      customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
+      customEvent = new CustomEvent(eventName, {
         detail: {
           type: eventType,
-          payload: payload0
+          payload: payload0,
         },
       });
     } else {
-      customEvent = new CustomEvent('ICONEX_RELAY_REQUEST', {
+      customEvent = new CustomEvent(eventName, {
         detail: {
-          type: eventType
+          type: eventType,
         },
       });
     }
-    
+
     window.dispatchEvent(customEvent);
   }
 

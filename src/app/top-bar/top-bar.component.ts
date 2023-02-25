@@ -20,7 +20,7 @@ export class TopBarComponent implements OnInit {
 
   onSignIn() {
     this.walletProxyService
-      .handleEvent('RESPONSE_ADDRESS')
+      .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
       .subscribe(async (address0) => {
         this.address = address0;
         this.showButton = false;
@@ -41,6 +41,6 @@ export class TopBarComponent implements OnInit {
           );
         });
       });
-    this.walletProxyService.dispatchEvent('REQUEST_ADDRESS');
+    this.walletProxyService.dispatchEvent('ICONEX_RELAY_REQUEST', 'REQUEST_ADDRESS');
   }
 }

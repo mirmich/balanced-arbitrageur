@@ -285,7 +285,70 @@ export class PairService {
     console.log(txObj);
     return IconService.IconConverter.toRawTransaction(txObj);
   }
+
+  doTradeRPC(
+    address: string,
+    tokenFrom: string,
+    toToken: string,
+    minimumRecieve0: string,
+    path0: string[]
+  ): any {
+    //const smth = 'Step limit ' + this.hexToUtf8('0x42c1d80');
+    //console.log(smth);
+    // TO DO -- you need to use REQUEST_JSON-RPC in order to send transaction
+
+    const data = {
+      method: '_swap',
+      params: {
+        toToken: toToken,
+        minimumRecieve: minimumRecieve0,
+        path: path0,
+      },
+    };
+    const txObj = new IconService.IconBuilder.CallTransactionBuilder()
+      .method('transfer')
+      .params({
+        _to: 'cxbb2871f468a3008f80b08fdde5b8b951583acf06', // Balanced router contract address
+        _value: '0x19567b1c64cc571',
+        _data: this.anyToHex(JSON.stringify(data)),
+      })
+      .from(address)
+      .to(tokenFrom)
+      .stepLimit('0x42c1d80')
+      .nid('0x1')
+      //.nonce(this.toBigNumber('1'))
+      .version('0x3')
+      .value('0x0')
+      .timestamp(new Date().getTime() * 1000)
+      .build();
+
+    const rpcResult = {
+      "jsonrpc": "2.0",
+      "method": "icx_sendTransaction",
+      "id": 1234,
+      "params": {
+          "version": "0x3",
+          "from": "hx97180db9263685f07bed00df5111481513ab30c1",
+          "to": "cxbb2871f468a3008f80b08fdde5b8b951583acf06",
+          "stepLimit": "0x42c1d80",
+          "timestamp": new Date().getTime() * 1000,
+          "nid": "0x3",
+          "nonce": "0x1",
+          "dataType": "call",
+          "data": {
+              "method": "transfer",
+              "params": {
+                  "_to": "cxbb2871f468a3008f80b08fdde5b8b951583acf06",
+                  "value": "0x19567b1c64cc571",
+                  "data": this.anyToHex(JSON.stringify(data))
+              }
+          }
+      }
+  }
+    return rpcResult;
+  }
 }
+
 /**
  * 
  * {
