@@ -341,7 +341,7 @@ export class PairService {
           method: 'transfer',
           params: {
             _to: 'cx21e94c08c03daee80c25d8ee3ea22a20786ec231',
-            _value: '0x19567b1c64cc571',
+            _value: '0x16345785d8a0000',
             _data: this.anyToHex(JSON.stringify(data)),
           },
         },
@@ -365,11 +365,13 @@ export class PairService {
         "method": "transfer",
         "params": {
             "_to": "cx21e94c08c03daee80c25d8ee3ea22a20786ec231",
-            "_value": "0x16345785d8a0000",
+            "_value": "0x16345785d8a0000", How many you wanna trade
             "_data": "0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637862623238373166343638613330303866383062303866646465356238623935313538336163663036222c226d696e696d756d52656365697665223a223938303232393635343338383536323834222c2270617468223a5b22637862623238373166343638613330303866383062303866646465356238623935313538336163663036225d7d7d"
         }
     }
 }
+^^ data
+{"method":"_swap","params":{"toToken":"cxbb2871f468a3008f80b08fdde5b8b951583acf06","minimumReceive":"98022965438856284","path":["cxbb2871f468a3008f80b08fdde5b8b951583acf06"]}}
  */
 
 /**
