@@ -323,31 +323,54 @@ export class PairService {
       .build();
 
     const rpcResult = {
-      "jsonrpc": "2.0",
-      "method": "icx_sendTransaction",
-      "id": 1234,
-      "params": {
-          "version": "0x3",
-          "from": "hx97180db9263685f07bed00df5111481513ab30c1",
-          "to": "cxbb2871f468a3008f80b08fdde5b8b951583acf06",
-          "stepLimit": "0x42c1d80",
-          "timestamp": new Date().getTime() * 1000,
-          "nid": "0x3",
-          "nonce": "0x1",
-          "dataType": "call",
-          "data": {
-              "method": "transfer",
-              "params": {
-                  "_to": "cxbb2871f468a3008f80b08fdde5b8b951583acf06",
-                  "value": "0x19567b1c64cc571",
-                  "data": this.anyToHex(JSON.stringify(data))
-              }
-          }
-      }
-  }
+      jsonrpc: '2.0',
+      method: 'icx_sendTransaction',
+      id: 1234,
+      params: {
+        version: '0x3',
+        from: 'hx97180db9263685f07bed00df5111481513ab30c1',
+        to: tokenFrom,
+        stepLimit: '0x42c1d80',
+        timestamp: IconService.IconConverter.toHexNumber(
+          new Date().getTime() * 1000
+        ),
+        nid: '0x1',
+        nonce: '0x1',
+        dataType: 'call',
+        data: {
+          method: 'transfer',
+          params: {
+            _to: 'cx21e94c08c03daee80c25d8ee3ea22a20786ec231',
+            _value: '0x19567b1c64cc571',
+            _data: this.anyToHex(JSON.stringify(data)),
+          },
+        },
+      },
+    };
     return rpcResult;
   }
 }
+
+/**
+ * {
+    "to": "cx88fd7df7ddff82f7cc735c871dc519838cb235bb",
+    "from": "hx97180db9263685f07bed00df5111481513ab30c1",
+    "nid": "0x1",
+    "version": "0x3",
+    "timestamp": "0x5f59e7100d498",
+    "stepLimit": "0x42c1d80",
+    "value": "0x0",
+    "dataType": "call",
+    "data": {
+        "method": "transfer",
+        "params": {
+            "_to": "cx21e94c08c03daee80c25d8ee3ea22a20786ec231",
+            "_value": "0x16345785d8a0000",
+            "_data": "0x7b226d6574686f64223a225f73776170222c22706172616d73223a7b22746f546f6b656e223a22637862623238373166343638613330303866383062303866646465356238623935313538336163663036222c226d696e696d756d52656365697665223a223938303232393635343338383536323834222c2270617468223a5b22637862623238373166343638613330303866383062303866646465356238623935313538336163663036225d7d7d"
+        }
+    }
+}
+ */
 
 /**
  * 

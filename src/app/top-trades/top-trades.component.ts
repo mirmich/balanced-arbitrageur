@@ -25,13 +25,14 @@ export class TopTradesComponent implements OnDestroy {
       }
     );
   }
+  // cxbb2871f468a3008f80b08fdde5b8b951583acf06
   public trade(): void {
     const result = this.pairService.doTradeRPC(
       'hx97180db9263685f07bed00df5111481513ab30c1',
-      'cxbb2871f468a3008f80b08fdde5b8b951583acf06',
       'cx88fd7df7ddff82f7cc735c871dc519838cb235bb',
-      '113335621541758528',
-      ['cx88fd7df7ddff82f7cc735c871dc519838cb235bb']
+      'cxbb2871f468a3008f80b08fdde5b8b951583acf06',
+      '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
+      ['cxbb2871f468a3008f80b08fdde5b8b951583acf06']
     );
     console.log(result);
     this.walletProxyService.dispatchEvent(
