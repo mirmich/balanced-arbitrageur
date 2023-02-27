@@ -36,7 +36,7 @@ export class TopTradesComponent implements OnDestroy {
       '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
       ['cxbb2871f468a3008f80b08fdde5b8b951583acf06']
     );
-    console.log(result);
+    console.log(sessionStorage.getItem('walletAddress'));
     this.walletProxyService.dispatchEvent(
       'ICONEX_RELAY_REQUEST',
       'REQUEST_JSON-RPC',

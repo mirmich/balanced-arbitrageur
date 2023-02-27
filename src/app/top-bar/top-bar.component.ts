@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletProxyService } from '../wallet-proxy.service';
-import { hexToDouble } from '../utils/pair-utils';
 
 @Component({
   selector: 'app-top-bar',
@@ -23,24 +22,28 @@ export class TopBarComponent implements OnInit {
       .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
       .subscribe(async (address0) => {
         this.address = address0;
-        this.showButton = false;
-        this.icxBalance = await this.walletProxyService.getIcxBalance(
-          this.address
-        );
-        this.walletProxyService.getTokens(this.address).subscribe((tokens) => {
-          // TO DO make it less dumb, when a user want to add token by his choice
-          this.sIcxBalance = parseFloat(
-            tokens.data.tokenList.find(
-              (token) => token.contractSymbol == 'sICX'
-            ).quantity
-          );
-          this.bnUsdBalance = parseFloat(
-            tokens.data.tokenList.find(
-              (token) => token.contractSymbol == 'bnUSD'
-            ).quantity
-          );
-        });
+        localStorage.setItem('walletAddress', this.address);
+        this.showBalance();
       });
-    this.walletProxyService.dispatchEvent('ICONEX_RELAY_REQUEST', 'REQUEST_ADDRESS');
+    this.walletProxyService.dispatchEvent(
+      'ICONEX_RELAY_REQUEST',
+      'REQUEST_ADDRESS'
+    );
+  }
+
+  private async showBalance() {
+    this.showButton = false;
+    this.icxBalance = await this.walletProxyService.getIcxBalance(this.address);
+    this.walletProxyService.getTokens(this.address).subscribe((tokens) => {
+      // TO DO make it less dumb, when a user want to add token by his choice
+      this.sIcxBalance = parseFloat(
+        tokens.data.tokenList.find((token) => token.contractSymbol == 'sICX')
+          .quantity
+      );
+      this.bnUsdBalance = parseFloat(
+        tokens.data.tokenList.find((token) => token.contractSymbol == 'bnUSD')
+          .quantity
+      );
+    });
   }
 }
