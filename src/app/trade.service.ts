@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import IconService from 'icon-sdk-js';
+import { WalletProxyService } from './wallet-proxy.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TradeService {
+  constructor(private walletProxyService: WalletProxyService) {}
   /**
    * Executes the trade
    *
