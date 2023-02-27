@@ -21,6 +21,9 @@ export class WalletProxyService {
   trackerAddress: string =
     'https://main.tracker.solidwallet.io/v3/address/info?address=';
 
+  httpProvider = new IconService.HttpProvider(this.address);
+  iconService = new IconService(this.httpProvider);
+
   handleEvent(eventName: string, eventType: string) {
     return fromEvent(window, eventName).pipe(
       map((e) => {
@@ -54,9 +57,7 @@ export class WalletProxyService {
   }
 
   async getIcxBalance(address0: string): Promise<number> {
-    const httpProvider = new IconService.HttpProvider(this.address);
-    const iconService = new IconService(httpProvider);
-    const balanceP = await iconService.getBalance(address0).execute();
+    const balanceP = await this.iconService.getBalance(address0).execute();
     return balanceP.shiftedBy(-18).toNumber();
   }
 
