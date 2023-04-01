@@ -6,4 +6,6 @@ export interface ArtbitraguePath {
 export interface SingleArbitrague {
   edge: string;
   price: number;
+  tokenFrom: string;
+  tokenTo: string;
 }
