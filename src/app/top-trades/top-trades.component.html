@@ -1,7 +1,7 @@
 <div class="top-trades-container">
   <h2>Top Trades</h2>
   <div class="trade-list-grid">
-    <div *ngFor="let arb of arbitragues">
+    <div *ngFor="let arb of arbitragues; index as i">
       <div class="trade-list-inner-info">
         <p>
           {{
@@ -17,7 +17,10 @@
           src="https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/arrowUpCompressed.svg"
         />
         <p class="trade-list-price">{{ arb.price | number }}</p>
-        <button class="trade-list-inner-info__execute-button" (click)="trade()">
+        <button
+          class="trade-list-inner-info__execute-button"
+          (click)="trade(i)"
+        >
           TRADE IT!
         </button>
         <div class="dropdown">
