@@ -14,4 +14,6 @@ export interface SingleArbitrague {
   price: number;
   tokenFrom: string;
   tokenTo: string;
+  tokenFromContract: string;
+  tokenToContract: string;
 }

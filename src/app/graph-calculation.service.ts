@@ -80,8 +80,8 @@ export class GraphCalculationService {
         }
       });
     const cycles = this.findAllCyclesForNode('bnUSD');
-    const cyclesEnriched = this.enrichCycles(cycles);
 
+    const cyclesEnriched = this.enrichCycles(cycles, pools);
     const cyclesFiltered = this.filterCycles(cyclesEnriched, icxPriceInBnUSD);
     this.mostProfitableSource.next(cyclesFiltered);
   }
@@ -90,14 +90,26 @@ export class GraphCalculationService {
   /**
    * Extracts the token names from the edge name
    */
-  private enrichCycles(cycles: SingleArbitrague[][]): SingleArbitrague[][] {
+  private enrichCycles(
+    cycles: SingleArbitrague[][],
+    pools: Array<IPoolStats>
+  ): SingleArbitrague[][] {
     return cycles.map((trades) =>
       trades.map((trade) => {
+        const tokenFromName = trade.edge.split('->')[0];
+        const tokenToName = trade.edge.split('->')[1];
+        const pool = pools.find(
+          (x) =>
+            x.result.name.includes(tokenFromName) &&
+            x.result.name.includes(tokenToName)
+        );
         return {
           edge: trade.edge,
           price: trade.price,
-          tokenFrom: trade.edge.split('->')[0],
-          tokenTo: trade.edge.split('->')[1],
+          tokenFrom: tokenFromName,
+          tokenTo: tokenToName,
+          tokenFromContract: pool.result.base_token,
+          tokenToContract: pool.result.quote_token,
         } as SingleArbitrague;
       })
     );
