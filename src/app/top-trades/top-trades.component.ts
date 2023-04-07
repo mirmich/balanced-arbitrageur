@@ -16,6 +16,7 @@ export class TopTradesComponent implements OnDestroy {
     'cx21e94c08c03daee80c25d8ee3ea22a20786ec231';
 
   public arbitragues: Array<ArtbitraguePath> = [];
+
   constructor(
     private graphService: GraphCalculationService,
     private walletProxyService: WalletProxyService,
@@ -27,7 +28,7 @@ export class TopTradesComponent implements OnDestroy {
       }
     );
   }
-  // cxbb2871f468a3008f80b08fdde5b8b951583acf06
+
   public trade(index: number): void {
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
