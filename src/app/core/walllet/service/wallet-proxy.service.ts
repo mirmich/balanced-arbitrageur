@@ -23,23 +23,18 @@ export class WalletProxyService {
     if (this.walletAddress.length === 0) {
       return this.handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS').pipe(
         map((walletAddress0) => {
-          console.log('Inside map');
           this.walletAddress = walletAddress0;
           return walletAddress0;
         })
       );
     } else {
-      console.log('Inside else');
       return of(this.walletAddress);
     }
   }
 
   handleEvent(eventName: string, eventType: string) {
-    console.log('bam');
-    console.log(eventType);
     return fromEvent(window, eventName).pipe(
       map((e) => {
-        console.log('im here');
         if ((e as CustomEvent).detail.type == eventType) {
           return (e as CustomEvent).detail.payload;
         } else {

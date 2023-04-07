@@ -34,31 +34,20 @@ export class TopTradesComponent implements OnDestroy {
       (trade) => trade.tokenToContract
     );
     path.pop();
-    console.log(index);
     const address = await lastValueFrom(this.walletProxyService.getAddress());
-    console.log(address);
-    // const trade = this.tradeService.doTradeRPC(
-    //   this.balancedRouterContract,
-    //   this.arbitragues[index].cycle[0].tokenFromContract,
-    //   this.arbitragues[index].cycle[0].tokenFromContract,
-    //   '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
-    //   path
-    // );
-    // const walletRequest = await firstValueFrom(trade);
-    // console.log(walletRequest);
-    // this.walletProxyService.dispatchEvent(
-    //   'ICONEX_RELAY_REQUEST',
-    //   'REQUEST_JSON-RPC',
-    //   walletRequest
-    // );
-    // .subscribe((walletRequest) => {
-    //   console.log(walletRequest);
-    //   this.walletProxyService.dispatchEvent(
-    //     'ICONEX_RELAY_REQUEST',
-    //     'REQUEST_JSON-RPC',
-    //     walletRequest
-    //   );
-    // });
+    const trade = this.tradeService.doTradeRPC(
+      this.balancedRouterContract,
+      this.arbitragues[index].cycle[0].tokenFromContract,
+      this.arbitragues[index].cycle[0].tokenFromContract,
+      '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
+      path,
+      address
+    );
+    this.walletProxyService.dispatchEvent(
+      'ICONEX_RELAY_REQUEST',
+      'REQUEST_JSON-RPC',
+      trade
+    );
   }
 
   public ngOnDestroy(): void {

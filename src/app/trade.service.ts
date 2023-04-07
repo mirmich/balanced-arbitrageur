@@ -22,48 +22,44 @@ export class TradeService {
     tokenFrom: string,
     toToken: string,
     minimumRecieve0: string,
-    path0: string[]
+    path0: string[],
+    walletAddress: string
   ) {
-    return this.walletProxyService.getAddress().pipe(
-      map((walletAddress) => {
-        console.log(walletAddress);
-        const data = {
-          method: '_swap',
-          params: {
-            toToken: toToken,
-            minimumRecieve: minimumRecieve0,
-            path: path0,
-          },
-        };
+    const data = {
+      method: '_swap',
+      params: {
+        toToken: toToken,
+        minimumRecieve: minimumRecieve0,
+        path: path0,
+      },
+    };
 
-        const rpcResult = {
-          jsonrpc: '2.0',
-          method: 'icx_sendTransaction',
-          id: 1234,
+    const rpcResult = {
+      jsonrpc: '2.0',
+      method: 'icx_sendTransaction',
+      id: 1234,
+      params: {
+        version: '0x3',
+        from: walletAddress,
+        to: tokenFrom,
+        stepLimit: '0x42c1d80',
+        timestamp: IconService.IconConverter.toHexNumber(
+          new Date().getTime() * 1000
+        ),
+        nid: '0x1',
+        nonce: '0x1',
+        dataType: 'call',
+        data: {
+          method: 'transfer',
           params: {
-            version: '0x3',
-            from: walletAddress,
-            to: tokenFrom,
-            stepLimit: '0x42c1d80',
-            timestamp: IconService.IconConverter.toHexNumber(
-              new Date().getTime() * 1000
-            ),
-            nid: '0x1',
-            nonce: '0x1',
-            dataType: 'call',
-            data: {
-              method: 'transfer',
-              params: {
-                _to: contractAddress,
-                _value: '0x16345785d8a0000',
-                _data: IconService.IconConverter.toHex(JSON.stringify(data)),
-              },
-            },
+            _to: contractAddress,
+            _value: '0x16345785d8a0000',
+            _data: IconService.IconConverter.toHex(JSON.stringify(data)),
           },
-        };
-        return rpcResult;
-      })
-    );
+        },
+      },
+    };
+    return rpcResult;
   }
 }
 
