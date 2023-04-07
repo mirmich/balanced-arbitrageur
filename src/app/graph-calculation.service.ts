@@ -143,7 +143,7 @@ export class GraphCalculationService {
             cycle
               .map((edge) => edge.price)
               .reduce((prev, current) => prev * current) -
-            cycle.length * 0.027 * icxPrice * 1.03,
+            cycle.length * 0.11 * icxPrice * 1.03,
         } as ArtbitraguePath;
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))
