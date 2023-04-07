@@ -19,7 +19,8 @@ export class TopBarComponent implements OnInit {
 
   onSignIn() {
     this.walletProxyService
-      .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
+      //.handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
+      .getAddress()
       .subscribe(async (address0) => {
         this.address = address0;
         this.showBalance();

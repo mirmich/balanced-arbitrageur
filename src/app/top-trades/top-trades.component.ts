@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom, lastValueFrom } from 'rxjs';
 import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { TradeService } from '../trade.service';
@@ -35,7 +35,7 @@ export class TopTradesComponent implements OnDestroy {
     );
     path.pop();
     console.log(index);
-    const address = await firstValueFrom(this.walletProxyService.getAddress());
+    const address = await lastValueFrom(this.walletProxyService.getAddress());
     console.log(address);
     // const trade = this.tradeService.doTradeRPC(
     //   this.balancedRouterContract,
