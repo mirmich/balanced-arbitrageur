@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { fromEvent, map, of } from 'rxjs';
+import { fromEvent, map } from 'rxjs';
 import IconService from 'icon-sdk-js';
 
-import {
-  IPoolStatsReq,
-  IPoolStats,
-  IcxBalanceResult,
-  TokensBalanceResult,
-} from './pool-stats-req-params';
-import { WalletEventPayload } from './wallet-event-payload';
+import { TokensBalanceResult } from '../model/tokens';
 
 @Injectable({
   providedIn: 'root',

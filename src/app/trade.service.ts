@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import IconService from 'icon-sdk-js';
-import { WalletProxyService } from './wallet-proxy.service';
+import { WalletProxyService } from './core/walllet/service/wallet-proxy.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { TradeService } from '../trade.service';
-import { WalletProxyService } from '../wallet-proxy.service';
 import { ArtbitraguePath } from './model';
 
 @Component({

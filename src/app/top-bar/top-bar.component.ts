@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletProxyService } from '../wallet-proxy.service';
+import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
+
 
 @Component({
   selector: 'app-top-bar',
