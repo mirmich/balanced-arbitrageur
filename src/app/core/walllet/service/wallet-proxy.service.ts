@@ -24,9 +24,13 @@ export class WalletProxyService {
       const walletAddressEvent = this.handleEvent(
         'ICONEX_RELAY_RESPONSE',
         'RESPONSE_ADDRESS'
-      ) as Observable<string>;
+      );
       walletAddressEvent.pipe(
-        map((walletAddress0) => (this.walletAddress = walletAddress0))
+        map((walletAddress0) => {
+          console.log('Inside map');
+          this.walletAddress = walletAddress0;
+          return walletAddress0;
+        })
       );
       return walletAddressEvent;
     } else {

@@ -34,8 +34,8 @@ export class TopTradesComponent implements OnDestroy {
       (trade) => trade.tokenToContract
     );
     path.pop();
-    const address = await firstValueFrom(this.walletProxyService.getAddress());
     console.log(index);
+    const address = await firstValueFrom(this.walletProxyService.getAddress());
     console.log(address);
     // const trade = this.tradeService.doTradeRPC(
     //   this.balancedRouterContract,
