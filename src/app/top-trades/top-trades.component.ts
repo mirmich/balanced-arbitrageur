@@ -42,13 +42,14 @@ export class TopTradesComponent implements OnDestroy {
         '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
         path
       )
-      .subscribe((walletRequest) =>
+      .subscribe((walletRequest) => {
+        console.log(walletRequest);
         this.walletProxyService.dispatchEvent(
           'ICONEX_RELAY_REQUEST',
           'REQUEST_JSON-RPC',
           walletRequest
-        )
-      );
+        );
+      });
   }
 
   public ngOnDestroy(): void {
