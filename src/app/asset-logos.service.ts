@@ -7,24 +7,23 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AssetLogosService {
+  private defaultLogo =
+    'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg';
+  private icxLogo =
+    'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/icon.png';
+
   constructor(private http: HttpClient) {}
 
   getAssetLogo(token: string) {
     const template = `https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/${token}/logo.png`;
-    const defaultLogo =
-      'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg';
     return this.http.head(template).pipe(
       map(() => template),
       catchError((error) => {
         // Only sICX/ICX pool should have quote_token null
         if (token == null) {
-          return of(
-            'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/icon.png'
-          );
+          return of(this.icxLogo);
         }
-        return of(
-          'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg'
-        );
+        return of(this.defaultLogo);
       })
     );
   }

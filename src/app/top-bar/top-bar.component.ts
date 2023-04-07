@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
 
-
 @Component({
   selector: 'app-top-bar',
   templateUrl: './top-bar.component.html',
@@ -23,7 +22,6 @@ export class TopBarComponent implements OnInit {
       .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
       .subscribe(async (address0) => {
         this.address = address0;
-        localStorage.setItem('walletAddress', this.address);
         this.showBalance();
       });
     this.walletProxyService.dispatchEvent(

@@ -6,6 +6,7 @@ import { WalletProxyService } from './core/walllet/service/wallet-proxy.service'
   providedIn: 'root',
 })
 export class TradeService {
+  private address: string;
   constructor(private walletProxyService: WalletProxyService) {}
   /**
    * Executes the trade
@@ -22,7 +23,12 @@ export class TradeService {
     toToken: string,
     minimumRecieve0: string,
     path0: string[]
-  ): any {
+  ) {
+    this.walletProxyService
+      .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
+      .subscribe(async (address0) => {
+        this.address = address0;
+      });
     const data = {
       method: '_swap',
       params: {
