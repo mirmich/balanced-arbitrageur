@@ -33,18 +33,21 @@ export class TopTradesComponent implements OnDestroy {
       (trade) => trade.tokenToContract
     );
     path.pop();
-    const result = this.tradeService.doTradeRPC(
-      this.balancedRouterContract,
-      this.arbitragues[index].cycle[0].tokenFromContract,
-      this.arbitragues[index].cycle[0].tokenFromContract,
-      '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
-      path
-    );
-    this.walletProxyService.dispatchEvent(
-      'ICONEX_RELAY_REQUEST',
-      'REQUEST_JSON-RPC',
-      result
-    );
+    this.tradeService
+      .doTradeRPC(
+        this.balancedRouterContract,
+        this.arbitragues[index].cycle[0].tokenFromContract,
+        this.arbitragues[index].cycle[0].tokenFromContract,
+        '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
+        path
+      )
+      .subscribe((walletRequest) =>
+        this.walletProxyService.dispatchEvent(
+          'ICONEX_RELAY_REQUEST',
+          'REQUEST_JSON-RPC',
+          walletRequest
+        )
+      );
   }
 
   public ngOnDestroy(): void {
