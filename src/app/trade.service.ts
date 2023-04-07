@@ -24,12 +24,6 @@ export class TradeService {
     minimumRecieve0: string,
     path0: string[]
   ) {
-    this.walletProxyService
-      .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
-      .subscribe(async (address0) => {
-        this.address = address0;
-        console.log(address0);
-      });
     const data = {
       method: '_swap',
       params: {

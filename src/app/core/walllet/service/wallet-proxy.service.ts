@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { fromEvent, map } from 'rxjs';
+import { fromEvent, map, Observable, of } from 'rxjs';
 import IconService from 'icon-sdk-js';
 
 import { TokensBalanceResult } from '../model/tokens';
@@ -12,11 +12,27 @@ export class WalletProxyService {
   constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
+  private walletAddress = '';
   trackerAddress: string =
     'https://main.tracker.solidwallet.io/v3/address/info?address=';
 
   httpProvider = new IconService.HttpProvider(this.address);
   iconService = new IconService(this.httpProvider);
+
+  getAddress() {
+    if (this.walletAddress.length === 0) {
+      const walletAddressEvent = this.handleEvent(
+        'ICONEX_RELAY_RESPONSE',
+        'RESPONSE_ADDRESS'
+      );
+      walletAddressEvent.subscribe(async (address0) => {
+        this.walletAddress = address0;
+      });
+      return walletAddressEvent as Observable<string>;
+    } else {
+      return of(this.walletAddress);
+    }
+  }
 
   handleEvent(eventName: string, eventType: string) {
     return fromEvent(window, eventName).pipe(

@@ -29,12 +29,10 @@ export class TopTradesComponent implements OnDestroy {
   }
   // cxbb2871f468a3008f80b08fdde5b8b951583acf06
   public trade(index: number): void {
-    console.log(index);
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
     );
     path.pop();
-    console.log(path);
     const result = this.tradeService.doTradeRPC(
       this.balancedRouterContract,
       this.arbitragues[index].cycle[0].tokenFromContract,
