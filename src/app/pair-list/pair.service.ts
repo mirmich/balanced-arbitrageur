@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
-import {
-  catchError,
-  filter,
-  map,
-  shareReplay,
-  switchMap,
-} from 'rxjs/operators';
-import { hexToDouble, isNotNullOrUndefined, isEmpty } from './utils/pair-utils';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
+import { hexToDouble, isEmpty } from '../utils/pair-utils';
 import { Observable, timer } from 'rxjs';
-import { concat, forkJoin, merge, zip, combineLatest } from 'rxjs';
+import { zip } from 'rxjs';
 import IconService from 'icon-sdk-js';
 
 import {
@@ -18,12 +12,8 @@ import {
   IPoolStatsReq,
   IPoolStats,
   ITokenName,
-  TradeParams,
-} from './pool-stats-req-params';
-import { ITokenAltName } from './names';
-import { CallTransactionBuilder } from 'icon-sdk-js/build/builder/transaction/CallTransaction';
-import { WalletProxyService } from './wallet-proxy.service';
-import { ConsoleLogger } from '@angular/compiler-cli';
+} from '../pool-stats-req-params';
+import { ITokenAltName } from './model/names';
 
 const CACHE_SIZE = 1;
 const REFRESH_INTERVAL = 600000;
@@ -33,10 +23,7 @@ const REFRESH_INTERVAL = 600000;
 })
 export class PairService {
   private cache$: Observable<IPoolStats[]>;
-  constructor(
-    private http: HttpClient,
-    private walletProxyService: WalletProxyService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
   httpProvider = new IconService.HttpProvider(this.address);

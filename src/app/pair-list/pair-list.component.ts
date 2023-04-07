@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { PairService } from '../pair.service';
-import { Observable, throwError, Observer } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { concat, forkJoin, merge, zip, of } from 'rxjs';
+import { PairService } from './pair.service';
+import { Observable, Observer } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { forkJoin, zip, of } from 'rxjs';
 import { IPoolStats, ITokenName } from '../pool-stats-req-params';
 import { firstValueFrom } from 'rxjs';
-import { ITokenAltName } from '../names';
+import { ITokenAltName } from './model/names';
 import { GraphCalculationService } from '../graph-calculation.service';
-import * as _ from 'lodash';
 import { AssetLogosService } from '../asset-logos.service';
 
 @Component({

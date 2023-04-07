@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GraphCalculationService } from '../graph-calculation.service';
-import { PairService } from '../pair.service';
 import { TradeService } from '../trade.service';
 import { WalletProxyService } from '../wallet-proxy.service';
 import { ArtbitraguePath } from './model';
@@ -19,7 +18,6 @@ export class TopTradesComponent implements OnDestroy {
   public arbitragues: Array<ArtbitraguePath> = [];
   constructor(
     private graphService: GraphCalculationService,
-    private pairService: PairService,
     private walletProxyService: WalletProxyService,
     private tradeService: TradeService
   ) {
