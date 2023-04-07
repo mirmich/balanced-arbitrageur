@@ -103,13 +103,22 @@ export class GraphCalculationService {
             x.result.name.includes(tokenFromName) &&
             x.result.name.includes(tokenToName)
         );
+        const baseToken =
+          pool.result.name.indexOf(tokenFromName) <
+          pool.result.name.indexOf(tokenToName)
+            ? pool.result.base_token
+            : pool.result.quote_token;
+        const quoteToken =
+          baseToken === pool.result.base_token
+            ? pool.result.quote_token
+            : pool.result.base_token;
         return {
           edge: trade.edge,
           price: trade.price,
           tokenFrom: tokenFromName,
           tokenTo: tokenToName,
-          tokenFromContract: pool.result.base_token,
-          tokenToContract: pool.result.quote_token,
+          tokenFromContract: baseToken,
+          tokenToContract: quoteToken,
         } as SingleArbitrague;
       })
     );
