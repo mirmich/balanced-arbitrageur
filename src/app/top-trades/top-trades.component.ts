@@ -29,12 +29,12 @@ export class TopTradesComponent implements OnDestroy {
     );
   }
 
-  public trade(index: number): void {
+  public async trade(index: number): Promise<void> {
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
     );
     path.pop();
-    this.tradeService
+    await this.tradeService
       .doTradeRPC(
         this.balancedRouterContract,
         this.arbitragues[index].cycle[0].tokenFromContract,

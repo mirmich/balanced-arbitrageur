@@ -26,6 +26,7 @@ export class TradeService {
   ) {
     return this.walletProxyService.getAddress().pipe(
       map((walletAddress) => {
+        console.log(walletAddress);
         const data = {
           method: '_swap',
           params: {
