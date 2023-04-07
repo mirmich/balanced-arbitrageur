@@ -28,6 +28,7 @@ export class TradeService {
       .handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
       .subscribe(async (address0) => {
         this.address = address0;
+        console.log(address0);
       });
     const data = {
       method: '_swap',
