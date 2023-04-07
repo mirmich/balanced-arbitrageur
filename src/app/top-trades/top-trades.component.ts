@@ -35,6 +35,7 @@ export class TopTradesComponent implements OnDestroy {
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
     );
+    path.pop();
     console.log(path);
     const result = this.tradeService.doTradeRPC(
       this.balancedRouterContract,
