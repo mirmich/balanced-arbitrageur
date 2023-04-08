@@ -30,11 +30,12 @@ export class TopTradesComponent implements OnDestroy {
   }
   // TODO Compute the chain fees precisely
   // Take the pool slippage into account
+  // Refresh the displayed balances
   public async trade(index: number) {
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
     );
-    path.pop();
+    //path.pop();
     const address = await lastValueFrom(this.walletProxyService.getAddress());
     const trade = this.tradeService.doTradeRPC(
       this.balancedRouterContract,
