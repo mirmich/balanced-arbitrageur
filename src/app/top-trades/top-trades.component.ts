@@ -28,7 +28,8 @@ export class TopTradesComponent implements OnDestroy {
       }
     );
   }
-
+  // TODO Compute the chain fees precisely
+  // Take the pool slippage into account
   public async trade(index: number) {
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
