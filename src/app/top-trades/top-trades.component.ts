@@ -35,16 +35,17 @@ export class TopTradesComponent implements OnDestroy {
   // Take the pool slippage into account
   // Refresh the displayed balances
   public async trade(index: number) {
-    console.log(this.quantityInputs[index]);
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
     );
     //path.pop();
     const address = await lastValueFrom(this.walletProxyService.getAddress());
+    const quantity = this.quantityInputs[index];
     const trade = this.tradeService.doTradeRPC(
       this.balancedRouterContract,
       this.arbitragues[index].cycle[0].tokenFromContract,
       this.arbitragues[index].cycle[0].tokenFromContract,
+      '0x16345785d8a0000',
       '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
       path,
       address

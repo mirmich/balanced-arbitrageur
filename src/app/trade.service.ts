@@ -14,6 +14,7 @@ export class TradeService {
    * @param contractAddress The address of the swap smart contracts
    * @param tokenFrom The source token of the trade
    * @param tokenTo The target token of the trade
+   * @param value The quantity/value of the trade
    * @param minimumRecieve0 The mininum that should be recieved after the trade
    * @param path0 The path that should be taken over when executing the trade e.g. bnUSD -> IUSDT -> sICX -> bnUSD
    */
@@ -21,6 +22,7 @@ export class TradeService {
     contractAddress: string,
     tokenFrom: string,
     toToken: string,
+    value: string,
     minimumRecieve0: string,
     path0: string[],
     walletAddress: string
