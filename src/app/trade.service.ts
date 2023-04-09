@@ -22,16 +22,30 @@ export class TradeService {
     contractAddress: string,
     tokenFrom: string,
     toToken: string,
-    value: string,
-    minimumRecieve0: string,
+    value: number,
+    minimumRecieve0: number,
     path0: string[],
     walletAddress: string
   ) {
+    const minimumHex = IconService.IconConverter.toHexNumber(
+      IconService.IconConverter.toBigNumber(
+        minimumRecieve0 * 100000000000000000
+      )
+    );
+    console.log(IconService.IconConverter.toNumber(minimumHex));
+    const valueHex = IconService.IconConverter.toHexNumber(
+      IconService.IconConverter.toBigNumber(value * 100000000000000000)
+    );
+    console.log(IconService.IconConverter.toNumber(valueHex));
     const data = {
       method: '_swap',
       params: {
         toToken: toToken,
-        minimumRecieve: minimumRecieve0,
+        minimumRecieve: IconService.IconConverter.toHexNumber(
+          IconService.IconConverter.toBigNumber(
+            minimumRecieve0 * 1000000000000000000
+          )
+        ),
         path: path0,
       },
     };
@@ -55,7 +69,9 @@ export class TradeService {
           method: 'transfer',
           params: {
             _to: contractAddress,
-            _value: '0x16345785d8a0000',
+            _value: IconService.IconConverter.toHexNumber(
+              IconService.IconConverter.toBigNumber(value * 1000000000000000000)
+            ),
             _data: IconService.IconConverter.toHex(JSON.stringify(data)),
           },
         },

@@ -45,8 +45,8 @@ export class TopTradesComponent implements OnDestroy {
       this.balancedRouterContract,
       this.arbitragues[index].cycle[0].tokenFromContract,
       this.arbitragues[index].cycle[0].tokenFromContract,
-      '0x16345785d8a0000',
-      '92022965438856284', // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
+      quantity,
+      quantity * 0.99, // Needs to be divided by 100000000000000000 to know the actual amount, the number will depend on token/pool
       path,
       address
     );
