@@ -17,6 +17,8 @@ export class TopTradesComponent implements OnDestroy {
 
   public arbitragues: Array<ArtbitraguePath> = [];
 
+  public quantityInputs: number[];
+
   constructor(
     private graphService: GraphCalculationService,
     private walletProxyService: WalletProxyService,
@@ -25,6 +27,7 @@ export class TopTradesComponent implements OnDestroy {
     this.arbitragueSubscription = this.graphService.mostProfitable.subscribe(
       (profitableArb) => {
         this.arbitragues = profitableArb;
+        this.quantityInputs = Array(this.arbitragues.length).fill(1);
       }
     );
   }
@@ -32,6 +35,7 @@ export class TopTradesComponent implements OnDestroy {
   // Take the pool slippage into account
   // Refresh the displayed balances
   public async trade(index: number) {
+    console.log(this.quantityInputs[index]);
     const path = this.arbitragues[index].cycle.map(
       (trade) => trade.tokenToContract
     );

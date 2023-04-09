@@ -17,14 +17,18 @@
           src="https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/arrowUpCompressed.svg"
         />
         <p class="trade-list-price">{{ arb.price | number }}</p>
-        <input
-          [id]="'input' + i"
-          type="number"
-          min="0"
-          value="1"
-          class="trade-list-inner-info__input"
-          alt="Enter the amount to trade"
-        />
+        <div class="input-row">
+          <label [for]="'input' + i">Quantity</label>
+          <input
+            [id]="'input' + i"
+            [(ngModel)]="quantityInputs[i]"
+            type="number"
+            min="0"
+            value="1"
+            class="trade-list-inner-info__input"
+            alt="Enter the amount to trade"
+          />
+        </div>
         <button
           class="trade-list-inner-info__execute-button"
           (click)="trade(i)"
