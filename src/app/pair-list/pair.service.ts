@@ -26,6 +26,8 @@ export class PairService {
   constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
+  private readonly balancedDexContract =
+    'cxa0af3165c08318e988cb30993b3048335b94af6c';
   httpProvider = new IconService.HttpProvider(this.address);
   iconService = new IconService(this.httpProvider);
 
@@ -75,17 +77,6 @@ export class PairService {
       );
   }
 
-  private anyToHex(str: string) {
-    return IconService.IconConverter.toHex(str);
-  }
-  private hexToUtf8(hex: string) {
-    return IconService.IconConverter.toUtf8(hex);
-  }
-
-  private toBigNumber(bigNum: string) {
-    return IconService.IconConverter.toBigNumber(bigNum);
-  }
-
   private getPoolStatsOut(poolId: string) {
     return this.http
       .post<IPoolStats>(this.address, this.getPoolStats(poolId))
@@ -99,7 +90,7 @@ export class PairService {
 
   private getPoolStats(poolId: string) {
     const params: IPoolStatsReqParams = {
-      to: 'cxa0af3165c08318e988cb30993b3048335b94af6c',
+      to: this.balancedDexContract,
       dataType: 'call',
       data: {
         method: 'getPoolStats',
@@ -108,13 +99,7 @@ export class PairService {
         },
       },
     };
-    const req: IPoolStatsReq = {
-      jsonrpc: '2.0',
-      id: 1631894860562,
-      method: 'icx_call',
-      params: params,
-    };
-    return req;
+    return this.makeRequest('icx_call', params);
   }
 
   private getTokenName(tokenAddress: String) {
@@ -125,33 +110,14 @@ export class PairService {
         method: 'name',
       },
     };
-    const req: IPoolStatsReq = {
-      jsonrpc: '2.0',
-      id: 1631894860562,
-      method: 'icx_call',
-      params: params,
-    };
-    return req;
+    return this.makeRequest('icx_call', params);
   }
 
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
-    const decimalBase = parseInt(
-      resultDirty.result.base_decimals.substring(2),
-      16
-    );
-    const decimalQuote = parseInt(
-      resultDirty.result.quote_decimals.substring(2),
-      16
-    );
-    const decimal = Math.min(decimalBase, decimalQuote);
-    const smoothed = hexToDouble(resultDirty.result.price, decimal).toString();
-    //const liquidity = hexToDouble(resultDirty.result.total_supply, decimal);
     let p1 = {
       ...resultDirty,
     };
     p1.result.price = this.priceImpact(resultDirty, 1).toString();
-
-    //p1.result.total_supply = liquidity.toString();
     return p1;
   }
 
@@ -182,5 +148,17 @@ export class PairService {
     const adjustedAgain =
       adjusted > 100000000 ? adjusted / Math.pow(10, 12) : adjusted;
     return adjustedAgain;
+  }
+
+  private makeRequest(
+    method: string,
+    params: IPoolStatsReqParams
+  ): IPoolStatsReq {
+    return {
+      jsonrpc: '2.0',
+      id: 1631894860562,
+      method: method,
+      params: params,
+    };
   }
 }

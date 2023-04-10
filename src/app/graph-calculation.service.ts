@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import Graph from 'graphology';
-import { dfs } from 'graphology-traversal/dfs';
-import { allSimpleEdgePaths, allSimplePaths } from 'graphology-simple-path';
-import { Attributes } from 'graphology-types';
+import { allSimplePaths } from 'graphology-simple-path';
 import { IPoolStats } from './pool-stats-req-params';
 import { Observable, Subject } from 'rxjs';
 import { ArtbitraguePath, SingleArbitrague } from './top-trades/model';
