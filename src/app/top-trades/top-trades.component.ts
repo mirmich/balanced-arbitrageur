@@ -64,6 +64,10 @@ export class TopTradesComponent implements OnDestroy {
       'REQUEST_JSON-RPC',
       trade
     );
+    this.walletProxyService
+      .confirmation()
+      .subscribe(() => this.refresh.emit(true));
+    this.walletProxyService.canceled().subscribe(() => this.refresh.emit(true));
   }
 
   public ngOnDestroy(): void {

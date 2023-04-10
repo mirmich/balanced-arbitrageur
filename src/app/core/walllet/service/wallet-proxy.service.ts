@@ -31,6 +31,12 @@ export class WalletProxyService {
       return of(this.walletAddress);
     }
   }
+  confirmation() {
+    return this.handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_JSON-RPC');
+  }
+  canceled() {
+    return this.handleEvent('ICONEX_RELAY_RESPONSE', 'CANCEL_JSON-RPC');
+  }
 
   handleEvent(eventName: string, eventType: string) {
     return fromEvent(window, eventName).pipe(
