@@ -52,7 +52,6 @@ export class PairService {
       indices.push(i);
     }
 
-    const indx = [...Array(count).keys()];
     const observables = [...Array(count).keys()].map((x) =>
       this.getPoolStatsOut('0x' + x.toString(16))
     );
