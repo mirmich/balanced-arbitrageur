@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subscription, firstValueFrom, lastValueFrom } from 'rxjs';
 import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
 import { GraphCalculationService } from '../graph-calculation.service';
@@ -18,6 +24,9 @@ export class TopTradesComponent implements OnDestroy {
   public arbitragues: Array<ArtbitraguePath> = [];
 
   public quantityInputs: number[];
+
+  @Output()
+  refresh: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     private graphService: GraphCalculationService,

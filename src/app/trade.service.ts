@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import IconService from 'icon-sdk-js';
-import { map } from 'rxjs';
 import { WalletProxyService } from './core/walllet/service/wallet-proxy.service';
 
 @Injectable({
@@ -8,6 +7,7 @@ import { WalletProxyService } from './core/walllet/service/wallet-proxy.service'
 })
 export class TradeService {
   constructor(private walletProxyService: WalletProxyService) {}
+
   /**
    * Executes the trade
    *
