@@ -43,7 +43,11 @@ export class GraphCalculationService {
     'USDS/IUSDC',
     'FIN/IUSDC',
     'IUSDT/IUSDC',
-    'sICX/USDS'
+    'sICX/USDS',
+    'METX/bnUSD',
+    'METX/IUSDC',
+    'METX/sICX',
+    'METX/USDS'
   );
 
   public get mostProfitable(): Observable<Array<ArtbitraguePath>> {
