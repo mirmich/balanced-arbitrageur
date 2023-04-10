@@ -1,5 +1,5 @@
 <div class="app">
-  <app-top-bar></app-top-bar>
+  <app-top-bar [refresh]="messageToTopBar"></app-top-bar>
   <app-pair-list></app-pair-list>
-  <app-top-trades></app-top-trades>
+  <app-top-trades (refresh)="forwardToTopBar($event)"></app-top-trades>
 </div>

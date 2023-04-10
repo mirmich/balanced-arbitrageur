@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
 
 @Component({
@@ -16,6 +16,12 @@ export class TopBarComponent implements OnInit {
   icxBalance: number = 0;
   bnUsdBalance: number = 0;
   sIcxBalance: number = 0;
+
+  @Input() set refresh(value: boolean) {
+    if(value) {
+      console.log('ahoj');
+    }
+  }
 
   onSignIn() {
     this.walletProxyService
