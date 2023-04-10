@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
-import { hexToDouble, isEmpty } from '../utils/pair-utils';
+import { isEmpty, priceImpact } from '../utils/pair-utils';
 import { Observable, timer } from 'rxjs';
 import { zip } from 'rxjs';
 import IconService from 'icon-sdk-js';
@@ -117,37 +117,8 @@ export class PairService {
     let p1 = {
       ...resultDirty,
     };
-    p1.result.price = this.priceImpact(resultDirty, 1).toString();
+    p1.result.price = priceImpact(resultDirty, 1).toString();
     return p1;
-  }
-
-  private priceImpact(pool: IPoolStats, value: number): number {
-    if (pool.result.name == 'sICX/ICX') {
-      return hexToDouble(
-        pool.result.price,
-        parseInt(pool.result.base_decimals.substring(2), 16)
-      );
-    } else {
-      const tokenALiq = this.hexToDecimalWithPrecision(
-        pool.result.base,
-        pool.result.base_decimals
-      );
-      const tokenBLiq = this.hexToDecimalWithPrecision(
-        pool.result.quote,
-        pool.result.quote_decimals
-      );
-      const poolFactor = tokenALiq * tokenBLiq;
-      return tokenBLiq - poolFactor / (value + tokenALiq);
-    }
-  }
-
-  private hexToDecimalWithPrecision(value: string, decimals: string): number {
-    const parsed =
-      parseInt(value, 16) / Number('1E' + parseInt(decimals, 16).toString());
-    const adjusted = parsed > 100000000 ? parsed / Math.pow(10, 12) : parsed;
-    const adjustedAgain =
-      adjusted > 100000000 ? adjusted / Math.pow(10, 12) : adjusted;
-    return adjustedAgain;
   }
 
   private makeRequest(
