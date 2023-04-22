@@ -10,9 +10,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2019",
+    "target": "ES2015",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["dom", "ES2020"]
+    "lib": ["dom", "es2019"]
   },
   "angularCompilerOptions": {
     "enableIvy": true,
