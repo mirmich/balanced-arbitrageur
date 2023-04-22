@@ -7,13 +7,14 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2015",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["dom", "es2019"]
+    "lib": ["dom", "ES2020"]
   },
+  "include": ["src/**/*.ts"],
   "angularCompilerOptions": {
     "enableIvy": true,
     "fullTemplateTypeCheck": true,
