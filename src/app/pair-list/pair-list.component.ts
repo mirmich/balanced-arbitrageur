@@ -9,6 +9,7 @@ import { ITokenAltName } from './model/names';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { AssetLogosService } from '../asset-logos.service';
 import { priceImpact } from '../utils/pair-utils';
+import { TokenService } from '../core/tokens/token.service';
 
 @Component({
   selector: 'app-pair-list',
@@ -18,6 +19,7 @@ import { priceImpact } from '../utils/pair-utils';
 export class PairListComponent implements OnInit {
   constructor(
     private pairService: PairService,
+    private tokenService: TokenService,
     private graphService: GraphCalculationService,
     private assetLogosService: AssetLogosService
   ) {}

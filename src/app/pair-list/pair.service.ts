@@ -47,7 +47,17 @@ export class PairService {
     return this.cache$;
   }
 
-  requestPools(count: number) {
+  getTokenNameOut(tokenAddress: String) {
+    return this.http
+      .post<ITokenName>(this.address, this.getTokenName(tokenAddress))
+      .pipe(
+        catchError((error) => {
+          return of({ jsonrpc: '', id: '', result: '' });
+        })
+      );
+  }
+
+  private requestPools(count: number) {
     var indices: Array<number> = [];
     // Find all possible pools listed on Balanced
     for (let i = 1; i < count; i++) {
@@ -65,16 +75,6 @@ export class PairService {
           .map((pool) => this.smoothPoolResult(pool))
       )
     );
-  }
-
-  getTokenNameOut(tokenAddress: String) {
-    return this.http
-      .post<ITokenName>(this.address, this.getTokenName(tokenAddress))
-      .pipe(
-        catchError((error) => {
-          return of({ jsonrpc: '', id: '', result: '' });
-        })
-      );
   }
 
   private getPoolStatsOut(poolId: string) {
