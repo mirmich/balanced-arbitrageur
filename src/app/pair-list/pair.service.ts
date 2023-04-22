@@ -114,11 +114,13 @@ export class PairService {
   }
 
   private smoothPoolResult(resultDirty: IPoolStats): IPoolStats {
-    let p1 = {
+    return {
       ...resultDirty,
+      result: {
+        ...resultDirty.result,
+        price: priceImpact(resultDirty, 1).toString(),
+      },
     };
-    p1.result.price = priceImpact(resultDirty, 1).toString();
-    return p1;
   }
 
   private makeRequest(
