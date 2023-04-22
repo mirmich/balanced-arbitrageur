@@ -18,19 +18,18 @@ export class TopBarComponent implements OnInit {
   sIcxBalance: number = 0;
 
   @Input() set refresh(value: boolean) {
-    if(value) {
-      console.log('ahoj');
+    if (value) {
+      this.showBalance();
     }
   }
 
   onSignIn() {
-    this.walletProxyService
-      //.handleEvent('ICONEX_RELAY_RESPONSE', 'RESPONSE_ADDRESS')
-      .getAddress()
-      .subscribe(async (address0) => {
+    this.walletProxyService.getAddress().subscribe(async (address0) => {
+      if (typeof address0 === 'string') {
         this.address = address0;
         this.showBalance();
-      });
+      }
+    });
     this.walletProxyService.dispatchEvent(
       'ICONEX_RELAY_REQUEST',
       'REQUEST_ADDRESS'

@@ -18,7 +18,7 @@ export class AssetLogosService {
     const template = `https://raw.githubusercontent.com/balancednetwork/assets/master/blockchains/icon/assets/${token}/logo.png`;
     return this.http.head(template).pipe(
       map(() => template),
-      catchError((error) => {
+      catchError(() => {
         // Only sICX/ICX pool should have quote_token null
         if (token == null) {
           return of(this.icxLogo);
