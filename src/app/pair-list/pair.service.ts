@@ -71,9 +71,11 @@ export class PairService {
   }
 
   private requestPoolsIds(tokens: Token[]) {
-    const ids = [...new Set(tokens.map((token) => token.pools).flat())];
+    const poolsIds = tokens.map((token) => token.pools);
+    const poolIdsFlat: number[] = [].concat.apply([], poolsIds);
+    const poolIdsUniq = [...new Set(poolIdsFlat)];
 
-    const observables = ids.map((x) =>
+    const observables = poolIdsUniq.map((x) =>
       this.getPoolStatsOut('0x' + x.toString(16))
     );
 
