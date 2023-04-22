@@ -12,7 +12,7 @@
     "importHelpers": true,
     "target": "ES2015",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["dom", "ES2020"]
+    "lib": ["dom", "ES2019"]
   },
   "include": ["src/**/*.ts"],
   "angularCompilerOptions": {
