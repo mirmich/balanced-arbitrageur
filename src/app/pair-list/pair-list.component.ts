@@ -47,6 +47,7 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(err),
       complete: () => null,
     };
+    this.tokenService.getTokens().subscribe((x) => console.log(x));
     this.pairService.getPools(48).subscribe(observer);
   }
 

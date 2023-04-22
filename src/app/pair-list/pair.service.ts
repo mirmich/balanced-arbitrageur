@@ -14,6 +14,7 @@ import {
   ITokenName,
 } from '../pool-stats-req-params';
 import { ITokenAltName } from './model/names';
+import { Token } from '../core/tokens/model/token';
 
 const CACHE_SIZE = 1;
 const REFRESH_INTERVAL = 600000;
@@ -47,6 +48,18 @@ export class PairService {
     return this.cache$;
   }
 
+  getPoolsIds(tokens: Token[]) {
+    if (!this.cache$) {
+      const timer$ = timer(0, REFRESH_INTERVAL);
+
+      this.cache$ = timer$.pipe(
+        switchMap((_) => this.requestPoolsIds(tokens)),
+        shareReplay(CACHE_SIZE)
+      );
+    }
+    return this.cache$;
+  }
+
   getTokenNameOut(tokenAddress: String) {
     return this.http
       .post<ITokenName>(this.address, this.getTokenName(tokenAddress))
@@ -55,6 +68,22 @@ export class PairService {
           return of({ jsonrpc: '', id: '', result: '' });
         })
       );
+  }
+
+  private requestPoolsIds(tokens: Token[]) {
+    const ids = [...new Set(tokens.map((token) => token.pools).flat())];
+
+    const observables = ids.map((x) =>
+      this.getPoolStatsOut('0x' + x.toString(16))
+    );
+
+    return zip(observables).pipe(
+      map((pools) =>
+        pools
+          .filter((pool) => !isEmpty(pool))
+          .map((pool) => this.smoothPoolResult(pool))
+      )
+    );
   }
 
   private requestPools(count: number) {
