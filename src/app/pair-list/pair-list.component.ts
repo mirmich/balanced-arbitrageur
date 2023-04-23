@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PairService } from './pair.service';
-import { Observable, Observer } from 'rxjs';
+import { mergeMap, Observable, Observer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { forkJoin, zip, of } from 'rxjs';
 import { IPoolStats, ITokenName } from '../pool-stats-req-params';
@@ -47,8 +47,14 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(err),
       complete: () => null,
     };
-    this.tokenService.getTokens().subscribe((x) => console.log(x));
-    this.pairService.getPools(48).subscribe(observer);
+    //this.tokenService.getTokens().subscribe((x) => console.log(x));
+    const neco = this.tokenService
+      .getTokens()
+      .pipe(mergeMap((x) => this.pairService.getPoolsIds(x)));
+    this.tokenService
+      .getTokens()
+      .pipe(mergeMap((x) => this.pairService.getPoolsIds(x)))
+      .subscribe(observer);
   }
 
   private tranformNames() {
