@@ -36,18 +36,6 @@ export class PairService {
     return this.http.get<ITokenAltName[]>('/assets/names.json');
   }
 
-  getPools(count: number) {
-    if (!this.cache$) {
-      const timer$ = timer(0, REFRESH_INTERVAL);
-
-      this.cache$ = timer$.pipe(
-        switchMap((_) => this.requestPools(count)),
-        shareReplay(CACHE_SIZE)
-      );
-    }
-    return this.cache$;
-  }
-
   getPoolsIds(tokens: Token[]) {
     if (!this.cache$) {
       const timer$ = timer(0, REFRESH_INTERVAL);
@@ -76,26 +64,6 @@ export class PairService {
     const poolIdsUniq = [...new Set(poolIdsFlat)];
 
     const observables = poolIdsUniq.map((x) =>
-      this.getPoolStatsOut('0x' + x.toString(16))
-    );
-
-    return zip(observables).pipe(
-      map((pools) =>
-        pools
-          .filter((pool) => !isEmpty(pool))
-          .map((pool) => this.smoothPoolResult(pool))
-      )
-    );
-  }
-
-  private requestPools(count: number) {
-    var indices: Array<number> = [];
-    // Find all possible pools listed on Balanced
-    for (let i = 1; i < count; i++) {
-      indices.push(i);
-    }
-
-    const observables = [...Array(count).keys()].map((x) =>
       this.getPoolStatsOut('0x' + x.toString(16))
     );
 
