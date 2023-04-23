@@ -47,10 +47,6 @@ export class PairListComponent implements OnInit {
       error: (err: string) => console.log(err),
       complete: () => null,
     };
-    //this.tokenService.getTokens().subscribe((x) => console.log(x));
-    const neco = this.tokenService
-      .getTokens()
-      .pipe(mergeMap((x) => this.pairService.getPoolsIds(x)));
     this.tokenService
       .getTokens()
       .pipe(mergeMap((x) => this.pairService.getPoolsIds(x)))
