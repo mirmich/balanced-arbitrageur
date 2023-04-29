@@ -5,6 +5,8 @@ import { IPoolStats } from '../pool-stats-req-params';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { TokenService } from '../core/tokens/token.service';
 import { Token } from '../core/tokens/model/token';
+import IconService from 'icon-sdk-js';
+import { hexToDecimalWithPrecision } from '../utils/pair-utils';
 
 @Component({
   selector: 'app-pair-list',
@@ -81,6 +83,7 @@ export class PairListComponent implements OnInit {
     const filteredPools = this.poolsGroomed.filter((pool) =>
       this.isLiquid(pool)
     );
+    console.log(filteredPools);
     this.graphService.initGraph(filteredPools, ICXPrice);
   }
 
@@ -100,7 +103,12 @@ export class PairListComponent implements OnInit {
     if (baseToken === undefined || quoteToken === undefined) {
       return false;
     }
-    return baseToken.price * baseToken.liquidity > 10000;
+    const baseTokenLiq = hexToDecimalWithPrecision(
+      pool.result.base,
+      pool.result.base_decimals
+    );
+    console.log(baseTokenLiq);
+    return baseToken.price * baseTokenLiq > 15000;
   }
 
   private linkToLogo(address: string) {

@@ -25,6 +25,7 @@ export class PairService {
   constructor(private http: HttpClient) {}
 
   address: string = 'https://ctz.solidwallet.io/api/v3';
+  newPoolsApi: string = 'https://balanced.icon.community/api/v1/pools';
   private readonly balancedDexContract =
     'cxa0af3165c08318e988cb30993b3048335b94af6c';
   httpProvider = new IconService.HttpProvider(this.address);
