@@ -76,9 +76,10 @@ export class PairListComponent implements OnInit {
             .result.price
         );
         const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
-        this.poolsGroomed.forEach((x) => this.isLiquid(x));
-
-        this.graphService.initGraph(this.poolsGroomed, ICXPrice);
+        const filteredPools = this.poolsGroomed.filter((pool) =>
+          this.isLiquid(pool)
+        );
+        this.graphService.initGraph(filteredPools, ICXPrice);
       },
     };
 
@@ -98,9 +99,17 @@ export class PairListComponent implements OnInit {
     smting.subscribe(observer);
   }
 
-  private isLiquid(pool: IPoolStats) {
-    const name = pool.result.name;
-    const neco = priceImpact(pool, 1);
+  private isLiquid(pool: IPoolStats): boolean {
+    const baseToken = this.tokens.find(
+      (token) => token.address === pool.result.base_token
+    );
+    const quoteToken = this.tokens.find(
+      (token) => token.address === pool.result.quote_token
+    );
+    if (baseToken === undefined || quoteToken === undefined) {
+      return false;
+    }
+    return baseToken.price * baseToken.liquidity > 10000;
   }
 
   private linkToLogo(address: string) {

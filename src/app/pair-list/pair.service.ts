@@ -31,7 +31,6 @@ export class PairService {
   iconService = new IconService(this.httpProvider);
 
   getPoolsIds(tokens: Token[]) {
-    console.log(tokens);
     if (!this.cache$) {
       const timer$ = timer(0, REFRESH_INTERVAL);
 
