@@ -37,6 +37,7 @@ export class PairService {
   }
 
   getPoolsIds(tokens: Token[]) {
+    console.log(tokens);
     if (!this.cache$) {
       const timer$ = timer(0, REFRESH_INTERVAL);
 
@@ -48,23 +49,13 @@ export class PairService {
     return this.cache$;
   }
 
-  getTokenNameOut(tokenAddress: String) {
-    return this.http
-      .post<ITokenName>(this.address, this.getTokenName(tokenAddress))
-      .pipe(
-        catchError((error) => {
-          return of({ jsonrpc: '', id: '', result: '' });
-        })
-      );
-  }
-
   private requestPoolsIds(tokens: Token[]) {
     const poolsIds = tokens.map((token) => token.pools);
     const poolIdsFlat: number[] = [].concat.apply([], poolsIds);
     const poolIdsUniq = [...new Set(poolIdsFlat)];
 
-    const observables = poolIdsUniq.map((x) =>
-      this.getPoolStatsOut('0x' + x.toString(16))
+    const observables = poolIdsUniq.map((id) =>
+      this.getPoolStatsOut(IconService.IconConverter.toHexNumber(id))
     );
 
     return zip(observables).pipe(
@@ -80,7 +71,7 @@ export class PairService {
     return this.http
       .post<IPoolStats>(this.address, this.getPoolStats(poolId))
       .pipe(
-        catchError((error) => {
+        catchError((_) => {
           console.log(`Error when fetching data from pool: ${poolId}`);
           return of({} as IPoolStats);
         })
@@ -96,17 +87,6 @@ export class PairService {
         params: {
           _id: `${poolId}`,
         },
-      },
-    };
-    return this.makeRequest('icx_call', params);
-  }
-
-  private getTokenName(tokenAddress: String) {
-    const params: IPoolStatsReqParams = {
-      to: `${tokenAddress}`,
-      dataType: 'call',
-      data: {
-        method: 'name',
       },
     };
     return this.makeRequest('icx_call', params);

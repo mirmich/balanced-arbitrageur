@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PairService } from './pair.service';
 import { mergeMap, Observable, Observer } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { forkJoin, zip, of } from 'rxjs';
-import { IPoolStats, ITokenName } from '../pool-stats-req-params';
+import { forkJoin, of } from 'rxjs';
+import { IPoolStats } from '../pool-stats-req-params';
 import { firstValueFrom } from 'rxjs';
 import { ITokenAltName } from './model/names';
 import { GraphCalculationService } from '../graph-calculation.service';
-import { AssetLogosService } from '../asset-logos.service';
 import { priceImpact } from '../utils/pair-utils';
 import { TokenService } from '../core/tokens/token.service';
+import { Token } from '../core/tokens/model/token';
 
 @Component({
   selector: 'app-pair-list',
@@ -20,14 +19,17 @@ export class PairListComponent implements OnInit {
   constructor(
     private pairService: PairService,
     private tokenService: TokenService,
-    private graphService: GraphCalculationService,
-    private assetLogosService: AssetLogosService
+    private graphService: GraphCalculationService
   ) {}
 
   pools: Array<IPoolStats> = [];
   poolsGroomed: Array<IPoolStats> = [];
   altNames: Array<ITokenAltName> = [];
   pathLogos: Map<string, string> = new Map<string, string>();
+  tokens: Token[] = [];
+  /* URL to the default logo when the token is such a shitcoin that even hasn't logo on Balanced :D */
+  defaultLogo =
+    'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/assetLogos/shitcoin2.svg';
 
   ngOnInit() {
     this.init();
@@ -49,7 +51,12 @@ export class PairListComponent implements OnInit {
     };
     this.tokenService
       .getTokens()
-      .pipe(mergeMap((x) => this.pairService.getPoolsIds(x)))
+      .pipe(
+        mergeMap((tokens) => {
+          this.tokens = tokens;
+          return this.pairService.getPoolsIds(tokens);
+        })
+      )
       .subscribe(observer);
   }
 
@@ -59,8 +66,8 @@ export class PairListComponent implements OnInit {
         this.poolsGroomed = [];
         poolStats.forEach((x) => {
           this.poolsGroomed.push(x);
-          this.linkToLogo(x.result.base_token);
-          this.linkToLogo(x.result.quote_token);
+          this.linkToLogoOff(x.result.base_token);
+          this.linkToLogoOff(x.result.quote_token);
         });
       },
       error: (err: string) => console.log(err),
@@ -85,18 +92,10 @@ export class PairListComponent implements OnInit {
         if (this.hasName(pool)) {
           return of(pool);
         }
-        const baseToken = this.getTokenName(pool.result.base_token);
-        const quoteToken = this.getTokenName(pool.result.quote_token);
-
-        const result = zip(baseToken, quoteToken).pipe(
-          map((tokenNames) => {
-            let p1 = { ...pool };
-            p1.result.name = `${tokenNames[0]}/${tokenNames[1]}`;
-            return p1;
-          })
-        );
-
-        return result;
+        const baseTokenName = this.getTokenName(pool.result.base_token);
+        const quoteTokenName = this.getTokenName(pool.result.quote_token);
+        pool.result.name = `${baseTokenName}/${quoteTokenName}`;
+        return of(pool);
       }
     );
     const smting = forkJoin(poolsGroomed);
@@ -109,10 +108,15 @@ export class PairListComponent implements OnInit {
     const neco = priceImpact(pool, 1);
   }
 
-  private linkToLogo(token: string) {
-    this.assetLogosService.getAssetLogo(token).subscribe((link) => {
-      this.pathLogos.set(token, link);
-    });
+  private linkToLogoOff(address: string) {
+    // There needs to be extra handling for ICX as it's native ICX token
+    const logoUri = this.tokens.find(
+      (token) =>
+        token.address === address ||
+        (address === null && token.address === 'ICX')
+    ).logo_uri;
+    const logoUriResolved = logoUri !== null ? logoUri : this.defaultLogo;
+    this.pathLogos.set(address, logoUriResolved);
   }
 
   private hasName(poolStats: IPoolStats) {
@@ -121,14 +125,7 @@ export class PairListComponent implements OnInit {
     );
   }
 
-  private getTokenName(token: string): Observable<string> {
-    return this.pairService
-      .getTokenNameOut(token)
-      .pipe(map((name) => this.resolveName(name as ITokenName)));
-  }
-
-  private resolveName(name: ITokenName): string {
-    const altName = this.altNames.find((el) => el.name === name.result);
-    return altName === undefined ? name.result : altName.ticker;
+  private getTokenName(address: string): string {
+    return this.tokens.find((token) => token.address === address).symbol;
   }
 }
