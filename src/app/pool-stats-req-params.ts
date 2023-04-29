@@ -17,12 +17,6 @@ export interface IPoolStatsReq {
   params: any;
 }
 
-export interface ITokenName {
-  jsonrpc: string;
-  id: number;
-  result: string;
-}
-
 export interface IPoolStats {
   id?: number;
   jsonrpc?: string;
