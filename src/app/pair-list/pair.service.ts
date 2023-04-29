@@ -30,19 +30,19 @@ export class PairService {
   httpProvider = new IconService.HttpProvider(this.address);
   iconService = new IconService(this.httpProvider);
 
-  getPoolsIds(tokens: Token[]) {
+  getPools(tokens: Token[]) {
     if (!this.cache$) {
       const timer$ = timer(0, REFRESH_INTERVAL);
 
       this.cache$ = timer$.pipe(
-        switchMap((_) => this.requestPoolsIds(tokens)),
+        switchMap((_) => this.requestPools(tokens)),
         shareReplay(CACHE_SIZE)
       );
     }
     return this.cache$;
   }
 
-  private requestPoolsIds(tokens: Token[]) {
+  private requestPools(tokens: Token[]) {
     const poolsIds = tokens.map((token) => token.pools);
     const poolIdsFlat: number[] = [].concat.apply([], poolsIds);
     const poolIdsUniq = [...new Set(poolIdsFlat)];
