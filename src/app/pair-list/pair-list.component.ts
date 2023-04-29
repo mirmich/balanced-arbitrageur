@@ -48,7 +48,7 @@ export class PairListComponent implements OnInit {
       .pipe(
         mergeMap((tokens) => {
           this.tokens = tokens;
-          return this.pairService.getPoolsIds(tokens);
+          return this.pairService.getPools(tokens);
         })
       )
       .subscribe(observer);
