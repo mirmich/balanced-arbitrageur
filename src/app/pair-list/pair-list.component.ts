@@ -107,7 +107,6 @@ export class PairListComponent implements OnInit {
       pool.result.base,
       pool.result.base_decimals
     );
-    console.log(baseTokenLiq);
     return baseToken.price * baseTokenLiq > 15000;
   }
 
