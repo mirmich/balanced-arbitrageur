@@ -11,9 +11,7 @@ import {
   IPoolStatsReqParams,
   IPoolStatsReq,
   IPoolStats,
-  ITokenName,
 } from '../pool-stats-req-params';
-import { ITokenAltName } from './model/names';
 import { Token } from '../core/tokens/model/token';
 
 const CACHE_SIZE = 1;
@@ -31,10 +29,6 @@ export class PairService {
     'cxa0af3165c08318e988cb30993b3048335b94af6c';
   httpProvider = new IconService.HttpProvider(this.address);
   iconService = new IconService(this.httpProvider);
-
-  getNames() {
-    return this.http.get<ITokenAltName[]>('/assets/names.json');
-  }
 
   getPoolsIds(tokens: Token[]) {
     console.log(tokens);

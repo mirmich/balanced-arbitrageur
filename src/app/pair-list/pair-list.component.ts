@@ -3,8 +3,6 @@ import { PairService } from './pair.service';
 import { mergeMap, Observable, Observer } from 'rxjs';
 import { forkJoin, of } from 'rxjs';
 import { IPoolStats } from '../pool-stats-req-params';
-import { firstValueFrom } from 'rxjs';
-import { ITokenAltName } from './model/names';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { priceImpact } from '../utils/pair-utils';
 import { TokenService } from '../core/tokens/token.service';
@@ -24,7 +22,6 @@ export class PairListComponent implements OnInit {
 
   pools: Array<IPoolStats> = [];
   poolsGroomed: Array<IPoolStats> = [];
-  altNames: Array<ITokenAltName> = [];
   pathLogos: Map<string, string> = new Map<string, string>();
   tokens: Token[] = [];
   /* URL to the default logo when the token is such a shitcoin that even hasn't logo on Balanced :D */
@@ -36,8 +33,6 @@ export class PairListComponent implements OnInit {
   }
 
   public async init() {
-    this.altNames = await firstValueFrom(this.pairService.getNames());
-
     const observer: Observer<IPoolStats[]> = {
       next: (poolStats: IPoolStats[]) => {
         this.pools = [];
@@ -66,8 +61,8 @@ export class PairListComponent implements OnInit {
         this.poolsGroomed = [];
         poolStats.forEach((x) => {
           this.poolsGroomed.push(x);
-          this.linkToLogoOff(x.result.base_token);
-          this.linkToLogoOff(x.result.quote_token);
+          this.linkToLogo(x.result.base_token);
+          this.linkToLogo(x.result.quote_token);
         });
       },
       error: (err: string) => console.log(err),
@@ -108,7 +103,7 @@ export class PairListComponent implements OnInit {
     const neco = priceImpact(pool, 1);
   }
 
-  private linkToLogoOff(address: string) {
+  private linkToLogo(address: string) {
     // There needs to be extra handling for ICX as it's native ICX token
     const logoUri = this.tokens.find(
       (token) =>
