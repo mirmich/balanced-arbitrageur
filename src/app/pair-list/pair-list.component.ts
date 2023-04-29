@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PairService } from './pair.service';
-import { mergeMap, Observable, Observer } from 'rxjs';
-import { forkJoin, of } from 'rxjs';
+import { mergeMap, Observer } from 'rxjs';
 import { IPoolStats } from '../pool-stats-req-params';
 import { GraphCalculationService } from '../graph-calculation.service';
-import { priceImpact } from '../utils/pair-utils';
 import { TokenService } from '../core/tokens/token.service';
 import { Token } from '../core/tokens/model/token';
 
@@ -39,11 +37,12 @@ export class PairListComponent implements OnInit {
         poolStats.forEach(async (poolStat) => {
           this.pools.push(poolStat);
         });
-        this.tranformNames();
+        this.tranformNamesNew();
       },
       error: (err: string) => console.log(err),
       complete: () => null,
     };
+
     this.tokenService
       .getTokens()
       .pipe(
@@ -55,50 +54,42 @@ export class PairListComponent implements OnInit {
       .subscribe(observer);
   }
 
-  private tranformNames() {
-    const observer: Observer<IPoolStats[]> = {
-      next: (poolStats: IPoolStats[]) => {
-        this.poolsGroomed = [];
-        poolStats.forEach((x) => {
-          this.poolsGroomed.push(x);
-          this.linkToLogo(x.result.base_token);
-          this.linkToLogo(x.result.quote_token);
-        });
-      },
-      error: (err: string) => console.log(err),
-      complete: () => {
-        const sICXtoICXPrice = parseFloat(
-          this.poolsGroomed.find((pool) => pool.result.name == 'sICX/ICX')
-            .result.price
-        );
-        const sICXtobnUSDPrice = parseFloat(
-          this.poolsGroomed.find((pool) => pool.result.name == 'sICX/bnUSD')
-            .result.price
-        );
-        const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
-        const filteredPools = this.poolsGroomed.filter((pool) =>
-          this.isLiquid(pool)
-        );
-        this.graphService.initGraph(filteredPools, ICXPrice);
-      },
-    };
-
-    const poolsGroomed: Array<Observable<IPoolStats>> = this.pools.map(
-      (pool) => {
-        if (this.hasName(pool)) {
-          return of(pool);
-        }
-        const baseTokenName = this.getTokenName(pool.result.base_token);
-        const quoteTokenName = this.getTokenName(pool.result.quote_token);
-        pool.result.name = `${baseTokenName}/${quoteTokenName}`;
-        return of(pool);
+  private tranformNamesNew() {
+    const poolsGroomed = this.pools.map((pool) => {
+      if (this.hasName(pool)) {
+        return pool;
       }
+      const baseTokenName = this.getTokenName(pool.result.base_token);
+      const quoteTokenName = this.getTokenName(pool.result.quote_token);
+      pool.result.name = `${baseTokenName}/${quoteTokenName}`;
+      return pool;
+    });
+    poolsGroomed.forEach((x) => {
+      this.poolsGroomed.push(x);
+      this.linkToLogo(x.result.base_token);
+      this.linkToLogo(x.result.quote_token);
+    });
+    const sICXtoICXPrice = parseFloat(
+      this.poolsGroomed.find((pool) => pool.result.name == 'sICX/ICX').result
+        .price
     );
-    const smting = forkJoin(poolsGroomed);
-
-    smting.subscribe(observer);
+    const sICXtobnUSDPrice = parseFloat(
+      this.poolsGroomed.find((pool) => pool.result.name == 'sICX/bnUSD').result
+        .price
+    );
+    const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
+    const filteredPools = this.poolsGroomed.filter((pool) =>
+      this.isLiquid(pool)
+    );
+    this.graphService.initGraph(filteredPools, ICXPrice);
   }
 
+  /**
+   * Dummy liquidity assumption.
+   * Any token that doesn't have at least $10,000
+   * in liquidity across all of its pools will be filtered.
+   * @param pool The pool that is valued in terms of liquidity
+   */
   private isLiquid(pool: IPoolStats): boolean {
     const baseToken = this.tokens.find(
       (token) => token.address === pool.result.base_token
