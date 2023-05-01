@@ -19,6 +19,9 @@
         <p class="trade-list-price">
           {{ arb.price * quantityInputs[i] | number }}
         </p>
+        <p>Estimated TX fee:</p>
+        <p>{{ arb.cycle.length * 0.09 | number }}</p>
+        <p>ICX</p>
         <div class="input-row">
           <label [for]="'input' + i">Quantity</label>
           <input
