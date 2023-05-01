@@ -17,73 +17,37 @@ export class GraphCalculationService {
   private mostProfitableArb: Observable<Array<ArtbitraguePath>> =
     this.mostProfitableSource.asObservable();
 
-  private blackListedPools: Array<string> = Array(
-    'LambdaX/bnUSD',
-    'LambdaX/USDS',
-    'LambdaX/sICX',
-    'sICX/IUSDC',
-    'IAM/sICX',
-    'IAM/bnUSD',
-    'IAM/IUSDC',
-    'CODA/bnUSD',
-    'NOTMIRAI/bnUSD',
-    'NOTMIRAI/USDS',
-    'NOTMIRAI/IUSDC',
-    'CHIU/bnUSD',
-    'Claw/sICX',
-    'CHKN/sICX',
-    'iDoge/bnUSD',
-    'iDoge/IUSDC',
-    'iDoge/sICX',
-    'GBET/USDS',
-    'GBET/bnUSD',
-    'GBET/sICX',
-    'USDS/IUSDC',
-    'FIN/IUSDC',
-    'IUSDT/IUSDC',
-    'sICX/USDS',
-    'METX/bnUSD',
-    'METX/IUSDC',
-    'METX/sICX',
-    'METX/USDS',
-    'ETH/bnUSD',
-    'USDS/IUSDC',
-    'BALN/USDS'
-  );
-
   public get mostProfitable(): Observable<Array<ArtbitraguePath>> {
     return this.mostProfitableArb;
   }
 
   public initGraph(pools: Array<Pool>, icxPriceInBnUSD: number) {
-    pools
-      .filter((pool) => !(this.blackListedPools.indexOf(pool.name) > -1))
-      .forEach((pool) => {
-        const names = pool.name.split('/');
+    pools.forEach((pool) => {
+      const names = pool.name.split('/');
 
-        // Add base token
-        if (!this.graph.hasNode(names[0])) {
-          this.graph.addNode(names[0]);
-        }
-        // Add quote token
-        if (!this.graph.hasNode(names[1])) {
-          this.graph.addNode(names[1]);
-        }
-        const firstEdge = `${names[0]}->${names[1]}`;
-        const secondEdge = `${names[1]}->${names[0]}`;
+      // Add base token
+      if (!this.graph.hasNode(names[0])) {
+        this.graph.addNode(names[0]);
+      }
+      // Add quote token
+      if (!this.graph.hasNode(names[1])) {
+        this.graph.addNode(names[1]);
+      }
+      const firstEdge = `${names[0]}->${names[1]}`;
+      const secondEdge = `${names[1]}->${names[0]}`;
 
-        if (!this.graph.hasDirectedEdge(firstEdge)) {
-          this.graph.addDirectedEdgeWithKey(firstEdge, names[0], names[1], {
-            price: pool.price,
-          });
-        }
+      if (!this.graph.hasDirectedEdge(firstEdge)) {
+        this.graph.addDirectedEdgeWithKey(firstEdge, names[0], names[1], {
+          price: pool.price,
+        });
+      }
 
-        if (!this.graph.hasDirectedEdge(secondEdge)) {
-          this.graph.addDirectedEdgeWithKey(secondEdge, names[1], names[0], {
-            price: 1 / pool.price,
-          });
-        }
-      });
+      if (!this.graph.hasDirectedEdge(secondEdge)) {
+        this.graph.addDirectedEdgeWithKey(secondEdge, names[1], names[0], {
+          price: 1 / pool.price,
+        });
+      }
+    });
     const cycles = this.findAllCyclesForNode('bnUSD');
 
     const cyclesEnriched = this.enrichCycles(cycles, pools);
@@ -131,27 +95,29 @@ export class GraphCalculationService {
     cycles: SingleArbitrague[][],
     icxPrice: number
   ): ArtbitraguePath[] {
-    return cycles
-      .filter(
-        (cycle) =>
-          cycle
-            .map((edge) => edge.price)
-            .reduce((prev, current) => prev * current) > 1
-      )
-      .map((cycle) => {
-        return {
-          cycle: cycle,
-          price:
+    return (
+      cycles
+        .filter(
+          (cycle) =>
             cycle
               .map((edge) => edge.price)
-              .reduce((prev, current) => prev * current) -
-            cycle.length * 0.09 * icxPrice * 1.03,
-        } as ArtbitraguePath;
-      })
-      .sort((a, b) => (a.price > b.price ? 1 : -1))
-      .filter((x) => x.price > 0.99)
-      .slice(-10)
-      .reverse();
+              .reduce((prev, current) => prev * current) > 1
+        )
+        .map((cycle) => {
+          return {
+            cycle: cycle,
+            price:
+              cycle
+                .map((edge) => edge.price)
+                .reduce((prev, current) => prev * current) -
+              cycle.length * 0.09 * icxPrice * 1.03,
+          } as ArtbitraguePath;
+        })
+        .sort((a, b) => (a.price > b.price ? 1 : -1))
+        //.filter((x) => x.price > 0.99)
+        //.slice(-10)
+        .reverse()
+    );
   }
 
   private findAllCyclesForNode(node: string) {
