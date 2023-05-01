@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { fromEvent, map, Observable, of } from 'rxjs';
+import { fromEvent, map, of } from 'rxjs';
 import IconService from 'icon-sdk-js';
 
 import { TokensBalanceResult } from '../model/tokens';
