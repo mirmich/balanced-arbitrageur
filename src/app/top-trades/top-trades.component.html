@@ -16,7 +16,9 @@
           height="12"
           [src]="iconBasedOnPrice(arb.price) | safe"
         />
-        <p class="trade-list-price">{{ arb.price | number }}</p>
+        <p class="trade-list-price">
+          {{ arb.price * quantityInputs[i] | number }}
+        </p>
         <div class="input-row">
           <label [for]="'input' + i">Quantity</label>
           <input
