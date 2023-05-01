@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PairService } from './pair.service';
-import { mergeMap, Observer } from 'rxjs';
-import { IPoolStats } from '../pool-stats-req-params';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { TokenService } from '../core/tokens/token.service';
 import { Token } from '../core/tokens/model/token';
-import IconService from 'icon-sdk-js';
-import { hexToDecimalWithPrecision } from '../utils/pair-utils';
+
 import { Pool } from './pool';
 
 @Component({
@@ -20,9 +17,6 @@ export class PairListComponent implements OnInit {
     private tokenService: TokenService,
     private graphService: GraphCalculationService
   ) {}
-
-  pools: Array<IPoolStats> = [];
-  poolsGroomed: Array<IPoolStats> = [];
   poolsNew: Array<Pool> = [];
   pathLogos: Map<string, string> = new Map<string, string>();
   tokens: Token[] = [];
@@ -37,7 +31,7 @@ export class PairListComponent implements OnInit {
   public async init() {
     this.tokenService.getTokens().subscribe((tokens) => {
       this.tokens = tokens;
-      this.pairService.getPoolsNew().subscribe((pools) => {
+      this.pairService.getPools().subscribe((pools) => {
         this.poolsNew = pools;
         this.poolsNew.forEach((pool) => {
           this.linkToLogo(pool.base_address);
