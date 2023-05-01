@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import Graph from 'graphology';
 import { allSimplePaths } from 'graphology-simple-path';
-import { IPoolStats } from './pool-stats-req-params';
 import { Observable, Subject } from 'rxjs';
 import { ArtbitraguePath, SingleArbitrague } from './top-trades/model';
 import { Pool } from './pair-list/pool';
