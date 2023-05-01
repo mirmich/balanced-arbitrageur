@@ -14,7 +14,7 @@
           class="trade-list-arrow"
           width="12"
           height="12"
-          src="https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/arrowUpCompressed.svg"
+          [src]="iconBasedOnPrice(arb.price) | safe"
         />
         <p class="trade-list-price">{{ arb.price | number }}</p>
         <div class="input-row">

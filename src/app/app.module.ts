@@ -9,6 +9,7 @@ import { TopTradesComponent } from './top-trades/top-trades.component';
 import { EdgeGroomingPipePipe } from './top-trades/edge-grooming-pipe.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShortenAddressPipe } from './top-bar/shorten-address.pipe';
+import { SafePipe } from './utils/pipes/safe.pipe';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { ShortenAddressPipe } from './top-bar/shorten-address.pipe';
     TopTradesComponent,
     EdgeGroomingPipePipe,
     ShortenAddressPipe,
+    SafePipe,
   ],
   bootstrap: [AppComponent],
 })

@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Subscription, firstValueFrom, lastValueFrom } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
 import { WalletProxyService } from '../core/walllet/service/wallet-proxy.service';
 import { GraphCalculationService } from '../graph-calculation.service';
 import { TradeService } from '../trade.service';
@@ -69,6 +69,14 @@ export class TopTradesComponent implements OnDestroy {
       .confirmation()
       .subscribe(() => this.refresh.emit(true));
     this.walletProxyService.canceled().subscribe(() => this.refresh.emit(true));
+  }
+
+  public iconBasedOnPrice(price: number) {
+    const url =
+      price <= 1
+        ? 'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/arrowDownCompressed.svg'
+        : 'https://raw.githubusercontent.com/mirmich/balanced-arbitrageur/master/src/icons/arrowUpCompressed.svg';
+    return url;
   }
 
   public ngOnDestroy(): void {
