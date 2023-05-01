@@ -38,7 +38,7 @@ export class PairListComponent implements OnInit {
           this.linkToLogo(pool.quote_address);
         });
         console.log(pools);
-        const poolsFiltered = pools.filter((pool) => this.isLiquidNew(pool));
+        const poolsFiltered = pools.filter((pool) => this.isLiquid(pool));
         const sICXtoICXPrice = pools.find(
           (pool) => pool.name == 'sICX/ICX'
         ).price;
@@ -58,7 +58,7 @@ export class PairListComponent implements OnInit {
    * in liquidity across all of its pools will be filtered.
    * @param pool The pool that is valued in terms of liquidity
    */
-  private isLiquidNew(pool: Pool): boolean {
+  private isLiquid(pool: Pool): boolean {
     const baseToken = this.tokens.find(
       (token) => token.address === pool.base_address
     );
