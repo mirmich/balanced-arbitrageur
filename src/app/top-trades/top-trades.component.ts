@@ -35,6 +35,7 @@ export class TopTradesComponent implements OnDestroy {
   ) {
     this.arbitragueSubscription = this.graphService.mostProfitable.subscribe(
       (profitableArb) => {
+        console.log(profitableArb);
         this.arbitragues = profitableArb;
         this.quantityInputs = Array(this.arbitragues.length).fill(1);
       }

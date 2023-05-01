@@ -4,6 +4,7 @@ import { allSimplePaths } from 'graphology-simple-path';
 import { IPoolStats } from './pool-stats-req-params';
 import { Observable, Subject } from 'rxjs';
 import { ArtbitraguePath, SingleArbitrague } from './top-trades/model';
+import { Pool } from './pair-list/pool';
 
 type NodeType = { name: string };
 
@@ -55,11 +56,11 @@ export class GraphCalculationService {
     return this.mostProfitableArb;
   }
 
-  public initGraph(pools: Array<IPoolStats>, icxPriceInBnUSD: number) {
+  public initGraph(pools: Array<Pool>, icxPriceInBnUSD: number) {
     pools
-      .filter((pool) => !(this.blackListedPools.indexOf(pool.result.name) > -1))
+      .filter((pool) => !(this.blackListedPools.indexOf(pool.name) > -1))
       .forEach((pool) => {
-        const names = pool.result.name.split('/');
+        const names = pool.name.split('/');
 
         // Add base token
         if (!this.graph.hasNode(names[0])) {
@@ -74,13 +75,13 @@ export class GraphCalculationService {
 
         if (!this.graph.hasDirectedEdge(firstEdge)) {
           this.graph.addDirectedEdgeWithKey(firstEdge, names[0], names[1], {
-            price: parseFloat(pool.result.price),
+            price: pool.price,
           });
         }
 
         if (!this.graph.hasDirectedEdge(secondEdge)) {
           this.graph.addDirectedEdgeWithKey(secondEdge, names[1], names[0], {
-            price: 1 / parseFloat(pool.result.price),
+            price: 1 / pool.price,
           });
         }
       });
@@ -97,26 +98,23 @@ export class GraphCalculationService {
    */
   private enrichCycles(
     cycles: SingleArbitrague[][],
-    pools: Array<IPoolStats>
+    pools: Array<Pool>
   ): SingleArbitrague[][] {
     return cycles.map((trades) =>
       trades.map((trade) => {
         const tokenFromName = trade.edge.split('->')[0];
         const tokenToName = trade.edge.split('->')[1];
         const pool = pools.find(
-          (x) =>
-            x.result.name.includes(tokenFromName) &&
-            x.result.name.includes(tokenToName)
+          (x) => x.name.includes(tokenFromName) && x.name.includes(tokenToName)
         );
         const baseToken =
-          pool.result.name.indexOf(tokenFromName) <
-          pool.result.name.indexOf(tokenToName)
-            ? pool.result.base_token
-            : pool.result.quote_token;
+          pool.name.indexOf(tokenFromName) < pool.name.indexOf(tokenToName)
+            ? pool.base_address
+            : pool.quote_address;
         const quoteToken =
-          baseToken === pool.result.base_token
-            ? pool.result.quote_token
-            : pool.result.base_token;
+          baseToken === pool.base_address
+            ? pool.quote_address
+            : pool.base_address;
         return {
           edge: trade.edge,
           price: trade.price,

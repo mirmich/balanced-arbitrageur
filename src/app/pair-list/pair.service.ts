@@ -13,6 +13,7 @@ import {
   IPoolStats,
 } from '../pool-stats-req-params';
 import { Token } from '../core/tokens/model/token';
+import { Pool } from './pool';
 
 const CACHE_SIZE = 1;
 const REFRESH_INTERVAL = 600000;
@@ -41,6 +42,9 @@ export class PairService {
       );
     }
     return this.cache$;
+  }
+  getPoolsNew() {
+    return this.http.get<Pool[]>(this.newPoolsApi);
   }
 
   private requestPools(tokens: Token[]) {
