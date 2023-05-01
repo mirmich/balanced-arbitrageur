@@ -95,29 +95,27 @@ export class GraphCalculationService {
     cycles: SingleArbitrague[][],
     icxPrice: number
   ): ArtbitraguePath[] {
-    return (
-      cycles
-        .filter(
-          (cycle) =>
+    const transactionFee = 0.09;
+    const balancedFee = 1.03;
+    return cycles
+      .filter(
+        (cycle) =>
+          cycle
+            .map((edge) => edge.price)
+            .reduce((prev, current) => prev * current) > 1
+      )
+      .map((cycle) => {
+        return {
+          cycle: cycle,
+          price:
             cycle
               .map((edge) => edge.price)
-              .reduce((prev, current) => prev * current) > 1
-        )
-        .map((cycle) => {
-          return {
-            cycle: cycle,
-            price:
-              cycle
-                .map((edge) => edge.price)
-                .reduce((prev, current) => prev * current) -
-              cycle.length * 0.09 * icxPrice * 1.03,
-          } as ArtbitraguePath;
-        })
-        .sort((a, b) => (a.price > b.price ? 1 : -1))
-        //.filter((x) => x.price > 0.99)
-        //.slice(-10)
-        .reverse()
-    );
+              .reduce((prev, current) => prev * current) -
+            cycle.length * transactionFee * icxPrice * balancedFee,
+        } as ArtbitraguePath;
+      })
+      .sort((a, b) => (a.price > b.price ? 1 : -1))
+      .reverse();
   }
 
   private findAllCyclesForNode(node: string) {

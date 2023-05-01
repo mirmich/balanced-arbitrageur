@@ -37,7 +37,6 @@ export class PairListComponent implements OnInit {
           this.linkToLogo(pool.base_address);
           this.linkToLogo(pool.quote_address);
         });
-        console.log(pools);
         const poolsFiltered = pools.filter((pool) => this.isLiquid(pool));
         const sICXtoICXPrice = pools.find(
           (pool) => pool.name == 'sICX/ICX'
@@ -46,8 +45,6 @@ export class PairListComponent implements OnInit {
           (pool) => pool.name == 'sICX/bnUSD'
         ).price;
         const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
-        console.log(ICXPrice);
-        console.log(poolsFiltered);
         this.graphService.initGraph(poolsFiltered, ICXPrice);
       });
     });
@@ -62,7 +59,7 @@ export class PairListComponent implements OnInit {
     const baseToken = this.tokens.find(
       (token) => token.address === pool.base_address
     );
-    return baseToken.price * pool.base_supply > 15000;
+    return baseToken.price * pool.base_supply > 10000;
   }
 
   private linkToLogo(address: string) {
