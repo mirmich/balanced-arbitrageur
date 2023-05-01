@@ -38,14 +38,7 @@ export class PairListComponent implements OnInit {
           this.linkToLogo(pool.quote_address);
         });
         const poolsFiltered = pools.filter((pool) => this.isLiquid(pool));
-        const sICXtoICXPrice = pools.find(
-          (pool) => pool.name == 'sICX/ICX'
-        ).price;
-        const sICXtobnUSDPrice = pools.find(
-          (pool) => pool.name == 'sICX/bnUSD'
-        ).price;
-        const ICXPrice = (1.0 / sICXtoICXPrice) * sICXtobnUSDPrice;
-        this.graphService.initGraph(poolsFiltered, ICXPrice);
+        this.graphService.initGraph(poolsFiltered);
       });
     });
   }

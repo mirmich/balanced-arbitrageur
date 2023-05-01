@@ -21,7 +21,7 @@ export class GraphCalculationService {
     return this.mostProfitableArb;
   }
 
-  public initGraph(pools: Array<Pool>, icxPriceInBnUSD: number) {
+  public initGraph(pools: Array<Pool>) {
     pools.forEach((pool) => {
       const names = pool.name.split('/');
 
@@ -51,7 +51,7 @@ export class GraphCalculationService {
     const cycles = this.findAllCyclesForNode('bnUSD');
 
     const cyclesEnriched = this.enrichCycles(cycles, pools);
-    const cyclesFiltered = this.filterCycles(cyclesEnriched, icxPriceInBnUSD);
+    const cyclesFiltered = this.filterCycles(cyclesEnriched);
     this.mostProfitableSource.next(cyclesFiltered);
   }
 
@@ -91,12 +91,8 @@ export class GraphCalculationService {
   }
 
   // TODO: Consider refactoring
-  private filterCycles(
-    cycles: SingleArbitrague[][],
-    icxPrice: number
-  ): ArtbitraguePath[] {
-    const transactionFee = 0.09;
-    const balancedFee = 1.03;
+  private filterCycles(cycles: SingleArbitrague[][]): ArtbitraguePath[] {
+    const balancedFee = 0.997;
     return cycles
       .filter(
         (cycle) =>
@@ -107,11 +103,13 @@ export class GraphCalculationService {
       .map((cycle) => {
         return {
           cycle: cycle,
-          price:
-            cycle
-              .map((edge) => edge.price)
-              .reduce((prev, current) => prev * current) -
-            cycle.length * transactionFee * icxPrice * balancedFee,
+          price: cycle
+            .map((edge) => edge.price)
+            .reduce((prev, current) => {
+              console.log(prev * current);
+              return prev * current * balancedFee;
+            }),
+          //cycle.length * transactionFee * icxPrice * balancedFee,
         } as ArtbitraguePath;
       })
       .sort((a, b) => (a.price > b.price ? 1 : -1))
